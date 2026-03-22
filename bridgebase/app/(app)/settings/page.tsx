@@ -69,7 +69,7 @@ export default function SettingsPage() {
 
   if (!user) {
     return (
-      <div className="max-w-md space-y-6">
+      <div className="w-full max-w-md mx-auto space-y-6">
         <div className="h-10 w-1.5 rounded-full bg-accent mb-4" />
         <h1 className="font-display text-3xl font-bold">Settings</h1>
         <p className="text-sm text-foreground-secondary">Sign in to manage your profile.</p>
@@ -81,7 +81,7 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="max-w-lg space-y-8">
+    <div className="w-full max-w-lg mx-auto space-y-8">
       <div className="flex items-start gap-4">
         <div className="h-12 w-1.5 rounded-full bg-gradient-to-b from-accent to-primary shrink-0" />
         <div>
