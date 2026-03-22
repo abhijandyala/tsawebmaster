@@ -23,7 +23,9 @@ const links = [
 /** Haptimize Sidebar: short delay before collapse on pointer leave */
 const COLLAPSE_DELAY_MS = 100;
 
-const easeWidth = '0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+/** One curve + duration for width and label reveal so open doesn’t fight itself */
+const SIDEBAR_EASE = 'cubic-bezier(0.4, 0, 0.2, 1)';
+const easeWidth = `0.4s ${SIDEBAR_EASE}`;
 
 /** Horizontal inset so logo / icons stay on one vertical line — never center in the strip */
 const RAIL_INSET = 'pl-2 pr-2';
@@ -78,7 +80,7 @@ export function AppSidebar({ showExitDemo, onExitDemo }: Props) {
     overflow: 'hidden',
     transition: reduceMotion
       ? 'none'
-      : 'opacity 0.22s ease, max-width 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
+      : `opacity 0.4s ${SIDEBAR_EASE}, max-width 0.4s ${SIDEBAR_EASE}`,
   };
 
   return (
@@ -176,13 +178,13 @@ export function AppSidebar({ showExitDemo, onExitDemo }: Props) {
 
       <div className={cn('border-t border-border flex-shrink-0 overflow-x-hidden min-w-0 py-3 mt-auto', RAIL_INSET)}>
         {(user || showExitDemo) && (
-          <div className="flex items-start gap-2 mb-2 min-w-0 overflow-hidden">
+          <div className="flex items-center gap-2 mb-2 min-w-0 overflow-hidden">
             <div className="w-9 h-9 rounded-full bg-accent/15 flex items-center justify-center text-sm font-bold text-accent shrink-0">
               {displayInitial}
             </div>
-            {/* Collapsed: cap height so zero-width text wrap can't stretch the row and move the avatar */}
+            {/* Fixed height: avoids open jank when expanded toggles (was max-h-9 only collapsed → row height jumped mid-width). */}
             <div
-              className={cn('min-w-0 overflow-hidden flex flex-col justify-center', !expanded && 'max-h-9')}
+              className="min-w-0 h-11 shrink flex flex-col justify-center gap-0 overflow-hidden"
               style={labelReveal}
             >
               <p className="text-sm font-medium text-foreground truncate leading-tight">{displayName}</p>
