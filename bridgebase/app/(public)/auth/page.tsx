@@ -1,10 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { useAuth } from '@/contexts/auth-context';
 import { LanguageSelector } from '@/components/ui/LanguageSelector';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
@@ -43,22 +42,7 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="relative min-h-screen flex flex-col overflow-hidden bg-background">
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="clt-blob clt-blob-a -top-24 -left-20 opacity-35" />
-        <div className="clt-blob clt-blob-b top-1/4 -right-24 opacity-30" />
-      </div>
-
-      <motion.div
-        className="absolute inset-0 z-[1]"
-        initial={{ filter: 'blur(0px)', scale: 1 }}
-        animate={{ filter: 'blur(5px)', scale: 1.03 }}
-        transition={{ duration: 0.85, ease: 'easeOut' }}
-      >
-        <Image src="/charlotte_nc.png" alt="" fill className="object-cover opacity-50 dark:opacity-35" sizes="100vw" priority />
-        <div className="absolute inset-0 bg-gradient-to-br from-[#D4D8EC]/80 via-[#447CB3]/25 to-[#23361D]/50 dark:from-[#0f1419]/90 dark:via-[#1a2430]/85 dark:to-[#23361D]/40" />
-      </motion.div>
-
+    <div className="relative min-h-[100dvh] flex flex-col overflow-hidden">
       <header className="relative z-20 flex justify-between items-center p-4 sm:p-5">
         <Link
           href="/"
@@ -73,12 +57,7 @@ export default function AuthPage() {
       </header>
 
       <div className="relative z-20 flex-1 flex items-center justify-center p-6 -mt-8 sm:-mt-10">
-        <motion.div
-          initial={{ opacity: 0, y: 28 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ type: 'spring', stiffness: 280, damping: 26 }}
-          className="w-full max-w-md clt-glass rounded-3xl p-8 sm:p-10 text-foreground"
-        >
+        <div className="w-full max-w-md clt-glass rounded-3xl p-8 sm:p-10 text-foreground">
           <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-1">Welcome</h1>
           <p className="text-sm text-foreground-secondary mb-8">
             Sign in with Google or email to sync favorites and reviews.
@@ -175,7 +154,7 @@ export default function AuthPage() {
           {mode === 'signup' && (
             <p className="text-xs text-foreground-muted mt-4">We&apos;ll email you a verification link.</p>
           )}
-        </motion.div>
+        </div>
       </div>
     </div>
   );

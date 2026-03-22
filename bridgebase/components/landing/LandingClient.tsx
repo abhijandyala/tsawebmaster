@@ -25,8 +25,6 @@ export function LandingClient() {
     target: heroRef,
     offset: ['start start', 'end start'],
   });
-  const heroBgY = useTransform(heroScroll, [0, 1], reduceMotion ? ['0%', '0%'] : ['0%', '18%']);
-  const heroBgScale = useTransform(heroScroll, [0, 1], reduceMotion ? [1, 1] : [1, 1.06]);
   const heroContentY = useTransform(heroScroll, [0, 1], reduceMotion ? ['0%', '0%'] : ['0%', '12%']);
   const heroOpacity = useTransform(heroScroll, [0, 0.65, 1], [1, 0.92, 0.78]);
 
@@ -37,7 +35,7 @@ export function LandingClient() {
   }, [user, loading, router]);
 
   return (
-    <div className="relative min-h-0 bg-background">
+    <div className="relative min-h-0 bg-transparent">
       {/* Page scroll progress */}
       {!reduceMotion && (
         <motion.div
@@ -47,32 +45,7 @@ export function LandingClient() {
         />
       )}
 
-      <div ref={heroRef} className="relative min-h-[100dvh] flex flex-col overflow-hidden bg-[#0d1210]">
-        {/* Ambient layer */}
-        <div className="pointer-events-none absolute inset-0 z-[1] overflow-hidden">
-          <div className="clt-blob clt-blob-a -top-20 -left-16 opacity-60 dark:opacity-50" />
-          <div className="clt-blob clt-blob-b top-1/3 -right-20 opacity-50 dark:opacity-40" />
-          <div className="clt-blob clt-blob-c bottom-0 left-1/3 opacity-45 dark:opacity-35" />
-        </div>
-
-        <div className="absolute inset-0 z-[2] overflow-hidden">
-          <motion.div className="absolute inset-0 will-change-transform" style={{ y: heroBgY, scale: heroBgScale }}>
-            <Image
-              src="/charlotte_nc.png"
-              alt=""
-              fill
-              priority
-              className="object-cover opacity-85"
-              sizes="100vw"
-            />
-          </motion.div>
-          <div
-            className="absolute inset-0 bg-gradient-to-br from-[#23361D]/88 via-[#447CB3]/42 to-[#23361D]/75"
-            aria-hidden
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0d1210]/90 via-transparent to-[#447CB3]/15" aria-hidden />
-        </div>
-
+      <div ref={heroRef} className="relative min-h-[100dvh] flex flex-col overflow-hidden bg-transparent">
         <header className="relative z-20 flex justify-end items-center gap-2 p-4 sm:p-5">
           <LanguageSelector />
           <ThemeToggle />
