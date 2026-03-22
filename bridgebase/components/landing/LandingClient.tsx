@@ -77,17 +77,16 @@ export function LandingClient() {
             transition={{ delay: 0.08, type: 'spring', stiffness: 280, damping: 22 }}
             className="mb-5 sm:mb-6"
           >
-            <div className="inline-flex w-fit max-w-full items-center justify-center rounded-xl bg-white px-2 py-0 shadow-[0_4px_28px_rgba(0,0,0,0.18)] ring-1 ring-black/[0.06]">
-              <div className="relative h-[44px] w-[min(268px,78vw)] sm:h-[48px] sm:w-[min(288px,78vw)]">
-                <Image
-                  src="/cltlogotext.png"
-                  alt="Charlotte Connect"
-                  fill
-                  sizes="(max-width: 640px) 78vw, 288px"
-                  className="object-cover object-center"
-                  priority
-                />
-              </div>
+            <div className="inline-flex w-fit max-w-full items-center justify-center rounded-2xl bg-white px-3 py-2.5 shadow-[0_4px_28px_rgba(0,0,0,0.18)] ring-1 ring-black/[0.06]">
+              <Image
+                src="/cltlogotext.png"
+                alt="Charlotte Connect"
+                width={2000}
+                height={2000}
+                sizes="(max-width: 640px) 72vw, 300px"
+                className="block h-[min(100px,26vw)] w-auto max-h-[112px] sm:h-[112px] object-contain object-center"
+                priority
+              />
             </div>
           </motion.div>
 
