@@ -138,10 +138,6 @@ export function LandingClient() {
           </motion.div>
 
           <p className="mt-6 sm:mt-8 text-sm text-[#D4D8EC]/90 flex flex-wrap justify-center gap-x-3 gap-y-1">
-            <Link href="/help" className="underline underline-offset-4 hover:text-white transition-colors">
-              Help wizard
-            </Link>
-            <span className="text-white/40">·</span>
             <Link href="/my-plan" className="underline underline-offset-4 hover:text-white transition-colors">
               My plan
             </Link>

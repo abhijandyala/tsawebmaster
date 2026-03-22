@@ -62,9 +62,14 @@ export default function YourResourcesPage() {
             </p>
           </div>
         </div>
-        <Button variant="accent" type="button" onClick={() => (window.location.href = '/request-resource')}>
-          Request a resource →
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-3 shrink-0">
+          <Button variant="outline" type="button" onClick={() => router.push('/help')}>
+            Help wizard →
+          </Button>
+          <Button variant="accent" type="button" onClick={() => router.push('/request-resource')}>
+            Request a resource →
+          </Button>
+        </div>
       </div>
 
       <section className="clt-glass rounded-3xl p-6 sm:p-8 border border-border-light">
