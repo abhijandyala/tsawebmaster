@@ -8,6 +8,7 @@ import { QuickFilters, FilterState } from './QuickFilters';
 import { GoogleMap, MapMarker } from '@/components/maps/GoogleMap';
 import { CrisisBanner } from '@/components/ui/CrisisBanner';
 import { SearchResult, GroupedResults, groupResultsByCategory } from '@/lib/searchService';
+import { enrichSearchWithBrowserPlaces } from '@/lib/enrichSearchWithBrowserPlaces';
 import { Loader2, MapIcon, List, LayoutGrid, LayoutList, Scale, X } from 'lucide-react';
 import { CompareModal } from './CompareModal';
 import { ParsedQuery } from '@/lib/queryParser';
@@ -109,7 +110,7 @@ export function SearchResults({ query, userLocation: initialLocation, onClearSea
     return url;
   }, [query, userLocation]);
 
-  const { data, error, isLoading, mutate } = useSWR<SearchApiResponse>(
+  const { data: swrData, error, isLoading, mutate } = useSWR<SearchApiResponse>(
     searchUrl,
     fetcher,
     {
@@ -119,10 +120,34 @@ export function SearchResults({ query, userLocation: initialLocation, onClearSea
     }
   );
 
+  const [displayData, setDisplayData] = useState<SearchApiResponse | null>(null);
+
+  useEffect(() => {
+    if (!swrData) {
+      setDisplayData(null);
+      return;
+    }
+    setDisplayData(swrData);
+    let cancelled = false;
+    void enrichSearchWithBrowserPlaces(swrData, {
+      userLat: userLocation?.lat,
+      userLng: userLocation?.lng,
+    })
+      .then((enriched) => {
+        if (!cancelled) setDisplayData(enriched);
+      })
+      .catch(() => {
+        if (!cancelled) setDisplayData(swrData);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [swrData, userLocation?.lat, userLocation?.lng]);
+
   const filteredResults = useMemo(() => {
-    if (!data?.results) return [];
+    if (!displayData?.results) return [];
     
-    let results = [...data.results];
+    let results = [...displayData.results];
     
     if (filters.openNow) {
       results = results.filter(r => r.isOpen === true);
@@ -150,7 +175,7 @@ export function SearchResults({ query, userLocation: initialLocation, onClearSea
     }
     
     return results;
-  }, [data, filters, userLocation]);
+  }, [displayData, filters, userLocation]);
 
   const filteredGrouped = useMemo(() => {
     if (!filteredResults.length) return [];
@@ -158,11 +183,11 @@ export function SearchResults({ query, userLocation: initialLocation, onClearSea
   }, [filteredResults]);
 
   const showCrisisBanner = useMemo(() => {
-    if (!data?.query) return false;
+    if (!displayData?.query) return false;
     const lowerQuery = query.toLowerCase();
     const isCrisisQuery = CRISIS_KEYWORDS.some(kw => lowerQuery.includes(kw));
-    return data.query.isHelpSeeking || isCrisisQuery;
-  }, [data, query]);
+    return displayData.query.isHelpSeeking || isCrisisQuery;
+  }, [displayData, query]);
 
   const isSevereCrisis = useMemo(() => {
     const lowerQuery = query.toLowerCase();
@@ -245,7 +270,7 @@ export function SearchResults({ query, userLocation: initialLocation, onClearSea
     );
   }
 
-  if (!data || data.results.length === 0) {
+  if (!displayData || displayData.results.length === 0) {
     return (
       <div className="text-center py-16">
         <p className="text-foreground-secondary mb-2">No results found for &quot;{query}&quot;</p>
@@ -278,8 +303,8 @@ export function SearchResults({ query, userLocation: initialLocation, onClearSea
           </div>
           <p className="text-sm text-foreground-muted">
             Found {filteredResults.length} results for &quot;{query}&quot;
-            {data.sources.curated > 0 && (
-              <span className="ml-1 text-sage">({data.sources.curated} verified)</span>
+            {displayData.sources.curated > 0 && (
+              <span className="ml-1 text-sage">({displayData.sources.curated} verified)</span>
             )}
           </p>
         </div>

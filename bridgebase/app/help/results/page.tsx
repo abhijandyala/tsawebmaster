@@ -18,6 +18,7 @@ import {
   WIZARD_CATEGORIES,
 } from '@/lib/wizardTypes';
 import { SearchResult } from '@/lib/searchService';
+import { enrichSearchWithBrowserPlaces } from '@/lib/enrichSearchWithBrowserPlaces';
 
 interface SearchApiResponse {
   results: SearchResult[];
@@ -28,7 +29,8 @@ const fetcher = async (url: string): Promise<SearchApiResponse> => {
   const response = await fetch(url);
   const data = await response.json();
   if (!response.ok) throw new Error(data.error || 'Failed to search');
-  return data;
+  const enriched = await enrichSearchWithBrowserPlaces(data, {});
+  return { results: enriched.results, total: enriched.total };
 };
 
 function HelpResultsContent() {

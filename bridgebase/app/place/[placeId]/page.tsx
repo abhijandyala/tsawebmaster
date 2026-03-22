@@ -1,7 +1,7 @@
 'use client';
 
 import { useParams, useRouter } from 'next/navigation';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import useSWR from 'swr';
 import { motion } from 'framer-motion';
 import {
@@ -22,6 +22,7 @@ import { PublicChrome } from '@/components/layout';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { GoogleMap } from '@/components/maps/GoogleMap';
+import { fetchPlaceDetailsBrowser } from '@/lib/browserPlaces';
 
 interface PlaceDetails {
   placeId: string;
@@ -51,10 +52,10 @@ interface Review {
   relativeTime: string;
 }
 
-const fetcher = async (url: string) => {
-  const response = await fetch(url);
-  if (!response.ok) throw new Error('Failed to fetch place details');
-  return response.json();
+const placeDetailsFetcher = async (id: string): Promise<PlaceDetails> => {
+  const place = await fetchPlaceDetailsBrowser(id);
+  if (!place) throw new Error('Failed to load place details');
+  return place;
 };
 
 export default function PlaceDetailPage() {
@@ -63,9 +64,12 @@ export default function PlaceDetailPage() {
   const placeId = params.placeId as string;
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
 
+  const swrKey = useMemo(() => (placeId ? placeId : null), [placeId]);
+
   const { data: place, error, isLoading } = useSWR<PlaceDetails>(
-    placeId ? `/api/places/details?placeId=${placeId}` : null,
-    fetcher
+    swrKey,
+    placeDetailsFetcher,
+    { revalidateOnFocus: false }
   );
 
   const handleShare = useCallback(async () => {
