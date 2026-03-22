@@ -1,8 +1,6 @@
 'use client';
 
 import { useEffect, type ReactNode } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useAuth } from '@/contexts/auth-context';
@@ -84,24 +82,14 @@ export function AppShell({ children }: { children: ReactNode }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.42, ease: pageEase }}
         >
-          <div className="flex items-center justify-between gap-4 px-4 sm:px-6 py-3.5">
-            <Link
-              href="/home"
-              className="flex items-center gap-3 shrink-0 group rounded-xl p-1 -m-1 hover:bg-accent-soft/25 transition-colors duration-200"
-            >
-              <motion.div whileHover={reduceMotion ? undefined : { scale: 1.06 }} whileTap={reduceMotion ? undefined : { scale: 0.95 }}>
-                <Image src="/cltlogo.png" alt="Home" width={36} height={36} className="h-9 w-auto" />
-              </motion.div>
-              <span className="hidden sm:block text-xs font-bold uppercase tracking-wider text-accent">
-                Charlotte Connect
-              </span>
-            </Link>
-            <p className="text-sm sm:text-base font-display font-semibold text-foreground truncate flex-1 text-center px-2">
+          <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3 px-4 sm:px-6 py-3.5">
+            <div className="min-w-0" aria-hidden />
+            <p className="text-sm sm:text-base font-display font-semibold text-foreground truncate text-center px-2 max-w-[min(100vw-12rem,28rem)]">
               Welcome back,{' '}
               <span className="text-accent">{displayName}</span>
             </p>
             <motion.div
-              className="flex items-center gap-1 sm:gap-2 shrink-0"
+              className="flex items-center justify-end gap-1 sm:gap-2 min-w-0"
               initial={reduceMotion ? false : { opacity: 0, x: 8 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.45, ease: pageEase, delay: 0.05 }}

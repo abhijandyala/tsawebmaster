@@ -77,7 +77,7 @@ export function AppSidebar({ showExitDemo, onExitDemo }: Props) {
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
       className={cn(
-        'fixed left-0 top-0 z-50 h-screen flex flex-col overflow-hidden',
+        'fixed left-0 top-0 z-50 h-screen flex flex-col overflow-x-hidden overflow-y-hidden',
         'border-r border-accent/20 bg-surface/95 backdrop-blur-xl shadow-[4px_0_28px_rgba(68,124,179,0.08)]'
       )}
       style={{
@@ -85,11 +85,14 @@ export function AppSidebar({ showExitDemo, onExitDemo }: Props) {
         transition: reduceMotion ? 'none' : `width ${easeWidth}`,
       }}
     >
-      {/* Brand row — Haptimize: logo + title fades with width */}
-      <div className="flex-shrink-0 flex items-center overflow-hidden pl-3 pr-2 pt-4 pb-3 gap-2 border-b border-border-light">
+      {/* Brand — keep within rail when collapsed (no horizontal overflow) */}
+      <div className="flex-shrink-0 flex items-center justify-center min-h-[3.25rem] border-b border-border-light overflow-hidden px-1.5">
         <Link
           href="/home"
-          className="flex items-center gap-2.5 min-w-0 rounded-xl -m-1 p-1"
+          className={cn(
+            'flex items-center rounded-xl p-1 min-w-0 max-w-full',
+            expanded ? 'gap-2 justify-start w-full' : 'justify-center'
+          )}
           style={{
             transition: reduceMotion ? undefined : easeSpringish,
           }}
@@ -105,7 +108,7 @@ export function AppSidebar({ showExitDemo, onExitDemo }: Props) {
             alt="Charlotte Connect"
             width={36}
             height={36}
-            className="flex-shrink-0 h-9 w-auto"
+            className="flex-shrink-0 h-9 w-9 object-contain"
             priority
           />
           <span
@@ -121,7 +124,13 @@ export function AppSidebar({ showExitDemo, onExitDemo }: Props) {
         </Link>
       </div>
 
-      <nav className="flex flex-col gap-1 px-2.5 pt-3 flex-1 min-h-0 overflow-y-auto overflow-x-hidden">
+      <nav
+        className={cn(
+          'flex flex-col gap-1 py-2 flex-1 min-h-0 min-w-0',
+          'overflow-x-hidden overflow-y-auto sidebar-rail-scroll',
+          expanded ? 'px-2' : 'px-1'
+        )}
+      >
         {links.map(({ href, label, icon: Icon }) => {
           const active = pathname === href || pathname.startsWith(`${href}/`);
           return (
@@ -129,7 +138,10 @@ export function AppSidebar({ showExitDemo, onExitDemo }: Props) {
               key={href}
               href={href}
               title={label}
-              className="flex items-center w-full py-2 min-w-0 group"
+              className={cn(
+                'group flex w-full min-w-0 max-w-full',
+                expanded ? 'justify-stretch px-0' : 'justify-center'
+              )}
               onMouseEnter={(e) => {
                 if (reduceMotion) return;
                 const inner = e.currentTarget.firstElementChild as HTMLElement | null;
@@ -142,20 +154,22 @@ export function AppSidebar({ showExitDemo, onExitDemo }: Props) {
             >
               <div
                 className={cn(
-                  'flex items-center gap-3 px-2.5 py-2 rounded-xl text-sm font-semibold min-w-0',
-                  expanded ? 'flex-1' : 'w-11 flex-none justify-center',
+                  'flex items-center rounded-xl text-sm font-semibold box-border border',
+                  expanded
+                    ? 'min-h-10 w-full min-w-0 gap-2.5 px-3 py-2'
+                    : 'h-10 w-10 shrink-0 justify-center p-0 mx-auto',
                   active
-                    ? 'bg-accent-soft text-accent-dark border border-accent/25 shadow-sm'
-                    : 'text-foreground-secondary border border-transparent group-hover:bg-accent-soft/35 group-hover:text-foreground'
+                    ? 'bg-accent-soft text-accent-dark border-accent/25 shadow-sm'
+                    : 'text-foreground-secondary border-transparent group-hover:bg-accent-soft/35 group-hover:text-foreground'
                 )}
                 style={{ transition: reduceMotion ? 'background-color 150ms ease, color 150ms ease' : easeSpringish }}
               >
-                <Icon className={cn('w-[18px] h-[18px] flex-shrink-0', active ? 'text-accent' : 'opacity-85')} />
+                <Icon className={cn('w-[18px] h-[18px] shrink-0', active ? 'text-accent' : 'opacity-85')} strokeWidth={2} />
                 <span
                   className="whitespace-nowrap overflow-hidden transition-opacity duration-300"
                   style={{
                     opacity: expanded ? 1 : 0,
-                    width: expanded ? 'auto' : 0,
+                    maxWidth: expanded ? 200 : 0,
                   }}
                 >
                   {label}
@@ -166,19 +180,22 @@ export function AppSidebar({ showExitDemo, onExitDemo }: Props) {
         })}
       </nav>
 
-      <div className="flex-1 min-h-2" />
-
-      <div className="border-t border-border flex-shrink-0 pl-2 pr-2.5 py-4">
+      <div className="border-t border-border flex-shrink-0 overflow-x-hidden min-w-0 py-3 px-1.5 mt-auto">
         {(user || showExitDemo) && (
-          <div className="flex items-center gap-2.5 mb-3 overflow-hidden min-w-0">
-            <div className="w-9 h-9 rounded-full bg-accent/15 flex items-center justify-center text-sm font-bold text-accent flex-shrink-0">
+          <div
+            className={cn(
+              'flex items-center gap-2 mb-2 min-w-0 overflow-hidden',
+              expanded ? 'justify-start' : 'justify-center'
+            )}
+          >
+            <div className="w-9 h-9 rounded-full bg-accent/15 flex items-center justify-center text-sm font-bold text-accent shrink-0">
               {displayInitial}
             </div>
             <div
               className="flex-1 min-w-0 transition-opacity duration-300"
               style={{
                 opacity: expanded ? 1 : 0,
-                width: expanded ? 'auto' : 0,
+                maxWidth: expanded ? 200 : 0,
                 overflow: 'hidden',
               }}
             >
@@ -195,7 +212,10 @@ export function AppSidebar({ showExitDemo, onExitDemo }: Props) {
             type="button"
             onClick={onExitDemo}
             title="Exit demo"
-            className="flex items-center gap-2 py-2 pl-1.5 pr-2 w-full text-sm text-foreground-secondary hover:text-gold rounded-xl cursor-pointer min-w-0 mb-1"
+            className={cn(
+              'flex items-center text-sm text-foreground-secondary hover:text-gold rounded-xl cursor-pointer min-w-0 w-full mb-1',
+              expanded ? 'gap-2 py-2 px-2 justify-start' : 'h-10 justify-center p-0'
+            )}
             style={{
               transition: reduceMotion ? 'color 150ms ease' : easeSpringish,
             }}
@@ -206,12 +226,12 @@ export function AppSidebar({ showExitDemo, onExitDemo }: Props) {
               e.currentTarget.style.transform = 'scale(1)';
             }}
           >
-            <span className="text-base leading-none w-[18px] text-center flex-shrink-0" aria-hidden>
+            <span className="text-base leading-none w-[18px] text-center shrink-0" aria-hidden>
               ×
             </span>
             <span
               className="whitespace-nowrap overflow-hidden transition-opacity duration-300"
-              style={{ opacity: expanded ? 1 : 0, width: expanded ? 'auto' : 0 }}
+              style={{ opacity: expanded ? 1 : 0, maxWidth: expanded ? 200 : 0 }}
             >
               Exit demo
             </span>
@@ -223,7 +243,10 @@ export function AppSidebar({ showExitDemo, onExitDemo }: Props) {
             type="button"
             onClick={handleSignOut}
             title="Sign out"
-            className="flex items-center gap-2 py-2 pl-1.5 pr-2 w-full text-sm text-foreground-secondary hover:text-error rounded-xl cursor-pointer min-w-0"
+            className={cn(
+              'flex items-center text-sm text-foreground-secondary hover:text-error rounded-xl cursor-pointer min-w-0 w-full',
+              expanded ? 'gap-2 py-2 px-2 justify-start' : 'h-10 justify-center p-0'
+            )}
             style={{
               transition: reduceMotion ? 'color 150ms ease' : easeSpringish,
             }}
@@ -234,10 +257,10 @@ export function AppSidebar({ showExitDemo, onExitDemo }: Props) {
               e.currentTarget.style.transform = 'scale(1)';
             }}
           >
-            <LogOut className="w-[18px] h-[18px] flex-shrink-0" />
+            <LogOut className="w-[18px] h-[18px] shrink-0" />
             <span
               className="whitespace-nowrap overflow-hidden transition-opacity duration-300"
-              style={{ opacity: expanded ? 1 : 0, width: expanded ? 'auto' : 0 }}
+              style={{ opacity: expanded ? 1 : 0, maxWidth: expanded ? 200 : 0 }}
             >
               Sign out
             </span>
