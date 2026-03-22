@@ -75,14 +75,21 @@ export function AppShell({ children }: { children: ReactNode }) {
         }}
       />
 
-      {/* flex-1 + min-w-0: fill viewport beside fixed rail; avoids shrink-wrapped header under block layout */}
+      {/* Full-bleed header: no column paddingLeft — that inset was shrinking the header bar and showing bg beside it.
+          Overlay inset (expanded sidebar clearance) applies only to inner padding of header + main. */}
       <div
-        className="flex min-h-screen min-h-0 flex-1 min-w-0 flex-col"
-        style={{ marginLeft: SIDEBAR_RAIL_PX, paddingLeft: SIDEBAR_OVERLAY_INSET_PX }}
+        className="box-border flex min-h-screen min-h-0 shrink-0 flex-col"
+        style={{
+          marginLeft: SIDEBAR_RAIL_PX,
+          // 100% = parent width; avoids 100vw scrollbar overflow. Sidebar is fixed/out of flex flow.
+          width: `calc(100% - ${SIDEBAR_RAIL_PX}px)`,
+          maxWidth: `calc(100% - ${SIDEBAR_RAIL_PX}px)`,
+          ['--clt-overlay-inset' as string]: `${SIDEBAR_OVERLAY_INSET_PX}px`,
+        }}
       >
-        <header className="sticky top-0 z-40 w-full max-w-none min-w-0 shrink-0 border-b border-border bg-surface/80 backdrop-blur-xl box-border">
+        <header className="sticky top-0 z-40 w-full min-w-0 shrink-0 border-b border-border bg-surface/80 backdrop-blur-xl box-border">
           <motion.div
-            className={`flex w-full max-w-none min-w-0 items-center gap-3 clt-page-x py-3.5 ${isHome ? 'justify-between' : 'justify-end'}`}
+            className={`flex w-full min-w-0 max-w-none items-center gap-3 py-3.5 pr-4 sm:pr-5 lg:pr-6 pl-[calc(var(--clt-overlay-inset)+1rem)] sm:pl-[calc(var(--clt-overlay-inset)+1.25rem)] lg:pl-[calc(var(--clt-overlay-inset)+1.5rem)] ${isHome ? 'justify-between' : 'justify-end'}`}
             initial={reduceMotion ? false : { opacity: 0, y: -6 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.42, ease: pageEase }}
@@ -101,7 +108,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
         <motion.main
           key={pathname}
-          className="flex-1 py-5 sm:py-6 lg:py-8 clt-page-x"
+          className="min-w-0 flex-1 py-5 sm:py-6 lg:py-8 pr-4 sm:pr-5 lg:pr-6 pl-[calc(var(--clt-overlay-inset)+1rem)] sm:pl-[calc(var(--clt-overlay-inset)+1.25rem)] lg:pl-[calc(var(--clt-overlay-inset)+1.5rem)]"
           initial={reduceMotion ? false : { opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: pageEase }}
