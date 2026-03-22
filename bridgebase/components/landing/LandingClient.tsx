@@ -77,7 +77,7 @@ export function LandingClient() {
             transition={{ delay: 0.08, type: 'spring', stiffness: 280, damping: 22 }}
             className="mb-5 sm:mb-6"
           >
-            <div className="inline-flex w-fit max-w-full items-center justify-center rounded-full bg-white/72 backdrop-blur-md px-5 py-2.5 sm:px-7 sm:py-3.5 shadow-[0_4px_28px_rgba(0,0,0,0.2)] ring-1 ring-white/55">
+            <div className="inline-flex w-fit max-w-full items-center justify-center rounded-2xl bg-white/12 backdrop-blur-md border-2 border-[#D4D8EC]/55 px-5 py-2.5 sm:px-7 sm:py-3.5">
               <Image
                 src="/cltlogotext.png"
                 alt="Charlotte Connect"
