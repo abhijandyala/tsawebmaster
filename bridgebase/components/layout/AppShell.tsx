@@ -88,24 +88,24 @@ export function AppShell({ children }: { children: ReactNode }) {
           ['--clt-sidebar-rail' as string]: `${SIDEBAR_RAIL_PX}px`,
         }}
       >
-        <header className="sticky top-0 z-40 w-full min-w-0 shrink-0 border-b border-border bg-surface/80 backdrop-blur-xl box-border">
-          <motion.div
-            className={`flex w-full min-w-0 max-w-none items-center gap-3 py-3.5 pl-[calc(var(--clt-overlay-inset)+1rem)] sm:pl-[calc(var(--clt-overlay-inset)+1.25rem)] lg:pl-[calc(var(--clt-overlay-inset)+1.5rem)] pr-[calc(var(--clt-overlay-inset)+var(--clt-sidebar-rail)+1rem)] sm:pr-[calc(var(--clt-overlay-inset)+var(--clt-sidebar-rail)+1.25rem)] lg:pr-[calc(var(--clt-overlay-inset)+var(--clt-sidebar-rail)+1.5rem)] ${isHome ? 'justify-between' : 'justify-end'}`}
-            initial={reduceMotion ? false : { opacity: 0, y: -6 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.42, ease: pageEase }}
-          >
-            {isHome ? (
+        {isHome ? (
+          <header className="sticky top-0 z-40 w-full min-w-0 shrink-0 border-b border-border bg-surface/80 backdrop-blur-xl box-border">
+            <motion.div
+              className="flex w-full min-w-0 max-w-none items-center justify-between gap-3 py-3.5 pl-[calc(var(--clt-overlay-inset)+1rem)] sm:pl-[calc(var(--clt-overlay-inset)+1.25rem)] lg:pl-[calc(var(--clt-overlay-inset)+1.5rem)] pr-[calc(var(--clt-overlay-inset)+var(--clt-sidebar-rail)+1rem)] sm:pr-[calc(var(--clt-overlay-inset)+var(--clt-sidebar-rail)+1.25rem)] lg:pr-[calc(var(--clt-overlay-inset)+var(--clt-sidebar-rail)+1.5rem)]"
+              initial={reduceMotion ? false : { opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.42, ease: pageEase }}
+            >
               <p className="min-w-0 flex-1 text-left text-sm sm:text-base font-display font-semibold text-foreground truncate pr-2">
                 Welcome back, <span className="text-accent">{displayName}</span>
               </p>
-            ) : null}
-            <div className="flex shrink-0 items-center justify-end gap-1 sm:gap-2">
-              <LanguageSelector />
-              <ThemeToggle />
-            </div>
-          </motion.div>
-        </header>
+              <div className="flex shrink-0 items-center justify-end gap-1 sm:gap-2">
+                <LanguageSelector />
+                <ThemeToggle />
+              </div>
+            </motion.div>
+          </header>
+        ) : null}
 
         <motion.main
           key={pathname}
