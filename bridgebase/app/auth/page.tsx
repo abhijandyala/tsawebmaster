@@ -72,7 +72,7 @@ export default function AuthPage() {
         </div>
       </header>
 
-      <div className="relative z-20 flex-1 flex items-center justify-center p-6">
+      <div className="relative z-20 flex-1 flex items-center justify-center p-6 -mt-8 sm:-mt-10">
         <motion.div
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
