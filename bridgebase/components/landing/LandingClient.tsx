@@ -64,7 +64,7 @@ export function LandingClient() {
         <ThemeToggle />
       </header>
 
-      <main className="relative z-20 flex-1 flex flex-col items-center justify-start pt-4 sm:pt-6 min-h-0 px-6 pb-6 sm:pb-8 text-center">
+      <main className="relative z-20 flex-1 flex flex-col items-center justify-start pt-8 sm:pt-10 min-h-0 px-6 pb-6 sm:pb-8 text-center">
         <motion.div
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
@@ -77,7 +77,7 @@ export function LandingClient() {
             transition={{ delay: 0.08, type: 'spring', stiffness: 280, damping: 22 }}
             className="mb-5 sm:mb-6"
           >
-            <div className="inline-flex w-fit max-w-full items-center justify-center rounded-full bg-white px-5 py-2.5 sm:px-7 sm:py-3.5 shadow-[0_4px_28px_rgba(0,0,0,0.18)] ring-1 ring-black/[0.06]">
+            <div className="inline-flex w-fit max-w-full items-center justify-center rounded-full bg-white/72 backdrop-blur-md px-5 py-2.5 sm:px-7 sm:py-3.5 shadow-[0_4px_28px_rgba(0,0,0,0.2)] ring-1 ring-white/55">
               <Image
                 src="/cltlogotext.png"
                 alt="Charlotte Connect"
