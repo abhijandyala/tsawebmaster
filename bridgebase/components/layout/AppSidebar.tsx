@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -24,7 +24,9 @@ const links = [
 const COLLAPSE_DELAY_MS = 100;
 
 const easeWidth = '0.4s cubic-bezier(0.4, 0, 0.2, 1)';
-const easeSpringish = 'transform 500ms cubic-bezier(0.25, 0.1, 0.25, 1), background-color 150ms ease, color 150ms ease';
+
+/** Horizontal inset so logo / icons stay on one vertical line — never center in the strip */
+const RAIL_INSET = 'pl-2 pr-2';
 
 type Props = {
   showExitDemo?: boolean;
@@ -70,6 +72,15 @@ export function AppSidebar({ showExitDemo, onExitDemo }: Props) {
   const displayName = user?.displayName || user?.email?.split('@')[0] || (showExitDemo ? 'Demo' : 'User');
   const displayEmail = user?.email ?? (showExitDemo ? 'Browsing without an account' : '');
 
+  const labelReveal: CSSProperties = {
+    opacity: expanded ? 1 : 0,
+    maxWidth: expanded ? 220 : 0,
+    overflow: 'hidden',
+    transition: reduceMotion
+      ? 'none'
+      : 'opacity 0.22s ease, max-width 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
+  };
+
   return (
     <aside
       aria-label="Main navigation"
@@ -85,23 +96,16 @@ export function AppSidebar({ showExitDemo, onExitDemo }: Props) {
         transition: reduceMotion ? 'none' : `width ${easeWidth}`,
       }}
     >
-      {/* Brand — keep within rail when collapsed (no horizontal overflow) */}
-      <div className="flex-shrink-0 flex items-center justify-center min-h-[3.25rem] border-b border-border-light overflow-hidden px-1.5">
+      {/* Brand — logo fixed left; text only reveals to the right */}
+      <div
+        className={cn(
+          'flex-shrink-0 flex items-center min-h-[3.25rem] border-b border-border-light overflow-hidden',
+          RAIL_INSET
+        )}
+      >
         <Link
           href="/home"
-          className={cn(
-            'flex items-center rounded-xl p-1 min-w-0 max-w-full',
-            expanded ? 'gap-2 justify-start w-full' : 'justify-center'
-          )}
-          style={{
-            transition: reduceMotion ? undefined : easeSpringish,
-          }}
-          onMouseEnter={(e) => {
-            if (!reduceMotion) e.currentTarget.style.transform = 'scale(1.06)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.transform = 'scale(1)';
-          }}
+          className="flex items-center gap-2 min-w-0 max-w-full rounded-xl p-1 -ml-1 transition-colors duration-200 hover:bg-accent-soft/25"
         >
           <Image
             src="/cltlogo.png"
@@ -112,12 +116,8 @@ export function AppSidebar({ showExitDemo, onExitDemo }: Props) {
             priority
           />
           <span
-            className="font-display text-sm font-semibold text-foreground whitespace-nowrap transition-all duration-300"
-            style={{
-              opacity: expanded ? 1 : 0,
-              maxWidth: expanded ? 200 : 0,
-              overflow: 'hidden',
-            }}
+            className="font-display text-sm font-semibold text-foreground whitespace-nowrap"
+            style={labelReveal}
           >
             Charlotte Connect
           </span>
@@ -126,9 +126,9 @@ export function AppSidebar({ showExitDemo, onExitDemo }: Props) {
 
       <nav
         className={cn(
-          'flex flex-col gap-1 py-2 flex-1 min-h-0 min-w-0',
+          'flex flex-col gap-0.5 py-2 flex-1 min-h-0 min-w-0',
           'overflow-x-hidden overflow-y-auto sidebar-rail-scroll',
-          expanded ? 'px-2' : 'px-1'
+          RAIL_INSET
         )}
       >
         {links.map(({ href, label, icon: Icon }) => {
@@ -139,66 +139,49 @@ export function AppSidebar({ showExitDemo, onExitDemo }: Props) {
               href={href}
               title={label}
               className={cn(
-                'group flex w-full min-w-0 max-w-full',
-                expanded ? 'justify-stretch px-0' : 'justify-center'
+                'group flex w-full min-w-0 items-center gap-2 rounded-xl py-1 pr-1 transition-colors duration-150',
+                expanded && active && 'bg-accent-soft border border-accent/25 shadow-sm',
+                expanded && !active && 'border border-transparent hover:bg-accent-soft/35',
+                !expanded && 'border border-transparent'
               )}
-              onMouseEnter={(e) => {
-                if (reduceMotion) return;
-                const inner = e.currentTarget.firstElementChild as HTMLElement | null;
-                if (inner) inner.style.transform = 'scale(1.06)';
-              }}
-              onMouseLeave={(e) => {
-                const inner = e.currentTarget.firstElementChild as HTMLElement | null;
-                if (inner) inner.style.transform = 'scale(1)';
-              }}
             >
               <div
                 className={cn(
-                  'flex items-center rounded-xl text-sm font-semibold box-border border',
-                  expanded
-                    ? 'min-h-10 w-full min-w-0 gap-2.5 px-3 py-2'
-                    : 'h-10 w-10 shrink-0 justify-center p-0 mx-auto',
-                  active
-                    ? 'bg-accent-soft text-accent-dark border-accent/25 shadow-sm'
-                    : 'text-foreground-secondary border-transparent group-hover:bg-accent-soft/35 group-hover:text-foreground'
+                  'flex h-9 w-9 shrink-0 items-center justify-center rounded-lg transition-colors duration-150',
+                  !expanded && active && 'bg-accent-soft ring-1 ring-accent/25 shadow-sm',
+                  !expanded && !active && 'group-hover:bg-accent-soft/35'
                 )}
-                style={{ transition: reduceMotion ? 'background-color 150ms ease, color 150ms ease' : easeSpringish }}
               >
-                <Icon className={cn('w-[18px] h-[18px] shrink-0', active ? 'text-accent' : 'opacity-85')} strokeWidth={2} />
-                <span
-                  className="whitespace-nowrap overflow-hidden transition-opacity duration-300"
-                  style={{
-                    opacity: expanded ? 1 : 0,
-                    maxWidth: expanded ? 200 : 0,
-                  }}
-                >
-                  {label}
-                </span>
+                <Icon
+                  className={cn(
+                    'h-[18px] w-[18px] shrink-0 transition-transform duration-200',
+                    active ? 'text-accent' : 'text-foreground-secondary opacity-90',
+                    !reduceMotion && 'group-hover:scale-110'
+                  )}
+                  strokeWidth={2}
+                />
               </div>
+              <span
+                className={cn(
+                  'min-w-0 text-sm font-semibold whitespace-nowrap',
+                  active ? 'text-accent-dark' : 'text-foreground-secondary group-hover:text-foreground'
+                )}
+                style={labelReveal}
+              >
+                {label}
+              </span>
             </Link>
           );
         })}
       </nav>
 
-      <div className="border-t border-border flex-shrink-0 overflow-x-hidden min-w-0 py-3 px-1.5 mt-auto">
+      <div className={cn('border-t border-border flex-shrink-0 overflow-x-hidden min-w-0 py-3 mt-auto', RAIL_INSET)}>
         {(user || showExitDemo) && (
-          <div
-            className={cn(
-              'flex items-center gap-2 mb-2 min-w-0 overflow-hidden',
-              expanded ? 'justify-start' : 'justify-center'
-            )}
-          >
+          <div className="flex items-center gap-2 mb-2 min-w-0 overflow-hidden">
             <div className="w-9 h-9 rounded-full bg-accent/15 flex items-center justify-center text-sm font-bold text-accent shrink-0">
               {displayInitial}
             </div>
-            <div
-              className="flex-1 min-w-0 transition-opacity duration-300"
-              style={{
-                opacity: expanded ? 1 : 0,
-                maxWidth: expanded ? 200 : 0,
-                overflow: 'hidden',
-              }}
-            >
+            <div className="min-w-0" style={labelReveal}>
               <p className="text-sm font-medium text-foreground truncate">{displayName}</p>
               {displayEmail ? (
                 <p className="text-xs text-foreground-muted truncate">{displayEmail}</p>
@@ -212,27 +195,15 @@ export function AppSidebar({ showExitDemo, onExitDemo }: Props) {
             type="button"
             onClick={onExitDemo}
             title="Exit demo"
-            className={cn(
-              'flex items-center text-sm text-foreground-secondary hover:text-gold rounded-xl cursor-pointer min-w-0 w-full mb-1',
-              expanded ? 'gap-2 py-2 px-2 justify-start' : 'h-10 justify-center p-0'
-            )}
-            style={{
-              transition: reduceMotion ? 'color 150ms ease' : easeSpringish,
-            }}
-            onMouseEnter={(e) => {
-              if (!reduceMotion) e.currentTarget.style.transform = 'scale(1.06)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'scale(1)';
-            }}
+            className="group flex w-full min-w-0 items-center gap-2 rounded-xl py-1.5 pr-1 mb-1 text-sm text-foreground-secondary hover:text-gold transition-colors duration-150"
           >
-            <span className="text-base leading-none w-[18px] text-center shrink-0" aria-hidden>
+            <span
+              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg group-hover:bg-gold/10 text-base leading-none"
+              aria-hidden
+            >
               ×
             </span>
-            <span
-              className="whitespace-nowrap overflow-hidden transition-opacity duration-300"
-              style={{ opacity: expanded ? 1 : 0, maxWidth: expanded ? 200 : 0 }}
-            >
+            <span className="min-w-0 whitespace-nowrap" style={labelReveal}>
               Exit demo
             </span>
           </button>
@@ -243,25 +214,12 @@ export function AppSidebar({ showExitDemo, onExitDemo }: Props) {
             type="button"
             onClick={handleSignOut}
             title="Sign out"
-            className={cn(
-              'flex items-center text-sm text-foreground-secondary hover:text-error rounded-xl cursor-pointer min-w-0 w-full',
-              expanded ? 'gap-2 py-2 px-2 justify-start' : 'h-10 justify-center p-0'
-            )}
-            style={{
-              transition: reduceMotion ? 'color 150ms ease' : easeSpringish,
-            }}
-            onMouseEnter={(e) => {
-              if (!reduceMotion) e.currentTarget.style.transform = 'scale(1.06)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'scale(1)';
-            }}
+            className="group flex w-full min-w-0 items-center gap-2 rounded-xl py-1.5 pr-1 text-sm text-foreground-secondary hover:text-error transition-colors duration-150"
           >
-            <LogOut className="w-[18px] h-[18px] shrink-0" />
-            <span
-              className="whitespace-nowrap overflow-hidden transition-opacity duration-300"
-              style={{ opacity: expanded ? 1 : 0, maxWidth: expanded ? 200 : 0 }}
-            >
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg group-hover:bg-error/10">
+              <LogOut className="h-[18px] w-[18px] shrink-0 transition-transform duration-200 group-hover:scale-110" />
+            </span>
+            <span className="min-w-0 whitespace-nowrap" style={labelReveal}>
               Sign out
             </span>
           </button>
