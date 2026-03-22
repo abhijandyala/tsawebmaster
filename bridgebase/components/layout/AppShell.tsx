@@ -5,13 +5,14 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
+import { LogOut } from 'lucide-react';
 import { useAuth } from '@/contexts/auth-context';
 import { useDemo } from '@/contexts/demo-context';
 import { setDemoMode } from '@/lib/demoMode';
 import { AppSidebar } from '@/components/layout/AppSidebar';
 import { LanguageSelector } from '@/components/ui/LanguageSelector';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
-import { AIChatPanel } from '@/components/chat/AIChatPanel';
+import { Button } from '@/components/ui/Button';
 
 export function AppShell({ children }: { children: ReactNode }) {
   const { user, loading, logout } = useAuth();
@@ -78,7 +79,19 @@ export function AppShell({ children }: { children: ReactNode }) {
               Welcome back,{' '}
               <span className="text-accent">{displayName}</span>
             </p>
-            <div className="flex items-center gap-2 shrink-0">
+            <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+              {user && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  type="button"
+                  className="gap-1.5 text-foreground-secondary hover:text-accent"
+                  onClick={() => logout().then(() => router.push('/'))}
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span className="hidden sm:inline">Sign out</span>
+                </Button>
+              )}
               <LanguageSelector />
               <ThemeToggle />
             </div>
@@ -86,7 +99,6 @@ export function AppShell({ children }: { children: ReactNode }) {
         </header>
         <main className="flex-1 p-4 sm:p-6 lg:p-10">{children}</main>
       </div>
-      <AIChatPanel />
     </div>
   );
 }
