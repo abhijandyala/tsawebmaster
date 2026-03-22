@@ -105,13 +105,7 @@ export function LandingBelowFold() {
 
   return (
     <div className="relative bg-background text-foreground">
-      {/* subtle top gradient transition from hero */}
-      <div
-        className="pointer-events-none absolute inset-x-0 -top-24 h-40 bg-gradient-to-b from-[#0d1210]/90 to-transparent z-[1]"
-        aria-hidden
-      />
-
-      <div className="relative z-[2] max-w-6xl mx-auto px-5 sm:px-8 pb-24 sm:pb-32 space-y-24 sm:space-y-28">
+      <div className="relative max-w-6xl mx-auto px-5 sm:px-8 pb-24 sm:pb-32 space-y-24 sm:space-y-28">
         {/* Purpose + story */}
         <motion.section
           initial="hidden"
