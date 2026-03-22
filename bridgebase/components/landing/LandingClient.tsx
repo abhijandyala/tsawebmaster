@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useAuth } from '@/contexts/auth-context';
 import { setDemoMode } from '@/lib/demoMode';
 import { LanguageSelector } from '@/components/ui/LanguageSelector';
@@ -15,6 +15,7 @@ export const LANDING_TAGLINE = "Charlotte's resources, all in one place.";
 export function LandingClient() {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
     if (loading || !user) return;
@@ -78,12 +79,25 @@ export function LandingClient() {
             {LANDING_TAGLINE}
           </h1>
 
-          <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto sm:justify-center">
+          <motion.div
+            className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto sm:justify-center"
+            variants={{
+              show: {
+                transition: reduceMotion ? undefined : { staggerChildren: 0.1, delayChildren: 0.15 },
+              },
+            }}
+            initial="hidden"
+            animate="show"
+          >
             <motion.button
               type="button"
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.97 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 22 }}
+              variants={{
+                hidden: reduceMotion ? {} : { opacity: 0, y: 16 },
+                show: { opacity: 1, y: 0 },
+              }}
+              transition={{ type: 'spring', stiffness: 380, damping: 26 }}
+              whileHover={reduceMotion ? undefined : { scale: 1.04 }}
+              whileTap={reduceMotion ? undefined : { scale: 0.97 }}
               onClick={() => router.push('/auth')}
               className="min-w-[200px] h-14 px-8 rounded-2xl font-semibold text-[#23361D] bg-[#BBB857] shadow-lg hover:bg-[#c9c46a] border border-[#d4d080]/50"
             >
@@ -91,9 +105,13 @@ export function LandingClient() {
             </motion.button>
             <motion.button
               type="button"
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.97 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 22 }}
+              variants={{
+                hidden: reduceMotion ? {} : { opacity: 0, y: 16 },
+                show: { opacity: 1, y: 0 },
+              }}
+              transition={{ type: 'spring', stiffness: 380, damping: 26 }}
+              whileHover={reduceMotion ? undefined : { scale: 1.04 }}
+              whileTap={reduceMotion ? undefined : { scale: 0.97 }}
               onClick={() => {
                 setDemoMode(true);
                 router.push('/home');
@@ -102,7 +120,7 @@ export function LandingClient() {
             >
               Try demo
             </motion.button>
-          </div>
+          </motion.div>
 
           <p className="mt-14 text-sm text-[#D4D8EC]/90 flex flex-wrap justify-center gap-x-3 gap-y-1">
             <Link href="/help" className="underline underline-offset-4 hover:text-white transition-colors">

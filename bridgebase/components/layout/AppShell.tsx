@@ -3,21 +3,26 @@
 import { useEffect, type ReactNode } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
-import { LogOut } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useAuth } from '@/contexts/auth-context';
 import { useDemo } from '@/contexts/demo-context';
 import { setDemoMode } from '@/lib/demoMode';
 import { AppSidebar } from '@/components/layout/AppSidebar';
 import { LanguageSelector } from '@/components/ui/LanguageSelector';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
-import { Button } from '@/components/ui/Button';
+
+/** Haptimize app layout: main uses fixed left margin (rail width); sidebar overlays when expanded */
+const RAIL_MARGIN = 'ml-16';
+
+const pageEase = [0.25, 0.1, 0.25, 1] as const;
 
 export function AppShell({ children }: { children: ReactNode }) {
-  const { user, loading, logout } = useAuth();
+  const pathname = usePathname();
+  const { user, loading } = useAuth();
   const { isDemo, hydrated } = useDemo();
   const router = useRouter();
+  const reduceMotion = useReducedMotion();
 
   useEffect(() => {
     if (!hydrated || loading) return;
@@ -29,10 +34,15 @@ export function AppShell({ children }: { children: ReactNode }) {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <motion.div
           className="flex flex-col items-center gap-3"
-          animate={{ opacity: [0.4, 1, 0.4] }}
-          transition={{ repeat: Infinity, duration: 1.4 }}
+          initial={{ opacity: 0, scale: 0.96 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.45, ease: pageEase }}
         >
-          <div className="h-10 w-10 rounded-2xl border-2 border-accent border-t-transparent animate-spin" />
+          <motion.div
+            className="h-10 w-10 rounded-2xl border-2 border-accent border-t-transparent"
+            animate={reduceMotion ? undefined : { rotate: 360 }}
+            transition={reduceMotion ? undefined : { repeat: Infinity, duration: 1, ease: 'linear' }}
+          />
           <span className="text-sm text-foreground-muted font-medium">Loading…</span>
         </motion.div>
       </div>
@@ -42,7 +52,14 @@ export function AppShell({ children }: { children: ReactNode }) {
   if (!user && !isDemo) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <p className="text-sm text-foreground-muted">Redirecting…</p>
+        <motion.p
+          className="text-sm text-foreground-muted"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.35, ease: pageEase }}
+        >
+          Redirecting…
+        </motion.p>
       </div>
     );
   }
@@ -51,24 +68,28 @@ export function AppShell({ children }: { children: ReactNode }) {
     user?.displayName || user?.email?.split('@')[0] || (isDemo ? 'Guest (demo)' : 'there');
 
   return (
-    <div className="min-h-screen bg-background flex">
+    <div className="min-h-screen bg-background relative">
       <AppSidebar
         showExitDemo={isDemo && !user}
         onExitDemo={() => {
           setDemoMode(false);
           router.push('/');
         }}
-        showSignOut={Boolean(user)}
-        onSignOut={user ? () => logout().then(() => router.push('/')) : undefined}
       />
-      <div className="flex-1 flex flex-col min-w-0">
-        <header className="sticky top-0 z-40 border-b border-border bg-surface/80 backdrop-blur-xl">
+
+      <div className={`min-h-screen flex flex-col min-w-0 ${RAIL_MARGIN}`}>
+        <motion.header
+          className="sticky top-0 z-40 border-b border-border bg-surface/80 backdrop-blur-xl"
+          initial={reduceMotion ? false : { opacity: 0, y: -6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.42, ease: pageEase }}
+        >
           <div className="flex items-center justify-between gap-4 px-4 sm:px-6 py-3.5">
             <Link
               href="/home"
-              className="flex items-center gap-3 shrink-0 group rounded-xl p-1 -m-1 hover:bg-accent-soft/25 transition-colors"
+              className="flex items-center gap-3 shrink-0 group rounded-xl p-1 -m-1 hover:bg-accent-soft/25 transition-colors duration-200"
             >
-              <motion.div whileHover={{ scale: 1.06 }} whileTap={{ scale: 0.95 }}>
+              <motion.div whileHover={reduceMotion ? undefined : { scale: 1.06 }} whileTap={reduceMotion ? undefined : { scale: 0.95 }}>
                 <Image src="/cltlogo.png" alt="Home" width={36} height={36} className="h-9 w-auto" />
               </motion.div>
               <span className="hidden sm:block text-xs font-bold uppercase tracking-wider text-accent">
@@ -79,25 +100,27 @@ export function AppShell({ children }: { children: ReactNode }) {
               Welcome back,{' '}
               <span className="text-accent">{displayName}</span>
             </p>
-            <div className="flex items-center gap-1 sm:gap-2 shrink-0">
-              {user && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  type="button"
-                  className="gap-1.5 text-foreground-secondary hover:text-accent"
-                  onClick={() => logout().then(() => router.push('/'))}
-                >
-                  <LogOut className="w-4 h-4" />
-                  <span className="hidden sm:inline">Sign out</span>
-                </Button>
-              )}
+            <motion.div
+              className="flex items-center gap-1 sm:gap-2 shrink-0"
+              initial={reduceMotion ? false : { opacity: 0, x: 8 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.45, ease: pageEase, delay: 0.05 }}
+            >
               <LanguageSelector />
               <ThemeToggle />
-            </div>
+            </motion.div>
           </div>
-        </header>
-        <main className="flex-1 p-4 sm:p-6 lg:p-10">{children}</main>
+        </motion.header>
+
+        <motion.main
+          key={pathname}
+          className="flex-1 p-4 sm:p-6 lg:p-10"
+          initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: pageEase }}
+        >
+          {children}
+        </motion.main>
       </div>
     </div>
   );
