@@ -13,7 +13,7 @@ export default function HomePage() {
           <div>
             <h2 className="font-display text-3xl font-bold text-foreground tracking-tight">Highlights</h2>
             <p className="text-foreground-secondary mt-2 max-w-2xl text-sm leading-relaxed">
-              Featured resources from our curated directory. Ratings grow as neighbors leave reviews in Firestore.
+              Featured resources from our curated directory. Ratings grow as neighbors leave reviews.
             </p>
           </div>
         </div>

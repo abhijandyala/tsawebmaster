@@ -23,7 +23,7 @@ export function RequestResourceForm() {
     const db = getFirebaseDb();
     if (!db) {
       setStatus('err');
-      setMsg('Firestore is not configured.');
+      setMsg('Submissions aren’t available — this environment isn’t fully configured.');
       return;
     }
     const message = `Resource requested: ${resource}\n\nWhy needed:\n${why}`;
@@ -43,7 +43,7 @@ export function RequestResourceForm() {
       setWhy('');
     } catch {
       setStatus('err');
-      setMsg('Could not submit. Check Firestore rules.');
+      setMsg('Could not submit. Try again later or contact support if it keeps happening.');
     }
   };
 

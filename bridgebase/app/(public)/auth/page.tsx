@@ -65,8 +65,8 @@ export default function AuthPage() {
 
           {!firebaseReady && (
             <p className="text-sm text-error mb-4 p-4 rounded-xl bg-error-light border border-error/20">
-              Add Firebase keys from <code className="text-xs">.env.example</code> to{' '}
-              <code className="text-xs">.env.local</code>.
+              Sign-in isn&apos;t configured on this deployment. Copy variables from <code className="text-xs">.env.example</code>{' '}
+              into <code className="text-xs">.env.local</code> for local development.
             </p>
           )}
 

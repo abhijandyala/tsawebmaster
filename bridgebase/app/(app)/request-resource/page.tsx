@@ -12,7 +12,7 @@ export default function RequestResourcePage() {
         <div>
           <h1 className="font-display text-4xl font-bold tracking-tight">Request a resource</h1>
           <p className="text-foreground-secondary mt-3 text-sm leading-relaxed max-w-xl mx-auto">
-            Tell our team what&apos;s missing. Submissions are stored in Firestore for review.
+            Tell our team what&apos;s missing. We keep submissions for our team to review.
           </p>
         </div>
       </div>

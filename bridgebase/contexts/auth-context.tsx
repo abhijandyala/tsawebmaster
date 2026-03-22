@@ -82,7 +82,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signInWithGoogle = useCallback(async () => {
     const auth = getFirebaseAuth();
     if (!auth) {
-      setError('Firebase is not configured. Add NEXT_PUBLIC_FIREBASE_* variables.');
+      setError('Sign-in isn’t configured. The app is missing its public environment keys.');
       return;
     }
     setError(null);
@@ -99,7 +99,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signInWithEmail = useCallback(async (email: string, password: string) => {
     const auth = getFirebaseAuth();
     if (!auth) {
-      setError('Firebase is not configured.');
+      setError('Sign-in isn’t configured on this deployment.');
       return;
     }
     setError(null);
@@ -116,7 +116,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     async (email: string, password: string, displayName: string) => {
       const auth = getFirebaseAuth();
       if (!auth) {
-        setError('Firebase is not configured.');
+        setError('Sign-in isn’t configured on this deployment.');
         return;
       }
       setError(null);

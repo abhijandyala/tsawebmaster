@@ -31,7 +31,7 @@ export default function SettingsPage() {
   };
 
   const wipe = async () => {
-    if (!user || !confirm('Delete favorites, history, and reviews from our database?')) return;
+    if (!user || !confirm('Remove synced favorites, recent views, and reviews? You’ll stay signed in.')) return;
     setBusy(true);
     try {
       await wipeUserFirestoreData(user);
@@ -56,7 +56,7 @@ export default function SettingsPage() {
         const cred = EmailAuthProvider.credential(user.email, pwd);
         await reauthenticateWithCredential(auth.currentUser, cred);
       }
-      await wipeUserFirestoreData(user);
+      await wipeUserFirestoreData(user, { keepProfile: false });
       await deleteUser(auth.currentUser);
       await logout();
       router.push('/');
@@ -111,7 +111,8 @@ export default function SettingsPage() {
       <section className="clt-glass rounded-3xl p-6 space-y-4 border border-gold/30 bg-gold/5">
         <h2 className="font-semibold text-error">Delete account</h2>
         <p className="text-sm text-foreground-secondary">
-          Email users: enter password to confirm. Google users may need to re-auth from Firebase.
+          Email users: enter your password to confirm. With Google sign-in, you may be asked to sign in again to
+          confirm.
         </p>
         <Input
           type="password"
