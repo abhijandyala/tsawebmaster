@@ -23,8 +23,19 @@ export function LandingClient() {
     if (!demo) router.replace('/home');
   }, [user, loading, router]);
 
+  useEffect(() => {
+    const prevHtml = document.documentElement.style.overflow;
+    const prevBody = document.body.style.overflow;
+    document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.documentElement.style.overflow = prevHtml;
+      document.body.style.overflow = prevBody;
+    };
+  }, []);
+
   return (
-    <div className="relative min-h-screen flex flex-col overflow-hidden bg-[#0d1210]">
+    <div className="relative h-[100dvh] min-h-0 max-h-[100dvh] flex flex-col overflow-hidden bg-[#0d1210]">
       {/* Ambient layer — blue / mustard / olive blobs (Haptimize-style motion) */}
       <div className="pointer-events-none absolute inset-0 z-[1] overflow-hidden">
         <div className="clt-blob clt-blob-a -top-20 -left-16 opacity-60 dark:opacity-50" />
@@ -53,29 +64,32 @@ export function LandingClient() {
         <ThemeToggle />
       </header>
 
-      <main className="relative z-20 flex-1 flex flex-col items-center justify-center px-6 pb-24 text-center">
+      <main className="relative z-20 flex-1 flex flex-col items-center justify-center min-h-0 px-6 pb-6 sm:pb-8 text-center">
         <motion.div
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ type: 'spring', stiffness: 260, damping: 28 }}
-          className="flex flex-col items-center max-w-lg w-full"
+          className="flex flex-col items-center max-w-lg w-full -mt-6 sm:-mt-10"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.92 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.08, type: 'spring', stiffness: 280, damping: 22 }}
+            className="mb-5 sm:mb-6"
           >
-            <Image
-              src="/cltlogotext.png"
-              alt="Charlotte Connect"
-              width={300}
-              height={96}
-              className="w-[min(300px,82vw)] h-auto drop-shadow-[0_4px_24px_rgba(0,0,0,0.45)] mb-10"
-              priority
-            />
+            <div className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 sm:px-7 sm:py-3.5 shadow-[0_4px_28px_rgba(0,0,0,0.18)] ring-1 ring-black/[0.06]">
+              <Image
+                src="/cltlogotext.png"
+                alt="Charlotte Connect"
+                width={300}
+                height={96}
+                className="w-[min(300px,82vw)] h-auto"
+                priority
+              />
+            </div>
           </motion.div>
 
-          <h1 className="font-display text-[clamp(1.75rem,5vw,3rem)] font-bold text-white text-balance leading-tight mb-12 drop-shadow-md">
+          <h1 className="font-display text-[clamp(1.75rem,5vw,3rem)] font-bold text-white text-balance leading-tight mb-6 sm:mb-7 drop-shadow-md">
             {LANDING_TAGLINE}
           </h1>
 
@@ -122,7 +136,7 @@ export function LandingClient() {
             </motion.button>
           </motion.div>
 
-          <p className="mt-14 text-sm text-[#D4D8EC]/90 flex flex-wrap justify-center gap-x-3 gap-y-1">
+          <p className="mt-6 sm:mt-8 text-sm text-[#D4D8EC]/90 flex flex-wrap justify-center gap-x-3 gap-y-1">
             <Link href="/help" className="underline underline-offset-4 hover:text-white transition-colors">
               Help wizard
             </Link>
