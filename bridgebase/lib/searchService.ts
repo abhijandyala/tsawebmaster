@@ -240,8 +240,7 @@ export function getTransitInfo(lat: number, lng: number): TransitInfo {
   }
   
   const nearBusRoutes: string[] = [];
-  const addressText = `${lat},${lng}`;
-  
+
   for (const corridor of MAJOR_BUS_CORRIDORS) {
     const corridorCenter = CHARLOTTE_AREA.center;
     const distanceToCenter = calculateHaversineDistance(lat, lng, corridorCenter.lat, corridorCenter.lng);
@@ -287,22 +286,19 @@ export function determineEligibilityStatus(
   return 'check';
 }
 
-export function mergePlacesResults(
-  places: Array<{
-    id: string;
-    placeId: string;
-    name: string;
-    address: string;
-    location: { lat: number; lng: number };
-    rating?: number;
-    userRatingsTotal?: number;
-    priceLevel?: number;
-    types: string[];
-    isOpen?: boolean;
-    photos?: string[];
-  }>,
-  queryTerms: string[]
-): SearchResult[] {
+export function mergePlacesResults(places: Array<{
+  id: string;
+  placeId: string;
+  name: string;
+  address: string;
+  location: { lat: number; lng: number };
+  rating?: number;
+  userRatingsTotal?: number;
+  priceLevel?: number;
+  types: string[];
+  isOpen?: boolean;
+  photos?: string[];
+}>): SearchResult[] {
   return places.map(place => ({
     id: `google-${place.placeId}`,
     source: 'google_places' as const,

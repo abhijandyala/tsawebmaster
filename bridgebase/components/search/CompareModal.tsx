@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Phone, MapPin, Globe, Clock, Check, Languages, DollarSign } from 'lucide-react';
+import { X, Phone, MapPin, Globe } from 'lucide-react';
 import { SearchResult } from '@/lib/searchService';
 
 interface CompareModalProps {

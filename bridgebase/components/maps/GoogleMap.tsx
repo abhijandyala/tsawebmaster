@@ -128,7 +128,9 @@ export function GoogleMap({
   }, [showUserLocation, center, zoom]);
 
   useEffect(() => {
-    initMap();
+    queueMicrotask(() => {
+      void initMap();
+    });
   }, [initMap]);
 
   useEffect(() => {

@@ -1,11 +1,17 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useSyncExternalStore } from 'react';
 import { useRouter } from 'next/navigation';
 import { Star, MapPin, Phone, Globe, Clock, ExternalLink, ArrowRight, Check, Users, Languages, Navigation, Shield, HelpCircle, Bookmark, BookmarkCheck, Train, Bus } from 'lucide-react';
 import { SearchResult, EligibilityStatus, SourceType } from '@/lib/searchService';
 import { Badge } from '@/components/ui/Badge';
 import { saveResource, isResourceSaved, removeResource } from '@/lib/helpPlan';
+
+function subscribeHelpPlan(onStoreChange: () => void) {
+  const handler = () => onStoreChange();
+  window.addEventListener('help-plan-updated', handler);
+  return () => window.removeEventListener('help-plan-updated', handler);
+}
 
 function SourceTypeBadge({ sourceType, verified }: { sourceType?: SourceType; verified?: boolean }) {
   if (!sourceType || sourceType === 'unknown') {
@@ -103,15 +109,11 @@ export function SearchResultCard({
   onCompareToggle,
 }: SearchResultCardProps) {
   const router = useRouter();
-  const [isSaved, setIsSaved] = useState(false);
-
-  useEffect(() => {
-    setIsSaved(isResourceSaved(result.id));
-    
-    const handleUpdate = () => setIsSaved(isResourceSaved(result.id));
-    window.addEventListener('help-plan-updated', handleUpdate);
-    return () => window.removeEventListener('help-plan-updated', handleUpdate);
-  }, [result.id]);
+  const isSaved = useSyncExternalStore(
+    subscribeHelpPlan,
+    () => isResourceSaved(result.id),
+    () => false
+  );
 
   const handleSaveToggle = (e: React.MouseEvent) => {
     e.stopPropagation();

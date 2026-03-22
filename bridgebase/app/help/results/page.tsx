@@ -1,13 +1,13 @@
 'use client';
 
-import { useState, useEffect, useMemo, Suspense } from 'react';
+import { useMemo, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import useSWR from 'swr';
 import {
   ArrowLeft, Phone, MapPin, ExternalLink, Clock, Check, Star,
-  AlertCircle, Loader2, ChevronRight, Globe, Users
+  AlertCircle, Loader2, ChevronRight, Globe
 } from 'lucide-react';
 import { PublicChrome } from '@/components/layout';
 import { CrisisBanner } from '@/components/ui/CrisisBanner';
@@ -35,13 +35,9 @@ function HelpResultsContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const encodedState = searchParams.get('state');
-  const [wizardState, setWizardState] = useState<WizardState | null>(null);
-
-  useEffect(() => {
-    if (encodedState) {
-      const decoded = decodeWizardState(encodedState);
-      setWizardState(decoded);
-    }
+  const wizardState = useMemo((): WizardState | null => {
+    if (!encodedState) return null;
+    return decodeWizardState(encodedState);
   }, [encodedState]);
 
   const searchQuery = useMemo(() => {
@@ -86,7 +82,7 @@ function HelpResultsContent() {
     }
 
     return results.slice(0, 10);
-  }, [data?.results, wizardState]);
+  }, [data, wizardState]);
 
   const generateMatchReason = (result: SearchResult): string[] => {
     if (!wizardState) return [];

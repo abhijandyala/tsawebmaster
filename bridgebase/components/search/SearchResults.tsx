@@ -150,27 +150,19 @@ export function SearchResults({ query, userLocation: initialLocation, onClearSea
     }
     
     return results;
-  }, [data?.results, filters, userLocation]);
+  }, [data, filters, userLocation]);
 
   const filteredGrouped = useMemo(() => {
     if (!filteredResults.length) return [];
     return groupResultsByCategory(filteredResults);
   }, [filteredResults]);
 
-  const resultsByCategory = useMemo(() => {
-    const counts: Record<string, number> = {};
-    filteredGrouped.forEach(g => {
-      counts[g.category] = g.count;
-    });
-    return counts;
-  }, [filteredGrouped]);
-
   const showCrisisBanner = useMemo(() => {
     if (!data?.query) return false;
     const lowerQuery = query.toLowerCase();
     const isCrisisQuery = CRISIS_KEYWORDS.some(kw => lowerQuery.includes(kw));
     return data.query.isHelpSeeking || isCrisisQuery;
-  }, [data?.query, query]);
+  }, [data, query]);
 
   const isSevereCrisis = useMemo(() => {
     const lowerQuery = query.toLowerCase();
@@ -324,7 +316,6 @@ export function SearchResults({ query, userLocation: initialLocation, onClearSea
         filters={filters}
         onFilterChange={setFilters}
         totalResults={filteredResults.length}
-        resultsByCategory={resultsByCategory}
         hasLocation={!!userLocation}
         onRequestLocation={requestLocation}
         isRequestingLocation={isRequestingLocation}

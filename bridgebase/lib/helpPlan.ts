@@ -65,6 +65,7 @@ export function updateNotes(id: string, notes: string): void {
   if (index !== -1) {
     saved[index].notes = notes;
     localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
+    window.dispatchEvent(new CustomEvent('help-plan-updated'));
   }
 }
 

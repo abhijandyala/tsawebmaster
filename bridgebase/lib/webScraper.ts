@@ -7,12 +7,6 @@ export interface ScrapedResult {
   source: string;
 }
 
-const CHARLOTTE_SOURCES = [
-  { name: 'Charlotte Agenda', domain: 'charlotteagenda.com' },
-  { name: 'Charlotte Magazine', domain: 'charlottemagazine.com' },
-  { name: 'Charlotte Observer', domain: 'charlotteobserver.com' },
-];
-
 const cache = new Map<string, { data: ScrapedResult[]; timestamp: number }>();
 const CACHE_TTL = 1000 * 60 * 30;
 
@@ -27,8 +21,6 @@ export async function scrapeCharlotteInfo(query: string): Promise<ScrapedResult[
   const results: ScrapedResult[] = [];
 
   try {
-    const searchQuery = `${query} Charlotte NC site:charlotteagenda.com OR site:charlottemagazine.com`;
-    
     results.push({
       title: `Search "${query}" on Charlotte Agenda`,
       snippet: `Find local Charlotte guides, reviews, and recommendations about ${query} from Charlotte Agenda.`,

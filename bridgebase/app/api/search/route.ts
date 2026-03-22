@@ -139,7 +139,7 @@ async function searchGooglePlaces(parsed: ReturnType<typeof parseQuery>): Promis
     ),
   }));
 
-  return mergePlacesResults(mappedResults, parsed.searchTerms);
+  return mergePlacesResults(mappedResults);
 }
 
 export async function GET(request: NextRequest) {

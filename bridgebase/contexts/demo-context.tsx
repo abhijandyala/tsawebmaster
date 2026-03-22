@@ -18,8 +18,10 @@ export function DemoProvider({ children }: { children: ReactNode }) {
   const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
-    setIsDemo(getDemoMode());
-    setHydrated(true);
+    queueMicrotask(() => {
+      setIsDemo(getDemoMode());
+      setHydrated(true);
+    });
   }, []);
 
   const value = useMemo(() => ({ isDemo, hydrated }), [isDemo, hydrated]);

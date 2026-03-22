@@ -15,7 +15,6 @@ interface QuickFiltersProps {
   filters: FilterState;
   onFilterChange: (filters: FilterState) => void;
   totalResults: number;
-  resultsByCategory: Record<string, number>;
   hasLocation: boolean;
   onRequestLocation: () => void;
   isRequestingLocation?: boolean;
@@ -25,7 +24,6 @@ export function QuickFilters({
   filters, 
   onFilterChange, 
   totalResults, 
-  resultsByCategory,
   hasLocation,
   onRequestLocation,
   isRequestingLocation = false,

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useSyncExternalStore } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
@@ -16,18 +16,20 @@ import {
   clearPlan 
 } from '@/lib/helpPlan';
 
+function subscribeHelpPlan(onStoreChange: () => void) {
+  const handler = () => onStoreChange();
+  window.addEventListener('help-plan-updated', handler);
+  return () => window.removeEventListener('help-plan-updated', handler);
+}
+
 export default function MyPlanPage() {
-  const [resources, setResources] = useState<SavedResource[]>([]);
+  const resources = useSyncExternalStore(
+    subscribeHelpPlan,
+    getSavedResources,
+    () => [] as SavedResource[]
+  );
   const [editingNotes, setEditingNotes] = useState<string | null>(null);
   const [notesText, setNotesText] = useState('');
-
-  useEffect(() => {
-    setResources(getSavedResources());
-    
-    const handleUpdate = () => setResources(getSavedResources());
-    window.addEventListener('help-plan-updated', handleUpdate);
-    return () => window.removeEventListener('help-plan-updated', handleUpdate);
-  }, []);
 
   const handleRemove = (id: string) => {
     removeResource(id);
@@ -70,7 +72,6 @@ export default function MyPlanPage() {
 
   const saveNotes = (id: string) => {
     updateNotes(id, notesText);
-    setResources(getSavedResources());
     setEditingNotes(null);
   };
 

@@ -83,7 +83,6 @@ export function AppSidebar({ showExitDemo, onExitDemo }: Props) {
   return (
     <aside
       aria-label="Main navigation"
-      aria-expanded={expanded}
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
       className={cn(

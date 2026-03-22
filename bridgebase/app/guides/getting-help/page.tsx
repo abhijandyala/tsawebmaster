@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { 
-  ArrowLeft, Search, Phone, MapPin, Clock, FileText,
+  ArrowLeft, Search, Phone, MapPin, FileText,
   Users, Heart, CheckCircle, ArrowRight
 } from 'lucide-react';
 import { PublicChrome } from '@/components/layout';

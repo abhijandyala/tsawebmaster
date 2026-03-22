@@ -172,7 +172,7 @@ export function ResourceFilters({
           <span className="text-sm text-foreground-muted">Active:</span>
           {filters.search && (
             <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-lg bg-accent/12 text-accent">
-              "{filters.search}"
+              &ldquo;{filters.search}&rdquo;
               <button onClick={() => onFilterChange({ search: '' })} className="hover:text-accent-dark">
                 <X className="w-3 h-3" />
               </button>

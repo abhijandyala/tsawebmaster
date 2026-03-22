@@ -36,8 +36,6 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const locationBias = `circle:50000@${CHARLOTTE_AREA.center.lat},${CHARLOTTE_AREA.center.lng}`;
-    
     let url = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(query)}&location=${CHARLOTTE_AREA.center.lat},${CHARLOTTE_AREA.center.lng}&radius=50000&key=${GOOGLE_PLACES_API_KEY}`;
     
     if (type) {
