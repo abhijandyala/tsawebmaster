@@ -14,11 +14,10 @@ import {
 } from 'lucide-react';
 import { LANDING_REGIONS } from './landingRegions';
 
-/**
- * Optional: add `public/landing/community-hero.jpg` and `public/landing/metro-wide.jpg`, then point these constants there.
- */
-const LANDING_IMG_COMMUNITY = '/charlotte_nc.png';
-const LANDING_IMG_METRO = '/charlotte_nc.png';
+/** Distinct hero shots for each below-the-fold band (see `public/charlotte_nc*.`). */
+const LANDING_IMG_STORY = '/charlotte_nc.png';
+const LANDING_IMG_COMMUNITY = '/charlotte_nc2.jpg';
+const LANDING_IMG_METRO = '/charlotte_nc3.webp';
 
 const viewport = { once: true, amount: 0.2, margin: '-40px' as const };
 
@@ -137,7 +136,7 @@ export function LandingBelowFold() {
           >
             <div className="will-change-transform">
               <SectionImage
-                src="/charlotte_nc.png"
+                src={LANDING_IMG_STORY}
                 alt="Charlotte skyline and city view"
                 objectPosition="center 35%"
               />
