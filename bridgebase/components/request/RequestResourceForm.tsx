@@ -23,7 +23,7 @@ export function RequestResourceForm() {
     const db = getFirebaseDb();
     if (!db) {
       setStatus('err');
-      setMsg('Firestore is not configured. Add Firebase keys to save requests.');
+      setMsg('Firestore is not configured.');
       return;
     }
     const message = `Resource requested: ${resource}\n\nWhy needed:\n${why}`;
@@ -43,16 +43,16 @@ export function RequestResourceForm() {
       setWhy('');
     } catch {
       setStatus('err');
-      setMsg('Could not submit. Check Firestore rules and try again.');
+      setMsg('Could not submit. Check Firestore rules.');
     }
   };
 
   return (
     <motion.form
-      initial={{ opacity: 0, y: 8 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       onSubmit={submit}
-      className="max-w-lg space-y-4 bg-surface border border-border rounded-2xl p-6"
+      className="max-w-lg space-y-5 clt-glass rounded-3xl p-6 sm:p-8 border border-border-light"
     >
       <input
         type="text"
@@ -73,22 +73,22 @@ export function RequestResourceForm() {
         required
       />
       <Input
-        placeholder="Resource or organization you’re looking for"
+        placeholder="Resource or organization you need"
         value={resource}
         onChange={(e) => setResource(e.target.value)}
         required
       />
       <Textarea
-        placeholder="Why you need it (helps us prioritize)"
+        placeholder="Why it matters — helps us prioritize"
         value={why}
         onChange={(e) => setWhy(e.target.value)}
         rows={5}
         required
       />
       {status !== 'idle' && (
-        <p className={`text-sm ${status === 'ok' ? 'text-success' : 'text-error'}`}>{msg}</p>
+        <p className={`text-sm font-medium ${status === 'ok' ? 'text-success' : 'text-error'}`}>{msg}</p>
       )}
-      <Button type="submit" variant="primary">
+      <Button type="submit" variant="primary" className="w-full">
         Submit request
       </Button>
     </motion.form>

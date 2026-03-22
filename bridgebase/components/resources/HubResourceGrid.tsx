@@ -18,7 +18,7 @@ export function HubResourceGrid({
   }
 
   return (
-    <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
+    <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-8">
       {resources.map((resource, index) => (
         <motion.div
           key={resource.id}

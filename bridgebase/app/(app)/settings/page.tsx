@@ -31,7 +31,7 @@ export default function SettingsPage() {
   };
 
   const wipe = async () => {
-    if (!user || !confirm('Delete all your favorites, history, and reviews from our database?')) return;
+    if (!user || !confirm('Delete favorites, history, and reviews from our database?')) return;
     setBusy(true);
     try {
       await wipeUserFirestoreData(user);
@@ -39,14 +39,14 @@ export default function SettingsPage() {
       localStorage.removeItem('clt-recent-resources');
       setMsg('Your app data was wiped.');
     } catch {
-      setMsg('Could not wipe data (check Firestore rules).');
+      setMsg('Could not wipe data.');
     } finally {
       setBusy(false);
     }
   };
 
   const deleteAccount = async () => {
-    if (!user || !confirm('Permanently delete your account? This cannot be undone.')) return;
+    if (!user || !confirm('Permanently delete your account?')) return;
     const auth = getFirebaseAuth();
     if (!auth?.currentUser) return;
     setBusy(true);
@@ -61,9 +61,7 @@ export default function SettingsPage() {
       await logout();
       router.push('/');
     } catch {
-      setMsg(
-        'Could not delete account. If you use email login, enter your password below and try again. You may need to re-sign in.'
-      );
+      setMsg('Could not delete account. For email login, enter password below and try again.');
     } finally {
       setBusy(false);
     }
@@ -71,11 +69,10 @@ export default function SettingsPage() {
 
   if (!user) {
     return (
-      <div className="max-w-lg space-y-4">
-        <h1 className="font-display text-2xl font-bold">Settings</h1>
-        <p className="text-sm text-foreground-secondary">
-          Sign in to manage your profile. In demo mode, settings are not available.
-        </p>
+      <div className="max-w-md space-y-6">
+        <div className="h-10 w-1.5 rounded-full bg-accent mb-4" />
+        <h1 className="font-display text-3xl font-bold">Settings</h1>
+        <p className="text-sm text-foreground-secondary">Sign in to manage your profile.</p>
         <Button variant="primary" type="button" onClick={() => router.push('/auth')}>
           Sign in
         </Button>
@@ -85,44 +82,49 @@ export default function SettingsPage() {
 
   return (
     <div className="max-w-lg space-y-8">
-      <h1 className="font-display text-3xl font-bold">Settings</h1>
+      <div className="flex items-start gap-4">
+        <div className="h-12 w-1.5 rounded-full bg-gradient-to-b from-accent to-primary shrink-0" />
+        <div>
+          <h1 className="font-display text-4xl font-bold tracking-tight">Settings</h1>
+          <p className="text-sm text-foreground-secondary mt-2">Profile and data controls</p>
+        </div>
+      </div>
 
-      <section className="space-y-3 bg-surface border border-border rounded-2xl p-6">
-        <h2 className="font-semibold">Display name</h2>
-        <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Username" />
-        <Button variant="primary" type="button" disabled={busy} onClick={saveName}>
+      <section className="clt-glass rounded-3xl p-6 space-y-4 border border-border-light">
+        <h2 className="font-semibold text-foreground">Display name</h2>
+        <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="How we greet you" />
+        <Button variant="secondary" type="button" disabled={busy} onClick={saveName}>
           Save
         </Button>
       </section>
 
-      <section className="space-y-3 bg-surface border border-border rounded-2xl p-6">
-        <h2 className="font-semibold">Wipe my data</h2>
+      <section className="clt-glass rounded-3xl p-6 space-y-4 border border-border-light">
+        <h2 className="font-semibold text-foreground">Wipe my data</h2>
         <p className="text-sm text-foreground-secondary">
-          Removes favorites, recent views, and your reviews from Firestore. Does not delete your login.
+          Removes favorites, recent views, and your reviews. Keeps your login.
         </p>
         <Button variant="outline" type="button" disabled={busy} onClick={wipe}>
           Wipe data
         </Button>
       </section>
 
-      <section className="space-y-3 bg-surface border border-border rounded-2xl p-6 border-error/40">
+      <section className="clt-glass rounded-3xl p-6 space-y-4 border border-gold/30 bg-gold/5">
         <h2 className="font-semibold text-error">Delete account</h2>
         <p className="text-sm text-foreground-secondary">
-          For email/password accounts, enter your password to confirm. Google users: use the Google account settings
-          to revoke access, or contact support.
+          Email users: enter password to confirm. Google users may need to re-auth from Firebase.
         </p>
         <Input
           type="password"
-          placeholder="Current password (email users)"
+          placeholder="Password (email accounts)"
           value={pwd}
           onChange={(e) => setPwd(e.target.value)}
         />
-        <Button variant="primary" type="button" disabled={busy} className="bg-error hover:bg-error/90" onClick={deleteAccount}>
+        <Button variant="danger" type="button" disabled={busy} onClick={deleteAccount}>
           Delete account
         </Button>
       </section>
 
-      {msg && <p className="text-sm text-foreground-secondary">{msg}</p>}
+      {msg && <p className="text-sm text-foreground-muted">{msg}</p>}
     </div>
   );
 }

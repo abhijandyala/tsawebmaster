@@ -1,99 +1,30 @@
 'use client';
 
-import { ReactNode } from 'react';
+import { HTMLAttributes, ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
-interface CardProps {
-  children: ReactNode;
-  className?: string;
-  hover?: boolean;
-  padding?: 'none' | 'sm' | 'md' | 'lg';
+export function Card({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+  return <div className={cn('clt-card overflow-hidden', className)} {...props} />;
 }
 
-export function Card({ children, className, hover = false, padding = 'md' }: CardProps) {
-  const paddingStyles = {
-    none: '',
-    sm: 'p-4',
-    md: 'p-5',
-    lg: 'p-6',
-  };
+export function CardHeader({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+  return <div className={cn('px-6 pt-6 pb-2', className)} {...props} />;
+}
 
+export function CardTitle({ className, ...props }: HTMLAttributes<HTMLHeadingElement>) {
+  return <h3 className={cn('font-display text-lg font-semibold text-foreground', className)} {...props} />;
+}
+
+export function CardDescription({ className, ...props }: HTMLAttributes<HTMLParagraphElement>) {
+  return <p className={cn('text-sm text-foreground-muted mt-1', className)} {...props} />;
+}
+
+export function CardContent({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+  return <div className={cn('px-6 py-4', className)} {...props} />;
+}
+
+export function CardFooter({ className, children }: { className?: string; children: ReactNode }) {
   return (
-    <div
-      className={cn(
-        'bg-surface border border-border',
-        paddingStyles[padding],
-        hover && 'transition-all duration-200 hover:border-primary/30',
-        className
-      )}
-    >
-      {children}
-    </div>
-  );
-}
-
-interface CardHeaderProps {
-  children: ReactNode;
-  className?: string;
-}
-
-export function CardHeader({ children, className }: CardHeaderProps) {
-  return (
-    <div className={cn('mb-4', className)}>
-      {children}
-    </div>
-  );
-}
-
-interface CardTitleProps {
-  children: ReactNode;
-  className?: string;
-  as?: 'h1' | 'h2' | 'h3' | 'h4';
-}
-
-export function CardTitle({ children, className, as: Component = 'h3' }: CardTitleProps) {
-  return (
-    <Component className={cn('font-display text-lg font-semibold text-foreground', className)}>
-      {children}
-    </Component>
-  );
-}
-
-interface CardDescriptionProps {
-  children: ReactNode;
-  className?: string;
-}
-
-export function CardDescription({ children, className }: CardDescriptionProps) {
-  return (
-    <p className={cn('text-sm text-foreground-secondary mt-1', className)}>
-      {children}
-    </p>
-  );
-}
-
-interface CardContentProps {
-  children: ReactNode;
-  className?: string;
-}
-
-export function CardContent({ children, className }: CardContentProps) {
-  return (
-    <div className={cn(className)}>
-      {children}
-    </div>
-  );
-}
-
-interface CardFooterProps {
-  children: ReactNode;
-  className?: string;
-}
-
-export function CardFooter({ children, className }: CardFooterProps) {
-  return (
-    <div className={cn('mt-4 pt-4 border-t border-border', className)}>
-      {children}
-    </div>
+    <div className={cn('px-6 py-4 border-t border-border-light bg-surface-muted/40', className)}>{children}</div>
   );
 }

@@ -9,10 +9,8 @@ import { useAuth } from '@/contexts/auth-context';
 import { setDemoMode } from '@/lib/demoMode';
 import { LanguageSelector } from '@/components/ui/LanguageSelector';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
-import { Button } from '@/components/ui/Button';
 
-export const LANDING_TAGLINE =
-  "Charlotte's resources, all in one place.";
+export const LANDING_TAGLINE = "Charlotte's resources, all in one place.";
 
 export function LandingClient() {
   const { user, loading } = useAuth();
@@ -25,74 +23,94 @@ export function LandingClient() {
   }, [user, loading, router]);
 
   return (
-    <div className="relative min-h-screen flex flex-col overflow-hidden">
-      <div className="absolute inset-0 z-0">
+    <div className="relative min-h-screen flex flex-col overflow-hidden bg-[#0d1210]">
+      {/* Ambient layer — blue / mustard / olive blobs (Haptimize-style motion) */}
+      <div className="pointer-events-none absolute inset-0 z-[1] overflow-hidden">
+        <div className="clt-blob clt-blob-a -top-20 -left-16 opacity-60 dark:opacity-50" />
+        <div className="clt-blob clt-blob-b top-1/3 -right-20 opacity-50 dark:opacity-40" />
+        <div className="clt-blob clt-blob-c bottom-0 left-1/3 opacity-45 dark:opacity-35" />
+      </div>
+
+      <div className="absolute inset-0 z-[2]">
         <Image
           src="/charlotte_nc.png"
           alt=""
           fill
           priority
-          className="object-cover"
+          className="object-cover opacity-85"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-[#23361D]/55" />
+        <div
+          className="absolute inset-0 bg-gradient-to-br from-[#23361D]/88 via-[#447CB3]/42 to-[#23361D]/75"
+          aria-hidden
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0d1210]/90 via-transparent to-[#447CB3]/15" aria-hidden />
       </div>
 
-      <header className="relative z-10 flex justify-end items-center gap-2 p-4">
+      <header className="relative z-20 flex justify-end items-center gap-2 p-4 sm:p-5">
         <LanguageSelector />
         <ThemeToggle />
       </header>
 
-      <main className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 pb-20 text-center">
+      <main className="relative z-20 flex-1 flex flex-col items-center justify-center px-6 pb-24 text-center">
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ type: 'spring', stiffness: 280, damping: 28 }}
-          className="flex flex-col items-center max-w-xl"
+          transition={{ type: 'spring', stiffness: 260, damping: 28 }}
+          className="flex flex-col items-center max-w-lg w-full"
         >
-          <Image
-            src="/cltlogotext.png"
-            alt="Charlotte Connect"
-            width={280}
-            height={90}
-            className="w-[min(280px,78vw)] h-auto drop-shadow-lg mb-8"
-            priority
-          />
-          <h1 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-white text-balance drop-shadow-md mb-10">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.92 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.08, type: 'spring', stiffness: 280, damping: 22 }}
+          >
+            <Image
+              src="/cltlogotext.png"
+              alt="Charlotte Connect"
+              width={300}
+              height={96}
+              className="w-[min(300px,82vw)] h-auto drop-shadow-[0_4px_24px_rgba(0,0,0,0.45)] mb-10"
+              priority
+            />
+          </motion.div>
+
+          <h1 className="font-display text-[clamp(1.75rem,5vw,3rem)] font-bold text-white text-balance leading-tight mb-12 drop-shadow-md">
             {LANDING_TAGLINE}
           </h1>
-          <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-            <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
-              <Button
-                variant="primary"
-                size="lg"
-                className="w-full sm:w-auto min-w-[200px] bg-gold text-[#23361D] hover:bg-gold-light border-0 shadow-lg"
-                onClick={() => router.push('/auth')}
-              >
-                Get started
-              </Button>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }}>
-              <Button
-                variant="outline"
-                size="lg"
-                className="w-full sm:w-auto min-w-[200px] border-2 border-white/90 text-white bg-white/10 backdrop-blur-sm hover:bg-white/20"
-                onClick={() => {
-                  setDemoMode(true);
-                  router.push('/home');
-                }}
-              >
-                Try demo
-              </Button>
-            </motion.div>
+
+          <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto sm:justify-center">
+            <motion.button
+              type="button"
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 22 }}
+              onClick={() => router.push('/auth')}
+              className="min-w-[200px] h-14 px-8 rounded-2xl font-semibold text-[#23361D] bg-[#BBB857] shadow-lg hover:bg-[#c9c46a] border border-[#d4d080]/50"
+            >
+              Get started
+            </motion.button>
+            <motion.button
+              type="button"
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ type: 'spring', stiffness: 400, damping: 22 }}
+              onClick={() => {
+                setDemoMode(true);
+                router.push('/home');
+              }}
+              className="min-w-[200px] h-14 px-8 rounded-2xl font-semibold text-white bg-white/12 backdrop-blur-md border-2 border-[#D4D8EC]/55 hover:bg-white/20 hover:border-[#D4D8EC]/80"
+            >
+              Try demo
+            </motion.button>
           </div>
-          <p className="mt-10 text-sm text-white/80">
-            <Link href="/help" className="underline underline-offset-2 hover:text-white">
-              Help &amp; guides
+
+          <p className="mt-14 text-sm text-[#D4D8EC]/90 flex flex-wrap justify-center gap-x-3 gap-y-1">
+            <Link href="/help" className="underline underline-offset-4 hover:text-white transition-colors">
+              Help wizard
             </Link>
-            {' · '}
-            <Link href="/my-plan" className="underline underline-offset-2 hover:text-white">
-              Legacy My Plan
+            <span className="text-white/40">·</span>
+            <Link href="/my-plan" className="underline underline-offset-4 hover:text-white transition-colors">
+              My plan
             </Link>
           </p>
         </motion.div>

@@ -18,8 +18,7 @@ import {
   Quote,
   ExternalLink,
 } from 'lucide-react';
-import { Navbar } from '@/components/layout/Navbar';
-import { Footer } from '@/components/layout/Footer';
+import { PublicChrome } from '@/components/layout';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { GoogleMap } from '@/components/maps/GoogleMap';
@@ -123,27 +122,24 @@ export default function PlaceDetailPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navbar />
-        <main className="pt-24 pb-16">
+      <PublicChrome>
+        <div className="pt-8 pb-16">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="animate-pulse space-y-8">
-              <div className="h-96 bg-background-alt rounded-xl" />
-              <div className="h-8 bg-background-alt rounded w-1/2" />
-              <div className="h-4 bg-background-alt rounded w-3/4" />
+              <div className="h-96 bg-surface-muted rounded-2xl border border-border" />
+              <div className="h-8 bg-surface-muted rounded-xl w-1/2 border border-border" />
+              <div className="h-4 bg-surface-muted rounded-lg w-3/4 border border-border" />
             </div>
           </div>
-        </main>
-        <Footer />
-      </div>
+        </div>
+      </PublicChrome>
     );
   }
 
   if (error || !place) {
     return (
-      <div className="min-h-screen bg-background">
-        <Navbar />
-        <main className="pt-24 pb-16">
+      <PublicChrome>
+        <div className="pt-16 pb-16">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
             <h1 className="text-2xl font-semibold text-foreground mb-4">Place not found</h1>
             <p className="text-foreground-secondary mb-6">Unable to load details for this place.</p>
@@ -151,9 +147,8 @@ export default function PlaceDetailPage() {
               Back to Home
             </Button>
           </div>
-        </main>
-        <Footer />
-      </div>
+        </div>
+      </PublicChrome>
     );
   }
 
@@ -162,10 +157,8 @@ export default function PlaceDetailPage() {
     .slice(0, 3);
 
   return (
-    <div className="min-h-screen bg-background">
-      <Navbar />
-
-      <main className="pt-16">
+    <PublicChrome>
+      <div className="pt-6">
         {/* Photo Gallery */}
         {place.photos && place.photos.length > 0 && (
           <div className="relative h-[50vh] min-h-[400px] max-h-[600px] bg-background-alt overflow-hidden">
@@ -489,9 +482,7 @@ export default function PlaceDetailPage() {
             </div>
           </div>
         </div>
-      </main>
-
-      <Footer />
-    </div>
+      </div>
+    </PublicChrome>
   );
 }

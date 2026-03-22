@@ -8,7 +8,7 @@ import {
   ArrowRight, ArrowLeft, Check, AlertCircle, Car, Footprints,
   Phone
 } from 'lucide-react';
-import { Navbar, Footer } from '@/components/layout';
+import { PublicChrome } from '@/components/layout';
 import {
   WizardState,
   defaultWizardState,
@@ -82,17 +82,15 @@ export default function HelpWizardPage() {
   const progressPercent = (step / TOTAL_STEPS) * 100;
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <Navbar />
-      
-      <main className="flex-1 pt-20 pb-12">
+    <PublicChrome>
+      <div className="pt-8 pb-8">
         <div className="max-w-2xl mx-auto px-4 sm:px-6">
           {/* Crisis Notice */}
           {state.urgency === 'today' && (
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mb-6 p-4 bg-warning-surface border-l-4 border-warning"
+              className="mb-6 p-4 bg-warning-light border-l-4 border-gold"
             >
               <div className="flex items-start gap-3">
                 <AlertCircle className="w-5 h-5 text-warning flex-shrink-0 mt-0.5" />
@@ -364,24 +362,21 @@ export default function HelpWizardPage() {
             </div>
           )}
         </div>
-      </main>
-      
-      {/* Crisis footer */}
-      <div className="border-t border-border bg-surface py-4">
+      </div>
+
+      <div className="border-t border-border bg-surface-muted/80 py-4">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 flex items-center justify-center gap-6 text-sm">
-          <a href="tel:988" className="flex items-center gap-2 text-foreground-secondary hover:text-primary transition-colors">
+          <a href="tel:988" className="flex items-center gap-2 text-foreground-secondary hover:text-accent transition-colors">
             <Phone className="w-4 h-4" />
             988 Crisis Line
           </a>
-          <a href="tel:911" className="flex items-center gap-2 text-foreground-secondary hover:text-primary transition-colors">
+          <a href="tel:911" className="flex items-center gap-2 text-foreground-secondary hover:text-accent transition-colors">
             <Phone className="w-4 h-4" />
             911 Emergency
           </a>
         </div>
       </div>
-      
-      <Footer />
-    </div>
+    </PublicChrome>
   );
 }
 

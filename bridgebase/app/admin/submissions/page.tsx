@@ -7,7 +7,7 @@ import {
   ArrowLeft, Check, X, Clock, MapPin, Phone, Mail, Globe,
   Loader2, RefreshCw
 } from 'lucide-react';
-import { Navbar, Footer } from '@/components/layout';
+import { PublicChrome } from '@/components/layout';
 
 interface Submission {
   id: string;
@@ -83,10 +83,8 @@ export default function AdminSubmissionsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <Navbar />
-      
-      <main className="flex-1 pt-20 pb-12">
+    <PublicChrome>
+      <div className="pt-8 pb-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6">
           <Link 
             href="/"
@@ -250,9 +248,7 @@ export default function AdminSubmissionsPage() {
             </div>
           )}
         </div>
-      </main>
-      
-      <Footer />
-    </div>
+      </div>
+    </PublicChrome>
   );
 }

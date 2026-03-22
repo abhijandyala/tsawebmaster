@@ -6,7 +6,7 @@ import {
   ArrowLeft, AlertTriangle, Phone, Heart, Home, Utensils,
   Shield, Clock, CheckCircle, XCircle
 } from 'lucide-react';
-import { Navbar, Footer } from '@/components/layout';
+import { PublicChrome } from '@/components/layout';
 
 const emergencyResources = [
   {
@@ -81,10 +81,8 @@ const urgentResources = [
 
 export default function EmergencyGuidePage() {
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <Navbar />
-      
-      <main className="flex-1 pt-20 pb-12">
+    <PublicChrome>
+      <div className="pt-8 pb-16">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <Link 
             href="/"
@@ -244,9 +242,7 @@ export default function EmergencyGuidePage() {
             </Link>
           </motion.div>
         </div>
-      </main>
-      
-      <Footer />
-    </div>
+      </div>
+    </PublicChrome>
   );
 }

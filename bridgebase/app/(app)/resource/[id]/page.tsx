@@ -147,9 +147,9 @@ export default function ResourceDetailPage() {
 
   if (!resource) {
     return (
-      <div className="max-w-xl mx-auto py-20 text-center">
-        <h1 className="text-xl font-semibold mb-2">Resource not found</h1>
-        <Button variant="primary" type="button" onClick={() => router.push('/resources')}>
+      <div className="max-w-xl mx-auto py-24 text-center clt-glass rounded-3xl p-10 border border-border-light">
+        <h1 className="font-display text-2xl font-bold mb-3">Resource not found</h1>
+        <Button variant="accent" type="button" onClick={() => router.push('/resources')}>
           Back to hub
         </Button>
       </div>
@@ -171,7 +171,7 @@ export default function ResourceDetailPage() {
       <button
         type="button"
         onClick={() => router.back()}
-        className="inline-flex items-center gap-2 text-sm text-foreground-secondary hover:text-foreground mb-6"
+        className="inline-flex items-center gap-2 text-sm font-medium text-foreground-secondary hover:text-accent mb-8"
       >
         <ArrowLeft className="w-4 h-4" />
         Back
@@ -179,7 +179,7 @@ export default function ResourceDetailPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <article className="lg:col-span-2 space-y-6">
-          <div className="relative aspect-[21/9] rounded-2xl overflow-hidden bg-background-alt">
+          <div className="relative aspect-[21/9] rounded-3xl overflow-hidden bg-surface-muted ring-1 ring-accent/15 shadow-md">
             {cover ? (
               <Image src={cover} alt="" fill className="object-cover" sizes="(max-width:1024px) 100vw, 66vw" />
             ) : (
@@ -231,8 +231,11 @@ export default function ResourceDetailPage() {
             ))}
           </div>
 
-          <section className="rounded-2xl border border-border bg-surface p-6 space-y-4">
-            <h2 className="font-display text-lg font-semibold">Write a review</h2>
+          <section className="clt-glass rounded-3xl p-6 sm:p-8 space-y-4 border border-border-light">
+            <h2 className="font-display text-xl font-bold flex items-center gap-2">
+              <span className="w-8 h-0.5 rounded-full bg-gold" />
+              Write a review
+            </h2>
             {isDemo || !user ? (
               <p className="text-sm text-foreground-secondary">
                 Sign in to rate and review (demo users can read only).
@@ -241,7 +244,7 @@ export default function ResourceDetailPage() {
               <form onSubmit={sendReview} className="space-y-3">
                 <StarRatingInput value={ratingIn} onChange={setRatingIn} disabled={reviewBusy} />
                 <textarea
-                  className="w-full rounded-xl border border-border bg-background p-3 text-sm min-h-[100px]"
+                  className="w-full rounded-xl border-2 border-border bg-surface px-4 py-3 text-sm min-h-[100px] focus:border-accent focus:outline-none focus:shadow-[0_0_0_3px_color-mix(in_srgb,var(--clt-blue)_18%,transparent)]"
                   placeholder="Share your experience…"
                   value={textIn}
                   onChange={(e) => setTextIn(e.target.value)}
@@ -276,7 +279,7 @@ export default function ResourceDetailPage() {
             </Button>
           </div>
 
-          <div className="h-[280px] rounded-2xl border border-border overflow-hidden">
+          <div className="h-[280px] rounded-3xl border-2 border-accent/20 overflow-hidden shadow-md ring-1 ring-gold/10">
             <GoogleMap
               markers={markers}
               height="100%"
@@ -286,7 +289,7 @@ export default function ResourceDetailPage() {
             />
           </div>
 
-          <div className="rounded-2xl border border-border bg-surface p-4 space-y-3 text-sm">
+          <div className="clt-glass rounded-3xl p-5 space-y-4 text-sm border border-border-light">
             <a
               href={`https://maps.google.com/?q=${encodeURIComponent(resource.address + ', ' + resource.city)}`}
               target="_blank"

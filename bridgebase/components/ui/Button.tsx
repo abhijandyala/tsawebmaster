@@ -4,52 +4,51 @@ import { forwardRef, ButtonHTMLAttributes, ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'accent';
+  variant?: 'primary' | 'secondary' | 'accent' | 'outline' | 'ghost' | 'danger' | 'link';
   size?: 'sm' | 'md' | 'lg';
   children: ReactNode;
   isLoading?: boolean;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant = 'primary', size = 'md', children, isLoading, disabled, ...props }, ref) => {
-    const baseStyles = 'inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
+  ({ className, variant = 'primary', size = 'md', children, isLoading, disabled, type = 'button', ...props }, ref) => {
+    const base = cn(
+      'inline-flex items-center justify-center font-semibold tracking-tight focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-45 disabled:pointer-events-none',
+      variant !== 'link' &&
+        'transition-[transform,box-shadow] duration-200 ease-out will-change-transform enabled:hover:scale-[1.02] enabled:active:scale-[0.98]'
+    );
 
-    const variants = {
-      primary: 'bg-primary text-white hover:bg-primary-dark',
-      secondary: 'bg-background-alt text-foreground hover:bg-border',
-      outline: 'border-2 border-border bg-transparent text-foreground hover:border-foreground',
-      ghost: 'bg-transparent text-foreground hover:bg-background-alt',
-      accent: 'bg-accent text-white hover:bg-accent-dark',
+    const variants: Record<NonNullable<ButtonProps['variant']>, string> = {
+      primary:
+        'bg-primary text-white shadow-md hover:bg-primary-dark border border-transparent',
+      secondary:
+        'bg-surface-muted text-foreground border border-border hover:border-accent/40 hover:bg-accent-soft/30',
+      accent:
+        'bg-accent text-white shadow-md hover:bg-accent-dark border border-transparent',
+      outline:
+        'bg-transparent text-foreground border-2 border-accent/50 hover:bg-accent-soft/40 hover:border-accent',
+      ghost: 'bg-transparent text-foreground-secondary hover:text-accent hover:bg-accent-soft/25',
+      danger: 'bg-error text-white hover:opacity-90 border border-transparent shadow-sm',
+      link: 'bg-transparent text-accent underline-offset-4 hover:underline p-0 h-auto shadow-none border-0',
     };
 
-    const sizes = {
-      sm: 'h-9 px-4 text-sm gap-1.5',
-      md: 'h-11 px-5 text-sm gap-2',
-      lg: 'h-13 px-7 text-base gap-2',
+    const sizes: Record<NonNullable<ButtonProps['size']>, string> = {
+      sm: 'h-9 px-4 text-sm gap-1.5 rounded-xl',
+      md: 'h-11 px-6 text-sm gap-2 rounded-xl',
+      lg: 'h-14 px-8 text-base gap-2 rounded-2xl',
     };
 
     return (
       <button
         ref={ref}
-        className={cn(baseStyles, variants[variant], sizes[size], className)}
+        type={type}
+        className={cn(base, variants[variant], variant !== 'link' && sizes[size], className)}
         disabled={disabled || isLoading}
         {...props}
       >
         {isLoading && (
-          <svg
-            className="animate-spin h-4 w-4"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <circle
-              className="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="4"
-            />
+          <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
             <path
               className="opacity-75"
               fill="currentColor"

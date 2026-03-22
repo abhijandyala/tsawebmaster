@@ -9,7 +9,7 @@ import {
   ArrowLeft, Phone, MapPin, ExternalLink, Clock, Check, Star,
   AlertCircle, Loader2, ChevronRight, Globe, Users
 } from 'lucide-react';
-import { Navbar, Footer } from '@/components/layout';
+import { PublicChrome } from '@/components/layout';
 import { CrisisBanner } from '@/components/ui/CrisisBanner';
 import {
   WizardState,
@@ -119,26 +119,22 @@ function HelpResultsContent() {
 
   if (!encodedState || !wizardState) {
     return (
-      <div className="min-h-screen bg-background flex flex-col">
-        <Navbar />
-        <main className="flex-1 pt-24 pb-12">
+      <PublicChrome>
+        <div className="pt-16 pb-16">
           <div className="max-w-2xl mx-auto px-4 text-center">
             <p className="text-foreground-secondary">Invalid or missing wizard state.</p>
-            <Link href="/help" className="text-primary hover:underline mt-4 inline-block">
+            <Link href="/help" className="text-accent font-medium hover:underline mt-4 inline-block">
               Start over
             </Link>
           </div>
-        </main>
-        <Footer />
-      </div>
+        </div>
+      </PublicChrome>
     );
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <Navbar />
-      
-      <main className="flex-1 pt-20 pb-12">
+    <PublicChrome>
+      <div className="pt-8 pb-16">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           {/* Back link */}
           <Link 
@@ -376,10 +372,8 @@ function HelpResultsContent() {
             </div>
           </div>
         </div>
-      </main>
-      
-      <Footer />
-    </div>
+      </div>
+    </PublicChrome>
   );
 }
 

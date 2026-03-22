@@ -6,7 +6,7 @@ import {
   ArrowLeft, FileText, CreditCard, Home, Briefcase, Heart,
   Users, CheckSquare, AlertCircle, Utensils
 } from 'lucide-react';
-import { Navbar, Footer } from '@/components/layout';
+import { PublicChrome } from '@/components/layout';
 
 const generalDocuments = [
   { name: 'Government-issued ID', description: 'Driver\'s license, state ID, or passport', required: true },
@@ -116,10 +116,8 @@ const categories = [
 
 export default function WhatToBringPage() {
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <Navbar />
-      
-      <main className="flex-1 pt-20 pb-12">
+    <PublicChrome>
+      <div className="pt-8 pb-16">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <Link 
             href="/"
@@ -264,9 +262,7 @@ export default function WhatToBringPage() {
             </Link>
           </motion.div>
         </div>
-      </main>
-      
-      <Footer />
-    </div>
+      </div>
+    </PublicChrome>
   );
 }

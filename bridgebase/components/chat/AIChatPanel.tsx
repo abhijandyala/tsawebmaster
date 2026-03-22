@@ -26,7 +26,7 @@ export function AIChatPanel() {
       const data = await res.json();
       setMessages((m) => [...m, { role: 'assistant', text: data.reply || 'Something went wrong.' }]);
     } catch {
-      setMessages((m) => [...m, { role: 'assistant', text: 'Network error. Try again.' }]);
+      setMessages((m) => [...m, { role: 'assistant', text: 'Network error.' }]);
     } finally {
       setLoading(false);
     }
@@ -36,10 +36,10 @@ export function AIChatPanel() {
     <>
       <motion.button
         type="button"
-        aria-label="Open assistant"
-        className="fixed bottom-6 right-6 z-[60] w-14 h-14 rounded-full bg-primary text-white shadow-lg flex items-center justify-center"
+        aria-label={open ? 'Close assistant' : 'Open assistant'}
+        className="fixed bottom-6 right-6 z-[60] w-14 h-14 rounded-full bg-gradient-to-br from-gold to-[#a89d3a] text-[#23361D] shadow-lg flex items-center justify-center border-2 border-white/40"
         whileHover={{ scale: 1.06 }}
-        whileTap={{ scale: 0.95 }}
+        whileTap={{ scale: 0.94 }}
         onClick={() => setOpen((o) => !o)}
       >
         {open ? <X className="w-6 h-6" /> : <MessageCircle className="w-6 h-6" />}
@@ -48,40 +48,45 @@ export function AIChatPanel() {
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: 20, scale: 0.96 }}
+            initial={{ opacity: 0, y: 24, scale: 0.94 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.96 }}
             transition={{ type: 'spring', stiffness: 320, damping: 28 }}
-            className="fixed bottom-24 right-6 z-[60] w-[min(100vw-3rem,420px)] h-[min(70vh,520px)] bg-surface border border-border rounded-2xl shadow-xl flex flex-col overflow-hidden"
+            className="fixed bottom-24 right-6 z-[60] w-[min(100vw-2rem,420px)] h-[min(70vh,520px)] clt-glass rounded-3xl border-2 border-accent/25 flex flex-col overflow-hidden shadow-[var(--shadow-lg)]"
           >
-            <div className="px-4 py-3 border-b border-border font-semibold text-foreground">Resource assistant</div>
+            <div className="px-4 py-3 border-b border-border bg-gradient-to-r from-accent-soft/50 to-gold/10">
+              <p className="font-display font-bold text-foreground">Resource assistant</p>
+              <p className="text-xs text-foreground-muted">Matched against our hub catalog</p>
+            </div>
             <div className="flex-1 overflow-y-auto p-4 space-y-3 text-sm">
               {messages.length === 0 && (
-                <p className="text-foreground-secondary">
-                  Describe what you need — we&apos;ll match against resources in the hub.
+                <p className="text-foreground-secondary text-sm leading-relaxed">
+                  Ask in plain language — we&apos;ll suggest resources or tell you if we need to add one.
                 </p>
               )}
               {messages.map((m, i) => (
                 <div
                   key={i}
-                  className={`rounded-xl px-3 py-2 max-w-[95%] whitespace-pre-wrap ${
-                    m.role === 'user' ? 'bg-accent/15 text-foreground ml-6' : 'bg-background-alt text-foreground mr-6'
+                  className={`rounded-2xl px-4 py-3 max-w-[92%] whitespace-pre-wrap text-sm leading-relaxed ${
+                    m.role === 'user'
+                      ? 'bg-accent text-white ml-auto shadow-sm'
+                      : 'bg-surface-muted text-foreground mr-auto border border-border-light'
                   }`}
                 >
                   {m.text}
                 </div>
               ))}
-              {loading && <p className="text-foreground-muted text-xs">Thinking…</p>}
+              {loading && <p className="text-xs text-foreground-muted">Thinking…</p>}
             </div>
-            <div className="p-3 border-t border-border flex gap-2">
+            <div className="p-3 border-t border-border flex gap-2 bg-surface-muted/40">
               <input
-                className="flex-1 rounded-xl border border-border bg-background px-3 py-2 text-sm"
-                placeholder="What are you looking for?"
+                className="flex-1 rounded-2xl border-2 border-border bg-surface px-4 py-2.5 text-sm focus:border-accent focus:outline-none"
+                placeholder="What do you need?"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && send()}
               />
-              <Button type="button" variant="primary" className="shrink-0" disabled={loading} onClick={send}>
+              <Button type="button" variant="accent" className="shrink-0 px-4" disabled={loading} onClick={send}>
                 <Send className="w-4 h-4" />
               </Button>
             </div>

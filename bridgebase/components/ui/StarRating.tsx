@@ -16,15 +16,16 @@ export function StarRatingDisplay({
   const full = Math.floor(v);
   const half = v - full >= 0.5 && full < 5;
   const s = size === 'md' ? 'w-5 h-5' : 'w-4 h-4';
+
   return (
-    <div className={cn('flex items-center gap-1', className)}>
+    <div className={cn('flex items-center gap-1.5', className)}>
       <div className="flex items-center gap-0.5" aria-label={`${v} out of 5 stars`}>
         {[0, 1, 2, 3, 4].map((i) => {
           const filled = i < full || (i === full && half);
           const onlyHalf = i === full && half;
           return (
             <span key={i} className="relative inline-flex">
-              <Star className={cn(s, 'text-border')} strokeWidth={1.5} />
+              <Star className={cn(s, 'text-accent/35')} strokeWidth={1.5} />
               {filled && (
                 <Star
                   className={cn(s, 'absolute inset-0 text-gold fill-gold')}
@@ -36,9 +37,7 @@ export function StarRatingDisplay({
           );
         })}
       </div>
-      <span className="text-sm font-medium text-foreground tabular-nums">
-        {v.toFixed(1)}
-      </span>
+      <span className="text-sm font-bold tabular-nums text-foreground">{v.toFixed(1)}</span>
     </div>
   );
 }
@@ -54,7 +53,7 @@ export function StarRatingInput({
 }) {
   const steps = [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
   return (
-    <div className="flex flex-wrap gap-1">
+    <div className="flex flex-wrap gap-1.5">
       {steps.map((step) => (
         <button
           key={step}
@@ -62,10 +61,10 @@ export function StarRatingInput({
           disabled={disabled}
           onClick={() => onChange(step)}
           className={cn(
-            'px-2 py-1 text-xs rounded-md border transition-colors',
+            'px-2.5 py-1.5 text-xs font-semibold rounded-lg border-2 transition-colors',
             value === step
-              ? 'bg-primary text-white border-primary'
-              : 'bg-surface border-border text-foreground-secondary hover:border-accent'
+              ? 'bg-accent text-white border-accent shadow-sm'
+              : 'bg-surface border-border text-foreground-secondary hover:border-accent/50 hover:text-accent'
           )}
         >
           {step}

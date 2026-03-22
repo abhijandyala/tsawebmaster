@@ -3,42 +3,21 @@
 import { forwardRef, TextareaHTMLAttributes } from 'react';
 import { cn } from '@/lib/utils';
 
-interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
-  label?: string;
-  error?: string;
-}
-
-const Textarea = forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ className, label, error, id, ...props }, ref) => {
-    const textareaId = id || label?.toLowerCase().replace(/\s+/g, '-');
-
+const Textarea = forwardRef<HTMLTextAreaElement, TextareaHTMLAttributes<HTMLTextAreaElement>>(
+  ({ className, ...props }, ref) => {
     return (
-      <div className="w-full">
-        {label && (
-          <label
-            htmlFor={textareaId}
-            className="block text-sm font-medium text-foreground mb-2"
-          >
-            {label}
-          </label>
+      <textarea
+        ref={ref}
+        className={cn(
+          'flex min-h-[120px] w-full rounded-xl border-2 border-border bg-surface px-4 py-3 text-sm text-foreground placeholder:text-foreground-muted',
+          'resize-y transition-shadow duration-200',
+          'hover:border-accent/35',
+          'focus-visible:border-accent focus-visible:shadow-[0_0_0_3px_color-mix(in_srgb,var(--clt-blue)_22%,transparent)] focus-visible:outline-none',
+          'disabled:cursor-not-allowed disabled:opacity-50',
+          className
         )}
-        <textarea
-          ref={ref}
-          id={textareaId}
-          className={cn(
-            'w-full min-h-[120px] px-4 py-3 bg-surface border border-border text-foreground placeholder:text-foreground-muted resize-y',
-            'transition-colors duration-200',
-            'focus:outline-none focus:border-primary',
-            'disabled:opacity-50 disabled:cursor-not-allowed',
-            error && 'border-error focus:border-error',
-            className
-          )}
-          {...props}
-        />
-        {error && (
-          <p className="mt-1.5 text-sm text-error">{error}</p>
-        )}
-      </div>
+        {...props}
+      />
     );
   }
 );

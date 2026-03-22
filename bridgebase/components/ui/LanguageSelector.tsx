@@ -121,8 +121,9 @@ export function LanguageSelector() {
   return (
     <div className="relative">
       <button
+        type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 text-sm text-foreground-secondary hover:text-foreground border border-border hover:border-primary/50 transition-colors"
+        className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-foreground-secondary hover:text-accent rounded-xl border-2 border-border hover:border-accent/40 hover:bg-accent-soft/25 transition-colors"
         aria-label="Select language"
       >
         <Globe className="w-4 h-4" />
@@ -136,14 +137,14 @@ export function LanguageSelector() {
             className="fixed inset-0 z-40" 
             onClick={() => { setIsOpen(false); setSearchQuery(''); }} 
           />
-          <div className="absolute right-0 top-full mt-2 w-72 max-h-96 bg-surface border border-border shadow-lg z-50 flex flex-col">
+          <div className="absolute right-0 top-full mt-2 w-72 max-h-96 clt-glass rounded-2xl z-50 flex flex-col overflow-hidden border border-border-light">
             <div className="p-2 border-b border-border">
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search languages..."
-                className="w-full px-3 py-2 text-sm bg-background border border-border text-foreground placeholder:text-foreground-muted focus:outline-none focus:border-primary"
+                className="w-full px-3 py-2.5 text-sm rounded-xl bg-surface-muted border-2 border-border text-foreground placeholder:text-foreground-muted focus:outline-none focus:border-accent"
                 autoFocus
               />
             </div>
@@ -156,9 +157,10 @@ export function LanguageSelector() {
                 filteredLanguages.map((lang) => (
                   <button
                     key={lang.code}
+                    type="button"
                     onClick={() => { handleLanguageChange(lang.code); setSearchQuery(''); }}
-                    className={`w-full px-4 py-2.5 text-left text-sm hover:bg-background transition-colors flex items-center justify-between ${
-                      currentLang === lang.code ? 'bg-primary/5 text-primary' : 'text-foreground'
+                    className={`w-full px-4 py-2.5 text-left text-sm hover:bg-accent-soft/30 transition-colors flex items-center justify-between rounded-xl mx-1 ${
+                      currentLang === lang.code ? 'bg-accent-soft text-accent-dark font-semibold' : 'text-foreground'
                     }`}
                   >
                     <span className="font-medium">{lang.native}</span>

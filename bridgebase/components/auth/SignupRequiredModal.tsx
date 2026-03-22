@@ -13,16 +13,16 @@ type Props = {
 export function SignupRequiredModal({ isOpen, onClose, feature }: Props) {
   const router = useRouter();
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Create an account" size="sm">
-      <div className="px-6 pb-6 pt-2">
-        <p className="text-foreground-secondary text-sm mb-4">
+    <Modal isOpen={isOpen} onClose={onClose} title="Create a free account" size="sm">
+      <div className="px-6 pb-6 pt-1">
+        <p className="text-foreground-secondary text-sm mb-6 leading-relaxed">
           {feature
-            ? `To ${feature}, please create a free account or sign in.`
-            : 'Please create a free account or sign in to use this feature.'}
+            ? `To ${feature}, sign in or create an account — it’s free.`
+            : 'Sign in or create an account to use this feature.'}
         </p>
         <div className="flex flex-col sm:flex-row gap-3">
           <Button
-            variant="primary"
+            variant="accent"
             className="flex-1"
             onClick={() => {
               onClose();

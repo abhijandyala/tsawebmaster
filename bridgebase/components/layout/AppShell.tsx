@@ -27,11 +27,12 @@ export function AppShell({ children }: { children: ReactNode }) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <motion.div
-          animate={{ opacity: [0.5, 1, 0.5] }}
-          transition={{ repeat: Infinity, duration: 1.2 }}
-          className="text-foreground-secondary text-sm"
+          className="flex flex-col items-center gap-3"
+          animate={{ opacity: [0.4, 1, 0.4] }}
+          transition={{ repeat: Infinity, duration: 1.4 }}
         >
-          Loading…
+          <div className="h-10 w-10 rounded-2xl border-2 border-accent border-t-transparent animate-spin" />
+          <span className="text-sm text-foreground-muted font-medium">Loading…</span>
         </motion.div>
       </div>
     );
@@ -40,13 +41,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   if (!user && !isDemo) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <motion.div
-          animate={{ opacity: [0.5, 1, 0.5] }}
-          transition={{ repeat: Infinity, duration: 1.2 }}
-          className="text-foreground-secondary text-sm"
-        >
-          Redirecting…
-        </motion.div>
+        <p className="text-sm text-foreground-muted">Redirecting…</p>
       </div>
     );
   }
@@ -66,13 +61,22 @@ export function AppShell({ children }: { children: ReactNode }) {
         onSignOut={user ? () => logout().then(() => router.push('/')) : undefined}
       />
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-md">
-          <div className="flex items-center justify-between gap-4 px-4 sm:px-6 py-3">
-            <Link href="/home" className="flex items-center gap-2 shrink-0 motion-safe:transition-transform hover:scale-[1.02]">
-              <Image src="/cltlogo.png" alt="Charlotte Connect" width={40} height={40} className="h-9 w-auto" />
+        <header className="sticky top-0 z-40 border-b border-border bg-surface/80 backdrop-blur-xl">
+          <div className="flex items-center justify-between gap-4 px-4 sm:px-6 py-3.5">
+            <Link
+              href="/home"
+              className="flex items-center gap-3 shrink-0 group rounded-xl p-1 -m-1 hover:bg-accent-soft/25 transition-colors"
+            >
+              <motion.div whileHover={{ scale: 1.06 }} whileTap={{ scale: 0.95 }}>
+                <Image src="/cltlogo.png" alt="Home" width={36} height={36} className="h-9 w-auto" />
+              </motion.div>
+              <span className="hidden sm:block text-xs font-bold uppercase tracking-wider text-accent">
+                Charlotte Connect
+              </span>
             </Link>
-            <p className="text-sm sm:text-base font-display font-semibold text-foreground truncate flex-1 text-center sm:text-left">
-              Welcome back, {displayName}!
+            <p className="text-sm sm:text-base font-display font-semibold text-foreground truncate flex-1 text-center px-2">
+              Welcome back,{' '}
+              <span className="text-accent">{displayName}</span>
             </p>
             <div className="flex items-center gap-2 shrink-0">
               <LanguageSelector />
@@ -80,7 +84,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             </div>
           </div>
         </header>
-        <main className="flex-1 p-4 sm:p-6 lg:p-8">{children}</main>
+        <main className="flex-1 p-4 sm:p-6 lg:p-10">{children}</main>
       </div>
       <AIChatPanel />
     </div>

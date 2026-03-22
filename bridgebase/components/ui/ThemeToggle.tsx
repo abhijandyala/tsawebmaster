@@ -19,15 +19,16 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
 
   if (!mounted) {
     return (
-      <div className={cn('w-9 h-9 rounded-lg bg-background-alt', className)} />
+      <div className={cn('w-10 h-10 rounded-xl bg-surface-muted border border-border', className)} />
     );
   }
 
   return (
     <button
+      type="button"
       onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
       className={cn(
-        'p-2 rounded-lg text-foreground-secondary hover:text-foreground hover:bg-background-alt transition-colors',
+        'p-2 rounded-xl border border-border text-foreground-secondary hover:text-accent hover:bg-accent-soft/35 hover:border-accent/30 transition-colors',
         className
       )}
       aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}

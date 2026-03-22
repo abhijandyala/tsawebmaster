@@ -7,7 +7,7 @@ import {
   ArrowLeft, Trash2, Phone, MapPin, Globe, Printer, Share2,
   FileText, Plus, CheckCircle, Edit3, Save, X
 } from 'lucide-react';
-import { Navbar, Footer } from '@/components/layout';
+import { PublicChrome } from '@/components/layout';
 import { 
   SavedResource, 
   getSavedResources, 
@@ -75,14 +75,12 @@ export default function MyPlanPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <Navbar />
-      
-      <main className="flex-1 pt-20 pb-12">
+    <PublicChrome>
+      <div className="pt-8 pb-16">
         <div className="max-w-3xl mx-auto px-4 sm:px-6">
           <Link 
-            href="/"
-            className="inline-flex items-center gap-2 text-sm text-foreground-secondary hover:text-foreground mb-6"
+            href="/resources"
+            className="inline-flex items-center gap-2 text-sm text-foreground-secondary hover:text-accent mb-6"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to search
@@ -313,19 +311,16 @@ export default function MyPlanPage() {
             </>
           )}
         </div>
-      </main>
-      
-      <Footer />
+      </div>
 
-      {/* Print styles */}
       <style jsx global>{`
         @media print {
           .print\\:hidden { display: none !important; }
           .print\\:block { display: block !important; }
           body { background: white; }
-          footer, nav { display: none !important; }
+          header, footer { display: none !important; }
         }
       `}</style>
-    </div>
+    </PublicChrome>
   );
 }

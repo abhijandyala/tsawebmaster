@@ -91,10 +91,10 @@ export function ResourceFilters({
             key={cat.name}
             onClick={() => toggleCategory(cat.name)}
             className={cn(
-              'px-3 py-1.5 text-sm font-medium border transition-colors',
+              'px-3 py-1.5 text-sm font-medium border rounded-xl transition-colors',
               filters.categories.includes(cat.name)
-                ? 'bg-primary text-white border-primary'
-                : 'bg-surface border-border text-foreground-secondary hover:border-primary/40 hover:text-foreground'
+                ? 'bg-accent text-white border-accent shadow-sm'
+                : 'bg-surface border-border text-foreground-secondary hover:border-accent/45 hover:text-foreground'
             )}
           >
             {cat.name}
@@ -143,7 +143,7 @@ export function ResourceFilters({
               type="checkbox"
               checked={filters.openNow}
               onChange={(e) => onFilterChange({ openNow: e.target.checked })}
-              className="w-4 h-4 border-border text-primary focus:ring-primary focus:ring-offset-0"
+              className="w-4 h-4 border-border text-accent focus:ring-accent focus:ring-offset-0 rounded"
             />
             <span className="text-sm font-medium text-foreground">Open now</span>
           </label>
@@ -171,57 +171,57 @@ export function ResourceFilters({
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-sm text-foreground-muted">Active:</span>
           {filters.search && (
-            <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-primary/10 text-primary">
+            <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-lg bg-accent/12 text-accent">
               "{filters.search}"
-              <button onClick={() => onFilterChange({ search: '' })} className="hover:text-primary-dark">
+              <button onClick={() => onFilterChange({ search: '' })} className="hover:text-accent-dark">
                 <X className="w-3 h-3" />
               </button>
             </span>
           )}
           {filters.categories.map((cat) => (
-            <span key={cat} className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-primary/10 text-primary">
+            <span key={cat} className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-lg bg-gold/20 text-primary">
               {cat}
-              <button onClick={() => toggleCategory(cat)} className="hover:text-primary-dark">
+              <button onClick={() => toggleCategory(cat)} className="hover:opacity-80">
                 <X className="w-3 h-3" />
               </button>
             </span>
           ))}
           {filters.neighborhood && (
-            <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-primary/10 text-primary">
+            <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-lg bg-accent/12 text-accent">
               {filters.neighborhood}
-              <button onClick={() => onFilterChange({ neighborhood: '' })} className="hover:text-primary-dark">
+              <button onClick={() => onFilterChange({ neighborhood: '' })} className="hover:text-accent-dark">
                 <X className="w-3 h-3" />
               </button>
             </span>
           )}
           {filters.cost && (
-            <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-primary/10 text-primary">
+            <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-lg bg-moss/18 text-primary">
               {filters.cost}
-              <button onClick={() => onFilterChange({ cost: '' })} className="hover:text-primary-dark">
+              <button onClick={() => onFilterChange({ cost: '' })} className="hover:opacity-80">
                 <X className="w-3 h-3" />
               </button>
             </span>
           )}
           {filters.format && (
-            <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-primary/10 text-primary">
+            <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-lg bg-accent/12 text-accent">
               {filters.format}
-              <button onClick={() => onFilterChange({ format: '' })} className="hover:text-primary-dark">
+              <button onClick={() => onFilterChange({ format: '' })} className="hover:text-accent-dark">
                 <X className="w-3 h-3" />
               </button>
             </span>
           )}
           {filters.audience && (
-            <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-primary/10 text-primary">
+            <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-lg bg-[color-mix(in_srgb,var(--clt-dusty)_42%,transparent)] text-primary dark:bg-accent-soft dark:text-foreground">
               {filters.audience}
-              <button onClick={() => onFilterChange({ audience: '' })} className="hover:text-primary-dark">
+              <button onClick={() => onFilterChange({ audience: '' })} className="hover:opacity-80">
                 <X className="w-3 h-3" />
               </button>
             </span>
           )}
           {filters.openNow && (
-            <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-primary/10 text-primary">
+            <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-lg bg-gold/20 text-primary">
               Open now
-              <button onClick={() => onFilterChange({ openNow: false })} className="hover:text-primary-dark">
+              <button onClick={() => onFilterChange({ openNow: false })} className="hover:opacity-80">
                 <X className="w-3 h-3" />
               </button>
             </span>
