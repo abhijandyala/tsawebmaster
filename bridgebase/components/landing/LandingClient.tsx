@@ -64,12 +64,12 @@ export function LandingClient() {
         <ThemeToggle />
       </header>
 
-      <main className="relative z-20 flex-1 flex flex-col items-center justify-center min-h-0 px-6 pb-6 sm:pb-8 text-center">
+      <main className="relative z-20 flex-1 flex flex-col items-center justify-start pt-4 sm:pt-6 min-h-0 px-6 pb-6 sm:pb-8 text-center">
         <motion.div
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ type: 'spring', stiffness: 260, damping: 28 }}
-          className="flex flex-col items-center max-w-lg w-full -mt-6 sm:-mt-10"
+          className="flex flex-col items-center max-w-2xl w-full"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.92 }}
@@ -77,14 +77,14 @@ export function LandingClient() {
             transition={{ delay: 0.08, type: 'spring', stiffness: 280, damping: 22 }}
             className="mb-5 sm:mb-6"
           >
-            <div className="inline-flex w-fit max-w-full items-center justify-center rounded-2xl bg-white px-3 py-2.5 shadow-[0_4px_28px_rgba(0,0,0,0.18)] ring-1 ring-black/[0.06]">
+            <div className="inline-flex w-fit max-w-full items-center justify-center rounded-full bg-white px-4 py-2 sm:px-5 sm:py-2.5 shadow-[0_4px_28px_rgba(0,0,0,0.18)] ring-1 ring-black/[0.06]">
               <Image
                 src="/cltlogotext.png"
                 alt="Charlotte Connect"
-                width={2000}
-                height={2000}
-                sizes="(max-width: 640px) 72vw, 300px"
-                className="block h-[min(100px,26vw)] w-auto max-h-[112px] sm:h-[112px] object-contain object-center"
+                width={1515}
+                height={391}
+                sizes="(max-width: 640px) 92vw, 440px"
+                className="block w-[min(380px,92vw)] sm:w-[min(440px,90vw)] h-auto max-w-full"
                 priority
               />
             </div>
