@@ -3,10 +3,11 @@
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useReducedMotion } from 'framer-motion';
 import { Home, LayoutGrid, Bookmark, Settings, LogOut } from 'lucide-react';
 import { useAuth } from '@/contexts/auth-context';
+import { usePageTransition, PAGE_TRANSITION_FADE_IN_MS } from '@/contexts/page-transition-context';
 import { SIDEBAR_EXPANDED_PX, SIDEBAR_RAIL_PX } from '@/lib/appShellLayout';
 import { cn } from '@/lib/utils';
 
@@ -37,8 +38,8 @@ type Props = {
 
 export function AppSidebar({ showExitDemo, onExitDemo }: Props) {
   const pathname = usePathname();
-  const router = useRouter();
   const { user, logout } = useAuth();
+  const { startTransition } = usePageTransition();
   const reduceMotion = useReducedMotion();
   const [expanded, setExpanded] = useState(false);
   const collapseTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -66,7 +67,10 @@ export function AppSidebar({ showExitDemo, onExitDemo }: Props) {
   useEffect(() => () => clearCollapseTimer(), [clearCollapseTimer]);
 
   const handleSignOut = () => {
-    logout().then(() => router.push('/'));
+    startTransition('/');
+    window.setTimeout(() => {
+      void logout();
+    }, PAGE_TRANSITION_FADE_IN_MS);
   };
 
   const displayInitial =
@@ -107,6 +111,11 @@ export function AppSidebar({ showExitDemo, onExitDemo }: Props) {
         <Link
           href="/home"
           className="flex items-center gap-2 min-w-0 max-w-full rounded-xl p-1 -ml-1 transition-colors duration-200 hover:bg-accent-soft/25"
+          onClick={(e) => {
+            if (pathname === '/home') return;
+            e.preventDefault();
+            startTransition('/home');
+          }}
         >
           <Image
             src="/cltlogo.png"
@@ -139,6 +148,11 @@ export function AppSidebar({ showExitDemo, onExitDemo }: Props) {
               key={href}
               href={href}
               title={label}
+              onClick={(e) => {
+                if (pathname === href || pathname.startsWith(`${href}/`)) return;
+                e.preventDefault();
+                startTransition(href);
+              }}
               className={cn(
                 'group flex w-full min-w-0 items-center gap-2 rounded-xl py-1 pr-1 transition-colors duration-150',
                 expanded && active && 'bg-accent-soft border border-accent/25 shadow-sm',

@@ -6,6 +6,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { useAuth } from '@/contexts/auth-context';
 import { useDemo } from '@/contexts/demo-context';
 import { setDemoMode } from '@/lib/demoMode';
+import { usePageTransition } from '@/contexts/page-transition-context';
 import { AppSidebar } from '@/components/layout/AppSidebar';
 import { LanguageSelector } from '@/components/ui/LanguageSelector';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
@@ -18,6 +19,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth();
   const { isDemo, hydrated } = useDemo();
   const router = useRouter();
+  const { startTransition } = usePageTransition();
   const reduceMotion = useReducedMotion();
 
   useEffect(() => {
@@ -71,7 +73,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         showExitDemo={isDemo && !user}
         onExitDemo={() => {
           setDemoMode(false);
-          router.push('/');
+          startTransition('/');
         }}
       />
 
