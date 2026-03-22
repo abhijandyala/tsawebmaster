@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -31,7 +31,7 @@ const fetcher = async (url: string): Promise<SearchApiResponse> => {
   return data;
 };
 
-export default function HelpResultsPage() {
+function HelpResultsContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const encodedState = searchParams.get('state');
@@ -265,7 +265,7 @@ export default function HelpResultsPage() {
                           {/* Address */}
                           <p className="text-sm text-foreground-secondary mt-2 flex items-start gap-2">
                             <MapPin className="w-4 h-4 flex-shrink-0 mt-0.5" />
-                            {result.address}
+                            {result.location.address}
                           </p>
 
                           {/* Quick info */}
@@ -304,7 +304,7 @@ export default function HelpResultsPage() {
                           </a>
                         )}
                         <a
-                          href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(result.address)}`}
+                          href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(result.location.address)}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}
@@ -380,5 +380,19 @@ export default function HelpResultsPage() {
       
       <Footer />
     </div>
+  );
+}
+
+export default function HelpResultsPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-background flex items-center justify-center text-foreground-secondary text-sm">
+          Loading…
+        </div>
+      }
+    >
+      <HelpResultsContent />
+    </Suspense>
   );
 }

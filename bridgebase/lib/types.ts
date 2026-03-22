@@ -29,8 +29,12 @@ export type Audience = 'Youth' | 'Families' | 'Seniors' | 'General';
 export interface Resource {
   id: string;
   name: string;
+  /** When different from the public-facing program title */
+  organizationName?: string;
   category: Category;
   description: string;
+  /** Longer copy for detail article view */
+  longDescription?: string;
   address: string;
   city: string;
   neighborhood?: string;
@@ -38,6 +42,8 @@ export interface Resource {
   email: string;
   website: string;
   hours: string;
+  /** Short line for cards (e.g. hours or next available) */
+  availabilitySummary?: string;
   tags: string[];
   cost: Cost;
   format: Format;
@@ -49,6 +55,8 @@ export interface Resource {
   accessibilityNotes?: string;
   walkIn?: boolean;
   coordinates?: { lat: number; lng: number };
+  imageUrl?: string;
+  imageUrls?: string[];
 }
 
 export interface FilterState {

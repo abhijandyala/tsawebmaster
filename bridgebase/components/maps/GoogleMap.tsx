@@ -152,7 +152,7 @@ export function GoogleMap({
         icon: {
           path: google.maps.SymbolPath.CIRCLE,
           scale: isSelected ? 12 : 10,
-          fillColor: markerData.isOpen !== false ? '#8B4729' : '#818865',
+          fillColor: markerData.isOpen !== false ? '#23361D' : '#447CB3',
           fillOpacity: 1,
           strokeColor: 'white',
           strokeWeight: 2,

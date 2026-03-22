@@ -59,6 +59,10 @@ export function getFeaturedResources(): Resource[] {
   return resources.filter((r) => r.featured);
 }
 
+export function getResourcesWithCoordinates(): Resource[] {
+  return resources.filter((r) => r.coordinates);
+}
+
 export function searchResources(query: string): Resource[] {
   const lowercaseQuery = query.toLowerCase();
   return resources.filter(

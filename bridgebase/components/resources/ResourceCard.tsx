@@ -1,45 +1,77 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
-import { MapPin, ArrowUpRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { Resource } from '@/lib/types';
+import { resourceCoverSrc, resourceImageGradient } from '@/lib/resourceImage';
+import { StarRatingDisplay } from '@/components/ui/StarRating';
 
 interface ResourceCardProps {
   resource: Resource;
+  rating?: number;
 }
 
-export function ResourceCard({ resource }: ResourceCardProps) {
+export function ResourceCard({ resource, rating = 0 }: ResourceCardProps) {
+  const cover = resourceCoverSrc(resource);
+  const title = resource.name;
+  const org = resource.organizationName;
+  const when = resource.availabilitySummary || resource.hours;
+
   return (
-    <Link href={`/resource/${resource.id}`} className="block group">
-      <article className="py-5 border-b border-border group-hover:border-primary/50 transition-colors">
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-3 mb-1">
-              <span className="text-xs text-accent uppercase tracking-wider">
-                {resource.category}
-              </span>
-              {resource.cost === 'Free' && (
-                <span className="text-xs text-success">Free</span>
+    <motion.div whileHover={{ y: -3 }} transition={{ type: 'spring', stiffness: 400, damping: 28 }}>
+      <Link href={`/resource/${resource.id}`} className="block group">
+        <article className="rounded-2xl border border-border bg-surface overflow-hidden shadow-sm hover:shadow-md transition-shadow h-full flex flex-col">
+          <div className="relative aspect-[16/10] w-full overflow-hidden bg-background-alt">
+            {cover ? (
+              <Image
+                src={cover}
+                alt=""
+                fill
+                className="object-cover group-hover:scale-[1.02] transition-transform duration-500"
+                sizes="(max-width:768px) 100vw, 33vw"
+              />
+            ) : (
+              <div
+                className={`absolute inset-0 bg-gradient-to-br ${resourceImageGradient(resource.category)} flex items-end p-4`}
+              >
+                <span className="text-white/95 font-display text-lg font-semibold drop-shadow-sm line-clamp-2">
+                  {title}
+                </span>
+              </div>
+            )}
+            {cover && (
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none" />
+            )}
+          </div>
+          <div className="p-4 flex flex-col flex-1 gap-2">
+            <div className="flex justify-between gap-3 items-start">
+              <div className="min-w-0">
+                {cover && (
+                  <h3 className="font-display text-base font-semibold text-foreground group-hover:text-accent transition-colors line-clamp-2">
+                    {title}
+                  </h3>
+                )}
+                {org && (
+                  <p className="text-xs text-foreground-muted mt-0.5 line-clamp-1">{org}</p>
+                )}
+                {!org && !cover && (
+                  <h3 className="font-display text-base font-semibold text-foreground">{title}</h3>
+                )}
+              </div>
+              {when && (
+                <p className="text-xs text-foreground-secondary text-right shrink-0 max-w-[40%] leading-snug">
+                  {when}
+                </p>
               )}
             </div>
-            
-            <h3 className="font-display text-base font-semibold text-foreground group-hover:text-primary transition-colors mb-1">
-              {resource.name}
-            </h3>
-            
-            <p className="text-sm text-foreground-secondary line-clamp-2 mb-2">
-              {resource.description}
-            </p>
-            
-            <div className="flex items-center gap-1 text-xs text-foreground-muted">
-              <MapPin className="w-3 h-3" />
-              <span>{resource.neighborhood || resource.city}</span>
+            <p className="text-sm text-foreground-secondary line-clamp-3 flex-1">{resource.description}</p>
+            <div className="flex justify-end pt-1">
+              <StarRatingDisplay value={rating} size="sm" />
             </div>
           </div>
-          
-          <ArrowUpRight className="w-4 h-4 text-foreground-muted group-hover:text-primary transition-colors flex-shrink-0 mt-1" />
-        </div>
-      </article>
-    </Link>
+        </article>
+      </Link>
+    </motion.div>
   );
 }
