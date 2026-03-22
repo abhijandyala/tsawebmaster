@@ -27,7 +27,7 @@ export function PublicChrome({ children }: { children: React.ReactNode }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.45, ease }}
       >
-        <div className="max-w-6xl mx-auto h-[4.25rem] px-4 sm:px-6 flex items-center justify-between gap-4">
+        <div className="max-w-6xl mx-auto w-full h-[4.25rem] clt-page-x flex items-center justify-between gap-4">
           <Link href="/" className="flex items-center gap-3 shrink-0 group rounded-xl -m-1 p-1">
             <motion.div
               whileHover={reduceMotion ? undefined : { scale: 1.05 }}
@@ -59,7 +59,7 @@ export function PublicChrome({ children }: { children: React.ReactNode }) {
                   href={item.href}
                   className={
                     item.variant === 'primary'
-                      ? 'inline-flex px-4 py-2 rounded-xl bg-primary text-white hover:bg-primary-dark shadow-sm transition-colors duration-200'
+                      ? 'inline-flex px-3 py-2 rounded-xl bg-primary text-white hover:bg-primary-dark shadow-sm transition-colors duration-200'
                       : 'inline-flex px-3 py-2 rounded-xl text-foreground-secondary hover:text-accent hover:bg-accent-soft/30 transition-colors duration-200'
                   }
                 >
@@ -90,7 +90,7 @@ export function PublicChrome({ children }: { children: React.ReactNode }) {
 
       <motion.main
         key={pathname}
-        className="flex-1 w-full"
+        className="flex-1 w-full clt-page-x"
         initial={reduceMotion ? false : { opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease }}
@@ -104,7 +104,7 @@ export function PublicChrome({ children }: { children: React.ReactNode }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease, delay: 0.12 }}
       >
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 flex flex-col sm:flex-row justify-between gap-6 text-sm text-foreground-muted">
+        <div className="max-w-6xl mx-auto w-full clt-page-x py-10 flex flex-col sm:flex-row justify-between gap-6 text-sm text-foreground-muted">
           <p className="max-w-md">
             Connecting Charlotte-area neighbors with food, housing, health, and crisis resources.
           </p>

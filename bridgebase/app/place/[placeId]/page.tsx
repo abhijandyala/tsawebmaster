@@ -124,7 +124,7 @@ export default function PlaceDetailPage() {
     return (
       <PublicChrome>
         <div className="pt-8 pb-16">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto w-full">
             <div className="animate-pulse space-y-8">
               <div className="h-96 bg-surface-muted rounded-2xl border border-border" />
               <div className="h-8 bg-surface-muted rounded-xl w-1/2 border border-border" />
@@ -140,7 +140,7 @@ export default function PlaceDetailPage() {
     return (
       <PublicChrome>
         <div className="pt-16 pb-16">
-          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20">
+          <div className="max-w-4xl mx-auto w-full text-center py-20">
             <h1 className="text-2xl font-semibold text-foreground mb-4">Place not found</h1>
             <p className="text-foreground-secondary mb-6">Unable to load details for this place.</p>
             <Button onClick={() => router.push('/')}>
@@ -223,7 +223,7 @@ export default function PlaceDetailPage() {
         )}
 
         {/* Content */}
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="max-w-6xl mx-auto w-full py-12">
           {/* Header */}
           <div className="mb-12">
             <div className="flex flex-wrap items-center gap-3 mb-4">

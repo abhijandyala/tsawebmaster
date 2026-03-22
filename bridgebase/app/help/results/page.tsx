@@ -117,7 +117,7 @@ function HelpResultsContent() {
     return (
       <PublicChrome>
         <div className="pt-16 pb-16">
-          <div className="max-w-2xl mx-auto px-4 text-center">
+          <div className="max-w-2xl mx-auto w-full text-center">
             <p className="text-foreground-secondary">Invalid or missing personalized help data.</p>
             <Link href="/help" className="text-accent font-medium hover:underline mt-4 inline-block">
               Start over
@@ -131,7 +131,7 @@ function HelpResultsContent() {
   return (
     <PublicChrome>
       <div className="pt-8 pb-16">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6">
+        <div className="max-w-3xl mx-auto w-full">
           {/* Back link */}
           <Link 
             href="/help"

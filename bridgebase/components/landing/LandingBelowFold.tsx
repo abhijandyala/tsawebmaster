@@ -105,7 +105,7 @@ export function LandingBelowFold() {
 
   return (
     <div className="relative bg-background text-foreground">
-      <div className="relative max-w-6xl mx-auto px-5 sm:px-8 pb-24 sm:pb-32 space-y-24 sm:space-y-28">
+      <div className="relative max-w-6xl mx-auto w-full clt-page-x pb-24 sm:pb-32 space-y-24 sm:space-y-28">
         {/* Purpose + story */}
         <motion.section
           initial="hidden"

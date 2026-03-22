@@ -82,7 +82,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       >
         <header className="sticky top-0 z-40 w-full max-w-none min-w-0 shrink-0 border-b border-border bg-surface/80 backdrop-blur-xl box-border">
           <motion.div
-            className={`flex w-full max-w-none min-w-0 items-center gap-3 px-4 sm:px-6 py-3.5 ${isHome ? 'justify-between' : 'justify-end'}`}
+            className={`flex w-full max-w-none min-w-0 items-center gap-3 clt-page-x py-3.5 ${isHome ? 'justify-between' : 'justify-end'}`}
             initial={reduceMotion ? false : { opacity: 0, y: -6 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.42, ease: pageEase }}
@@ -101,7 +101,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
         <motion.main
           key={pathname}
-          className="flex-1 p-4 sm:p-6 lg:p-10"
+          className="flex-1 py-5 sm:py-6 lg:py-8 clt-page-x"
           initial={reduceMotion ? false : { opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: pageEase }}

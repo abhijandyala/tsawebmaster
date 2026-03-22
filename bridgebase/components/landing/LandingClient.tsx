@@ -42,12 +42,12 @@ export function LandingClient() {
       )}
 
       <div className="relative min-h-[100dvh] flex flex-col overflow-hidden bg-transparent">
-        <header className="relative z-20 flex justify-end items-center gap-2 p-4 sm:p-5">
+        <header className="relative z-20 flex justify-end items-center gap-2 py-4 sm:py-5 clt-page-x">
           <LanguageSelector />
           <ThemeToggle />
         </header>
 
-        <main className="relative z-20 flex-1 flex flex-col items-center justify-start pt-4 sm:pt-6 min-h-0 px-6 pb-8 sm:pb-10 text-center">
+        <main className="relative z-20 flex-1 flex flex-col items-center justify-start pt-4 sm:pt-6 min-h-0 clt-page-x pb-8 sm:pb-10 text-center">
           <motion.div
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
@@ -75,7 +75,7 @@ export function LandingClient() {
                   width={1515}
                   height={391}
                   sizes="(max-width: 640px) 88vw, 360px"
-                  className="block w-[min(300px,86vw)] sm:w-[min(360px,82vw)] h-auto max-w-full"
+                  className="block w-full max-w-[300px] sm:max-w-[340px] h-auto mx-auto"
                   priority
                 />
               </div>

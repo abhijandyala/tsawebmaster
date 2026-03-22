@@ -43,7 +43,7 @@ export default function AuthPage() {
 
   return (
     <div className="relative min-h-[100dvh] flex flex-col overflow-hidden">
-      <header className="relative z-20 flex justify-between items-center p-4 sm:p-5">
+      <header className="relative z-20 flex justify-between items-center py-4 sm:py-5 clt-page-x">
         <Link
           href="/"
           className="text-sm font-medium text-foreground-secondary hover:text-accent px-3 py-2 rounded-xl hover:bg-accent-soft/30 transition-colors"
@@ -56,8 +56,8 @@ export default function AuthPage() {
         </div>
       </header>
 
-      <div className="relative z-20 flex-1 flex items-center justify-center p-6 -mt-8 sm:-mt-10">
-        <div className="w-full max-w-md clt-glass rounded-3xl p-8 sm:p-10 text-foreground">
+      <div className="relative z-20 flex-1 flex items-center justify-center clt-page-x py-6 -mt-8 sm:-mt-10">
+        <div className="w-full max-w-md clt-glass rounded-3xl p-6 sm:p-8 text-foreground">
           <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-1">Welcome</h1>
           <p className="text-sm text-foreground-secondary mb-8">
             Sign in with Google or email to sync favorites and reviews.

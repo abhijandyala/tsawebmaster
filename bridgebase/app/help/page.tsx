@@ -84,7 +84,7 @@ export default function HelpWizardPage() {
   return (
     <PublicChrome>
       <div className="pt-8 pb-8">
-        <div className="max-w-2xl mx-auto px-4 sm:px-6">
+        <div className="max-w-2xl mx-auto w-full">
           {/* Crisis Notice */}
           {state.urgency === 'today' && (
             <motion.div
@@ -365,7 +365,7 @@ export default function HelpWizardPage() {
       </div>
 
       <div className="border-t border-border bg-surface-muted/80 py-4">
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 flex items-center justify-center gap-6 text-sm">
+        <div className="max-w-2xl mx-auto w-full flex items-center justify-center gap-6 text-sm">
           <a href="tel:988" className="flex items-center gap-2 text-foreground-secondary hover:text-accent transition-colors">
             <Phone className="w-4 h-4" />
             988 Crisis Line

@@ -266,6 +266,17 @@ h1, h2, h3, h4, h5, h6, .font-display {
   padding-bottom: clamp(3rem, 6vw, 5rem);
 }
 
+/**
+ * Shared horizontal gutter for every layout: equal inset from viewport left/right,
+ * aligned with PublicChrome / AppShell headers. Pair with `max-w-* mx-auto w-full`
+ * on inner columns — do not add a second horizontal px on the same axis.
+ */
+@layer components {
+  .clt-page-x {
+    @apply px-4 sm:px-5 lg:px-6;
+  }
+}
+
 html, body, #__next {
   min-height: 100vh;
 }

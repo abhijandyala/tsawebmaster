@@ -85,7 +85,7 @@ export default function AdminSubmissionsPage() {
   return (
     <PublicChrome>
       <div className="pt-8 pb-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        <div className="max-w-4xl mx-auto w-full">
           <Link 
             href="/"
             className="inline-flex items-center gap-2 text-sm text-foreground-secondary hover:text-foreground mb-6"

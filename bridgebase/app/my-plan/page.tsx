@@ -78,7 +78,7 @@ export default function MyPlanPage() {
   return (
     <PublicChrome>
       <div className="pt-8 pb-16">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6">
+        <div className="max-w-3xl mx-auto w-full">
           <Link 
             href="/resources"
             className="inline-flex items-center gap-2 text-sm text-foreground-secondary hover:text-accent mb-6"
