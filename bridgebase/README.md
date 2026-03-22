@@ -1,6 +1,8 @@
-# BridgeBase - Community Resource Hub
+# Charlotte Connect — Community Resource Hub
 
-BridgeBase is a modern community resource hub designed for the TSA Webmaster competition. It helps users quickly discover trusted local community resources including food assistance, housing support, healthcare, tutoring, jobs, transportation, counseling, youth programs, and emergency help.
+Charlotte Connect is a modern community resource hub designed for the TSA Webmaster competition. It helps users quickly discover trusted local community resources including food assistance, housing support, healthcare, tutoring, jobs, transportation, counseling, youth programs, and emergency help.
+
+The Next.js application lives in this `bridgebase/` directory (folder name kept for tooling paths).
 
 ## Features
 
@@ -26,7 +28,7 @@ BridgeBase is a modern community resource hub designed for the TSA Webmaster com
 
 ### Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm or yarn
 
 ### Installation
@@ -34,6 +36,7 @@ BridgeBase is a modern community resource hub designed for the TSA Webmaster com
 1. Clone the repository:
 ```bash
 git clone <repository-url>
+cd <your-repo-folder>
 cd bridgebase
 ```
 
@@ -84,7 +87,7 @@ bridgebase/
 
 ## Design Philosophy
 
-BridgeBase was designed to feel:
+Charlotte Connect was designed to feel:
 - **Welcoming** - Warm colors and approachable UI
 - **Trustworthy** - Professional design with clear information
 - **Accessible** - Good contrast, keyboard navigation, responsive

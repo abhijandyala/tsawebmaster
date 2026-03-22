@@ -113,7 +113,7 @@ export function LandingBelowFold() {
 
   return (
     <div ref={topRef} className="relative bg-background text-foreground">
-      {/* subtle top gradient bridge from hero */}
+      {/* subtle top gradient transition from hero */}
       <div
         className="pointer-events-none absolute inset-x-0 -top-24 h-40 bg-gradient-to-b from-[#0d1210]/90 to-transparent z-[1]"
         aria-hidden

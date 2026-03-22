@@ -42,16 +42,16 @@ echo ""
 # ============================================================================
 echo "📦 Checking dependencies..."
 
-BRIDGEBASE_DEPS_OK=false
+APP_DEPS_OK=false
 if [ -d "bridgebase/node_modules" ]; then
   # Quick check: key packages exist
   if [ -d "bridgebase/node_modules/next" ] && [ -d "bridgebase/node_modules/react" ]; then
-    BRIDGEBASE_DEPS_OK=true
+    APP_DEPS_OK=true
   fi
 fi
 
-if [ "$BRIDGEBASE_DEPS_OK" = false ]; then
-  echo "   Installing bridgebase dependencies..."
+if [ "$APP_DEPS_OK" = false ]; then
+  echo "   Installing Charlotte Connect (Next.js app) dependencies..."
   cd bridgebase && npm install && cd ..
   echo "   ✓ Dependencies installed."
 else
