@@ -12,6 +12,9 @@ import { LandingBelowFold, LandingScrollHint } from './LandingBelowFold';
 
 export const LANDING_TAGLINE = "Charlotte's resources, all in one place.";
 
+/** Ease-out curve — no spring overshoot (avoids hero content dipping up mid-animation). */
+const enterEase: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
 export function LandingClient() {
   const { user, loading } = useAuth();
   const router = useRouter();
@@ -48,13 +51,21 @@ export function LandingClient() {
           <motion.div
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ type: 'spring', stiffness: 260, damping: 28 }}
+            transition={
+              reduceMotion
+                ? { duration: 0 }
+                : { duration: 0.52, ease: enterEase }
+            }
             className="flex flex-col items-center max-w-2xl w-full"
           >
             <motion.div
               initial={{ opacity: 0, scale: 0.92 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.08, type: 'spring', stiffness: 280, damping: 22 }}
+              transition={
+                reduceMotion
+                  ? { duration: 0 }
+                  : { delay: 0.06, duration: 0.48, ease: enterEase }
+              }
               className="mb-5 sm:mb-6"
             >
               <div className="inline-flex w-fit max-w-full items-center justify-center rounded-2xl bg-white/12 backdrop-blur-md border-2 border-[#D4D8EC]/55 px-5 py-2.5 sm:px-7 sm:py-3.5">
@@ -90,7 +101,11 @@ export function LandingClient() {
                   hidden: reduceMotion ? {} : { opacity: 0, y: 16 },
                   show: { opacity: 1, y: 0 },
                 }}
-                transition={{ type: 'spring', stiffness: 380, damping: 26 }}
+                transition={
+                  reduceMotion
+                    ? { duration: 0 }
+                    : { duration: 0.4, delay: 0.12, ease: enterEase }
+                }
                 whileHover={reduceMotion ? undefined : { scale: 1.04 }}
                 whileTap={reduceMotion ? undefined : { scale: 0.97 }}
                 onClick={() => router.push('/auth')}
@@ -104,7 +119,11 @@ export function LandingClient() {
                   hidden: reduceMotion ? {} : { opacity: 0, y: 16 },
                   show: { opacity: 1, y: 0 },
                 }}
-                transition={{ type: 'spring', stiffness: 380, damping: 26 }}
+                transition={
+                  reduceMotion
+                    ? { duration: 0 }
+                    : { duration: 0.4, delay: 0.2, ease: enterEase }
+                }
                 whileHover={reduceMotion ? undefined : { scale: 1.04 }}
                 whileTap={reduceMotion ? undefined : { scale: 0.97 }}
                 onClick={() => {
