@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { motion, useReducedMotion, useScroll, useSpring, useTransform } from 'framer-motion';
+import { motion, useReducedMotion, useScroll, useSpring } from 'framer-motion';
 import { useAuth } from '@/contexts/auth-context';
 import { setDemoMode } from '@/lib/demoMode';
 import { LanguageSelector } from '@/components/ui/LanguageSelector';
@@ -16,17 +16,10 @@ export function LandingClient() {
   const { user, loading } = useAuth();
   const router = useRouter();
   const reduceMotion = useReducedMotion();
-  const heroRef = useRef<HTMLDivElement>(null);
 
+  /** Document scroll only — avoid `useScroll({ target: ref })` (can throw if ref hydrates late; breaks Next). */
   const { scrollYProgress: pageScroll } = useScroll();
   const pageBar = useSpring(pageScroll, { stiffness: 120, damping: 35, restDelta: 0.001 });
-
-  const { scrollYProgress: heroScroll } = useScroll({
-    target: heroRef,
-    offset: ['start start', 'end start'],
-  });
-  const heroContentY = useTransform(heroScroll, [0, 1], reduceMotion ? ['0%', '0%'] : ['0%', '12%']);
-  const heroOpacity = useTransform(heroScroll, [0, 0.65, 1], [1, 0.92, 0.78]);
 
   useEffect(() => {
     if (loading || !user) return;
@@ -45,16 +38,13 @@ export function LandingClient() {
         />
       )}
 
-      <div ref={heroRef} className="relative min-h-[100dvh] flex flex-col overflow-hidden bg-transparent">
+      <div className="relative min-h-[100dvh] flex flex-col overflow-hidden bg-transparent">
         <header className="relative z-20 flex justify-end items-center gap-2 p-4 sm:p-5">
           <LanguageSelector />
           <ThemeToggle />
         </header>
 
-        <motion.main
-          style={{ y: heroContentY, opacity: heroOpacity }}
-          className="relative z-20 flex-1 flex flex-col items-center justify-start pt-4 sm:pt-6 min-h-0 px-6 pb-8 sm:pb-10 text-center"
-        >
+        <main className="relative z-20 flex-1 flex flex-col items-center justify-start pt-4 sm:pt-6 min-h-0 px-6 pb-8 sm:pb-10 text-center">
           <motion.div
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
@@ -129,7 +119,7 @@ export function LandingClient() {
 
             <LandingScrollHint />
           </motion.div>
-        </motion.main>
+        </main>
       </div>
 
       <LandingBelowFold />

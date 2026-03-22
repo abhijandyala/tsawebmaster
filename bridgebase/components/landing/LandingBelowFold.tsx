@@ -1,8 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useRef } from 'react';
-import { motion, useReducedMotion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import {
   Bookmark,
   ChevronDown,
@@ -103,16 +102,9 @@ function SectionImage({
 
 export function LandingBelowFold() {
   const reduceMotion = useReducedMotion();
-  const topRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: topRef,
-    offset: ['start end', 'end start'],
-  });
-  const photoY = useTransform(scrollYProgress, [0, 1], reduceMotion ? ['0%', '0%'] : ['-6%', '6%']);
-  const photoYSpring = useSpring(photoY, { stiffness: 100, damping: 30 });
 
   return (
-    <div ref={topRef} className="relative bg-background text-foreground">
+    <div className="relative bg-background text-foreground">
       {/* subtle top gradient transition from hero */}
       <div
         className="pointer-events-none absolute inset-x-0 -top-24 h-40 bg-gradient-to-b from-[#0d1210]/90 to-transparent z-[1]"
@@ -149,13 +141,13 @@ export function LandingBelowFold() {
             transition={{ type: 'spring', stiffness: 120, damping: 22 }}
             className="relative"
           >
-            <motion.div style={{ y: photoYSpring }} className="will-change-transform">
+            <div className="will-change-transform">
               <SectionImage
                 src="/charlotte_nc.png"
                 alt="Charlotte skyline and city view"
                 objectPosition="center 35%"
               />
-            </motion.div>
+            </div>
             <motion.div
               initial={{ opacity: 0, scale: 0.92 }}
               whileInView={{ opacity: 1, scale: 1 }}
