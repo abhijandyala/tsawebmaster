@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/contexts/auth-context';
 import { useDemo } from '@/contexts/demo-context';
@@ -17,6 +18,7 @@ function byIds(ids: string[]) {
 }
 
 export default function YourResourcesPage() {
+  const router = useRouter();
   const { user } = useAuth();
   const { isDemo } = useDemo();
   const [favIds, setFavIds] = useState<string[]>([]);
@@ -64,7 +66,7 @@ export default function YourResourcesPage() {
         </div>
         <div className="flex flex-col sm:flex-row gap-3 shrink-0">
           <Button variant="outline" type="button" onClick={() => router.push('/help')}>
-            Help wizard →
+            Personalized help →
           </Button>
           <Button variant="accent" type="button" onClick={() => router.push('/request-resource')}>
             Request a resource →

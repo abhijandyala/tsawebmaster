@@ -238,7 +238,7 @@ export default function EmergencyGuidePage() {
               href="/help"
               className="inline-flex items-center gap-2 text-primary font-medium hover:underline"
             >
-              Or use our guided help wizard
+              Or try personalized help
             </Link>
           </motion.div>
         </div>

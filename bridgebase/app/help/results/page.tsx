@@ -122,7 +122,7 @@ function HelpResultsContent() {
       <PublicChrome>
         <div className="pt-16 pb-16">
           <div className="max-w-2xl mx-auto px-4 text-center">
-            <p className="text-foreground-secondary">Invalid or missing wizard state.</p>
+            <p className="text-foreground-secondary">Invalid or missing personalized help data.</p>
             <Link href="/help" className="text-accent font-medium hover:underline mt-4 inline-block">
               Start over
             </Link>

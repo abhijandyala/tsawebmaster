@@ -144,7 +144,7 @@ export default function MyPlanPage() {
                   href="/help"
                   className="inline-flex items-center gap-2 px-6 py-3 border border-border hover:border-primary/50 font-medium transition-colors"
                 >
-                  Get Guided Help
+                  Get personalized help
                 </Link>
               </div>
             </motion.div>

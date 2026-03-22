@@ -17,8 +17,8 @@ const steps = [
   },
   {
     number: 2,
-    title: 'Search or use the wizard',
-    description: 'Use our search bar for specific queries, or click "I Need Help Now" for a guided experience that matches you to the right resources.',
+    title: 'Search or use personalized help',
+    description: 'Use our search bar for specific queries, or use personalized help for a guided experience that matches you to the right resources.',
     icon: Heart,
   },
   {
@@ -188,7 +188,7 @@ export default function GettingHelpPage() {
                 href="/help"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-medium hover:bg-primary/90 transition-colors"
               >
-                Start Guided Help
+                Start personalized help
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link

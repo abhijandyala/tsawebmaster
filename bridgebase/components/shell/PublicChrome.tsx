@@ -10,7 +10,7 @@ import { ThemeToggle } from '@/components/ui/ThemeToggle';
 const ease = [0.25, 0.1, 0.25, 1] as const;
 
 const navLinks = [
-  { href: '/help', label: 'Help wizard', variant: 'ghost' as const },
+  { href: '/help', label: 'Personalized help', variant: 'ghost' as const },
   { href: '/home', label: 'Open app', variant: 'ghost' as const },
   { href: '/auth', label: 'Sign in', variant: 'primary' as const },
 ];
