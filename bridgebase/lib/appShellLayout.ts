@@ -9,3 +9,4 @@ export const SIDEBAR_EXPANDED_PX = 220;
  * (expanded sidebar draws over this many pixels past the reserved margin).
  */
 export const SIDEBAR_OVERLAY_INSET_PX = SIDEBAR_EXPANDED_PX - SIDEBAR_RAIL_PX;
+

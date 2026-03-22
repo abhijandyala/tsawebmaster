@@ -85,11 +85,12 @@ export function AppShell({ children }: { children: ReactNode }) {
           width: `calc(100% - ${SIDEBAR_RAIL_PX}px)`,
           maxWidth: `calc(100% - ${SIDEBAR_RAIL_PX}px)`,
           ['--clt-overlay-inset' as string]: `${SIDEBAR_OVERLAY_INSET_PX}px`,
+          ['--clt-sidebar-rail' as string]: `${SIDEBAR_RAIL_PX}px`,
         }}
       >
         <header className="sticky top-0 z-40 w-full min-w-0 shrink-0 border-b border-border bg-surface/80 backdrop-blur-xl box-border">
           <motion.div
-            className={`flex w-full min-w-0 max-w-none items-center gap-3 py-3.5 pr-4 sm:pr-5 lg:pr-6 pl-[calc(var(--clt-overlay-inset)+1rem)] sm:pl-[calc(var(--clt-overlay-inset)+1.25rem)] lg:pl-[calc(var(--clt-overlay-inset)+1.5rem)] ${isHome ? 'justify-between' : 'justify-end'}`}
+            className={`flex w-full min-w-0 max-w-none items-center gap-3 py-3.5 pl-[calc(var(--clt-overlay-inset)+1rem)] sm:pl-[calc(var(--clt-overlay-inset)+1.25rem)] lg:pl-[calc(var(--clt-overlay-inset)+1.5rem)] pr-[calc(var(--clt-overlay-inset)+var(--clt-sidebar-rail)+1rem)] sm:pr-[calc(var(--clt-overlay-inset)+var(--clt-sidebar-rail)+1.25rem)] lg:pr-[calc(var(--clt-overlay-inset)+var(--clt-sidebar-rail)+1.5rem)] ${isHome ? 'justify-between' : 'justify-end'}`}
             initial={reduceMotion ? false : { opacity: 0, y: -6 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.42, ease: pageEase }}
@@ -108,7 +109,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
         <motion.main
           key={pathname}
-          className="min-w-0 flex-1 py-5 sm:py-6 lg:py-8 pr-4 sm:pr-5 lg:pr-6 pl-[calc(var(--clt-overlay-inset)+1rem)] sm:pl-[calc(var(--clt-overlay-inset)+1.25rem)] lg:pl-[calc(var(--clt-overlay-inset)+1.5rem)]"
+          className="min-w-0 flex-1 py-5 sm:py-6 lg:py-8 pl-[calc(var(--clt-overlay-inset)+1rem)] sm:pl-[calc(var(--clt-overlay-inset)+1.25rem)] lg:pl-[calc(var(--clt-overlay-inset)+1.5rem)] pr-[calc(var(--clt-overlay-inset)+var(--clt-sidebar-rail)+1rem)] sm:pr-[calc(var(--clt-overlay-inset)+var(--clt-sidebar-rail)+1.25rem)] lg:pr-[calc(var(--clt-overlay-inset)+var(--clt-sidebar-rail)+1.5rem)]"
           initial={reduceMotion ? false : { opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: pageEase }}
