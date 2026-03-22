@@ -176,14 +176,18 @@ export function AppSidebar({ showExitDemo, onExitDemo }: Props) {
 
       <div className={cn('border-t border-border flex-shrink-0 overflow-x-hidden min-w-0 py-3 mt-auto', RAIL_INSET)}>
         {(user || showExitDemo) && (
-          <div className="flex items-center gap-2 mb-2 min-w-0 overflow-hidden">
+          <div className="flex items-start gap-2 mb-2 min-w-0 overflow-hidden">
             <div className="w-9 h-9 rounded-full bg-accent/15 flex items-center justify-center text-sm font-bold text-accent shrink-0">
               {displayInitial}
             </div>
-            <div className="min-w-0" style={labelReveal}>
-              <p className="text-sm font-medium text-foreground truncate">{displayName}</p>
+            {/* Collapsed: cap height so zero-width text wrap can't stretch the row and move the avatar */}
+            <div
+              className={cn('min-w-0 overflow-hidden flex flex-col justify-center', !expanded && 'max-h-9')}
+              style={labelReveal}
+            >
+              <p className="text-sm font-medium text-foreground truncate leading-tight">{displayName}</p>
               {displayEmail ? (
-                <p className="text-xs text-foreground-muted truncate">{displayEmail}</p>
+                <p className="text-xs text-foreground-muted truncate leading-tight">{displayEmail}</p>
               ) : null}
             </div>
           </div>
