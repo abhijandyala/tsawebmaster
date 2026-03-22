@@ -72,7 +72,6 @@ export function useGoogleTranslate({
 }: UseGoogleTranslateOptions): UseGoogleTranslateReturn {
   const [currentLang, setCurrentLang] = useState('en');
   const [isLoaded, setIsLoaded] = useState(false);
-  const initializedRef = useRef(false);
   const languagesRef = useRef(languages);
   const pageLanguageRef = useRef(pageLanguage);
   const elementIdRef = useRef(elementId);
@@ -104,53 +103,54 @@ export function useGoogleTranslate({
       }
     }
 
-    if (initializedRef.current) {
-      return;
-    }
+    const ensureTranslateWidget = () => {
+      if (!isMounted) return;
+      if (!window.google?.translate?.TranslateElement) return;
+
+      const targetElement = document.getElementById(elementIdRef.current);
+      if (!targetElement) {
+        console.warn(`Google Translate: Element with ID '${elementIdRef.current}' not found`);
+        return;
+      }
+
+      // Widget already created (e.g. React Strict Mode remount)
+      if (targetElement.childElementCount > 0) {
+        setIsLoaded(true);
+        return;
+      }
+
+      new window.google.translate.TranslateElement(
+        {
+          pageLanguage: pageLanguageRef.current,
+          includedLanguages: languagesRef.current.map((l) => l.code).join(','),
+          autoDisplay: false,
+        },
+        elementIdRef.current
+      );
+      setIsLoaded(true);
+    };
+
+    window.googleTranslateElementInit = () => {
+      ensureTranslateWidget();
+    };
 
     if (!document.getElementById('google-translate-script')) {
-      initializedRef.current = true;
-      
       const script = document.createElement('script');
       script.id = 'google-translate-script';
-      script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+      script.src =
+        'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
       script.async = true;
       document.body.appendChild(script);
-
-      window.googleTranslateElementInit = () => {
-        if (!isMounted) return;
-        
-        if (!window.google?.translate?.TranslateElement) {
-          console.warn('Google Translate: API not yet available');
-          return;
-        }
-        
-        const targetElement = document.getElementById(elementIdRef.current);
-        if (!targetElement) {
-          console.warn(`Google Translate: Element with ID '${elementIdRef.current}' not found`);
-          return;
-        }
-        
-        new window.google.translate.TranslateElement(
-          {
-            pageLanguage: pageLanguageRef.current,
-            includedLanguages: languagesRef.current.map(l => l.code).join(','),
-            autoDisplay: false,
-          },
-          elementIdRef.current
-        );
-        setIsLoaded(true);
-      };
-    } else if (window.google?.translate) {
-      setIsLoaded(true);
+    } else if (window.google?.translate?.TranslateElement) {
+      ensureTranslateWidget();
     } else {
       checkInterval = setInterval(() => {
-        if (window.google?.translate) {
-          if (isMounted) setIsLoaded(true);
+        if (window.google?.translate?.TranslateElement) {
+          ensureTranslateWidget();
           if (checkInterval) clearInterval(checkInterval);
         }
       }, 100);
-      
+
       timeoutId = setTimeout(() => {
         if (checkInterval) clearInterval(checkInterval);
       }, 5000);
@@ -160,9 +160,6 @@ export function useGoogleTranslate({
       isMounted = false;
       if (checkInterval) clearInterval(checkInterval);
       if (timeoutId) clearTimeout(timeoutId);
-      if (window.googleTranslateElementInit) {
-        window.googleTranslateElementInit = () => {};
-      }
     };
   }, []);
 
