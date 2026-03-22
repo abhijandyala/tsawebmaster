@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useReducedMotion } from 'framer-motion';
-import { Home, LayoutGrid, Bookmark, Settings, LifeBuoy, LogOut } from 'lucide-react';
+import { Home, LayoutGrid, Bookmark, Settings, LogOut } from 'lucide-react';
 import { useAuth } from '@/contexts/auth-context';
 import { cn } from '@/lib/utils';
 
@@ -16,7 +16,6 @@ const links = [
   { href: '/home', label: 'Home', icon: Home },
   { href: '/resources', label: 'Resource hub', icon: LayoutGrid },
   { href: '/your-resources', label: 'Your resources', icon: Bookmark },
-  { href: '/request-resource', label: 'Request resource', icon: LifeBuoy },
   { href: '/settings', label: 'Settings', icon: Settings },
 ];
 
