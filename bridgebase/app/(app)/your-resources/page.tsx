@@ -64,9 +64,12 @@ export default function YourResourcesPage() {
             </p>
           </div>
         </div>
-        <div className="flex flex-col sm:flex-row gap-3 shrink-0">
+        <div className="flex flex-col sm:flex-row flex-wrap gap-3 shrink-0">
           <Button variant="outline" type="button" onClick={() => router.push('/help')}>
             Personalized help →
+          </Button>
+          <Button variant="secondary" type="button" onClick={() => router.push('/my-plan')}>
+            My plan →
           </Button>
           <Button variant="accent" type="button" onClick={() => router.push('/request-resource')}>
             Request a resource →
