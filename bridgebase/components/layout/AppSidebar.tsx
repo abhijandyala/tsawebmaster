@@ -7,10 +7,11 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useReducedMotion } from 'framer-motion';
 import { Home, LayoutGrid, Bookmark, Settings, LogOut } from 'lucide-react';
 import { useAuth } from '@/contexts/auth-context';
+import { SIDEBAR_EXPANDED_PX, SIDEBAR_RAIL_PX } from '@/lib/appShellLayout';
 import { cn } from '@/lib/utils';
 
-const RAIL_PX = 64;
-const EXPANDED_PX = 220;
+const RAIL_PX = SIDEBAR_RAIL_PX;
+const EXPANDED_PX = SIDEBAR_EXPANDED_PX;
 
 const links = [
   { href: '/home', label: 'Home', icon: Home },

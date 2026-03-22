@@ -9,6 +9,7 @@ import { setDemoMode } from '@/lib/demoMode';
 import { AppSidebar } from '@/components/layout/AppSidebar';
 import { LanguageSelector } from '@/components/ui/LanguageSelector';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
+import { SIDEBAR_OVERLAY_INSET_PX } from '@/lib/appShellLayout';
 
 /** Haptimize app layout: main uses fixed left margin (rail width); sidebar overlays when expanded */
 const RAIL_MARGIN = 'ml-16';
@@ -75,7 +76,10 @@ export function AppShell({ children }: { children: ReactNode }) {
         }}
       />
 
-      <div className={`min-h-screen flex flex-col min-w-0 ${RAIL_MARGIN}`}>
+      <div
+        className={`min-h-screen flex flex-col min-w-0 ${RAIL_MARGIN}`}
+        style={{ paddingLeft: SIDEBAR_OVERLAY_INSET_PX }}
+      >
         <motion.header
           className="sticky top-0 z-40 border-b border-border bg-surface/80 backdrop-blur-xl"
           initial={reduceMotion ? false : { opacity: 0, y: -6 }}
