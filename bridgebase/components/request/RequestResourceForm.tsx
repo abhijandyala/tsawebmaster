@@ -52,7 +52,7 @@ export function RequestResourceForm() {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       onSubmit={submit}
-      className="max-w-lg space-y-5 clt-glass rounded-3xl p-6 sm:p-8 border border-border-light"
+      className="w-full max-w-lg mx-auto space-y-5 clt-glass rounded-3xl p-6 sm:p-8 border border-border-light text-left"
     >
       <input
         type="text"
