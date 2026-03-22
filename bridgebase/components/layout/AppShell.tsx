@@ -9,10 +9,7 @@ import { setDemoMode } from '@/lib/demoMode';
 import { AppSidebar } from '@/components/layout/AppSidebar';
 import { LanguageSelector } from '@/components/ui/LanguageSelector';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
-import { SIDEBAR_OVERLAY_INSET_PX } from '@/lib/appShellLayout';
-
-/** Haptimize app layout: main uses fixed left margin (rail width); sidebar overlays when expanded */
-const RAIL_MARGIN = 'ml-16';
+import { SIDEBAR_OVERLAY_INSET_PX, SIDEBAR_RAIL_PX } from '@/lib/appShellLayout';
 
 const pageEase = [0.25, 0.1, 0.25, 1] as const;
 
@@ -69,7 +66,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const isHome = pathname === '/home';
 
   return (
-    <div className="min-h-screen bg-background relative">
+    <div className="relative flex min-h-screen min-h-0 w-full bg-background">
       <AppSidebar
         showExitDemo={isDemo && !user}
         onExitDemo={() => {
@@ -78,35 +75,29 @@ export function AppShell({ children }: { children: ReactNode }) {
         }}
       />
 
+      {/* flex-1 + min-w-0: fill viewport beside fixed rail; avoids shrink-wrapped header under block layout */}
       <div
-        className={`min-h-screen flex flex-col min-w-0 ${RAIL_MARGIN}`}
-        style={{ paddingLeft: SIDEBAR_OVERLAY_INSET_PX }}
+        className="flex min-h-screen min-h-0 flex-1 min-w-0 flex-col"
+        style={{ marginLeft: SIDEBAR_RAIL_PX, paddingLeft: SIDEBAR_OVERLAY_INSET_PX }}
       >
-        <motion.header
-          className="sticky top-0 z-40 w-full min-w-0 border-b border-border bg-surface/80 backdrop-blur-xl"
-          initial={reduceMotion ? false : { opacity: 0, y: -6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.42, ease: pageEase }}
-        >
-          <div
-            className={`flex w-full min-w-0 items-center gap-3 px-4 sm:px-6 py-3.5 ${isHome ? 'justify-between' : 'justify-end'}`}
+        <header className="sticky top-0 z-40 w-full max-w-none min-w-0 shrink-0 border-b border-border bg-surface/80 backdrop-blur-xl box-border">
+          <motion.div
+            className={`flex w-full max-w-none min-w-0 items-center gap-3 px-4 sm:px-6 py-3.5 ${isHome ? 'justify-between' : 'justify-end'}`}
+            initial={reduceMotion ? false : { opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.42, ease: pageEase }}
           >
             {isHome ? (
               <p className="min-w-0 flex-1 text-left text-sm sm:text-base font-display font-semibold text-foreground truncate pr-2">
                 Welcome back, <span className="text-accent">{displayName}</span>
               </p>
             ) : null}
-            <motion.div
-              className={`flex shrink-0 items-center justify-end gap-1 sm:gap-2 ${isHome ? '' : 'w-full'}`}
-              initial={reduceMotion ? false : { opacity: 0, x: 8 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.45, ease: pageEase, delay: 0.05 }}
-            >
+            <div className="flex shrink-0 items-center justify-end gap-1 sm:gap-2">
               <LanguageSelector />
               <ThemeToggle />
-            </motion.div>
-          </div>
-        </motion.header>
+            </div>
+          </motion.div>
+        </header>
 
         <motion.main
           key={pathname}
