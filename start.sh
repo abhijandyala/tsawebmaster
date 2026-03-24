@@ -2,73 +2,79 @@
 set -e
 
 # TSA Webmaster - Website Startup Script
-# Clears caches, checks/installs dependencies, launches dev server(s)
+# Supports both development and production modes
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR"
 
-echo "🚀 Starting TSA Webmaster..."
-echo ""
-
-# ============================================================================
-# 1. Clear previous caches
-# ============================================================================
-echo "🧹 Clearing caches..."
-
-if [ -d "bridgebase/.next" ]; then
-  rm -rf bridgebase/.next
-  echo "   ✓ Cleared Next.js build cache (.next)"
-fi
-
-if [ -d "bridgebase/node_modules/.cache" ]; then
-  rm -rf bridgebase/node_modules/.cache
-  echo "   ✓ Cleared node_modules cache"
-fi
-
-# Clear .swc cache (Next.js/Babel)
-if [ -d "bridgebase/.swc" ]; then
-  rm -rf bridgebase/.swc
-  echo "   ✓ Cleared SWC cache"
-fi
-
-# Clear npm cache for this project (optional - keeps global cache)
-# npm cache clean --force 2>/dev/null || true
-
-echo "   Cache clear complete."
-echo ""
-
-# ============================================================================
-# 2. Check and install dependencies
-# ============================================================================
-echo "📦 Checking dependencies..."
-
-APP_DEPS_OK=false
-if [ -d "bridgebase/node_modules" ]; then
-  # Quick check: key packages exist
-  if [ -d "bridgebase/node_modules/next" ] && [ -d "bridgebase/node_modules/react" ]; then
-    APP_DEPS_OK=true
-  fi
-fi
-
-if [ "$APP_DEPS_OK" = false ]; then
-  echo "   Installing Charlotte Connect (Next.js app) dependencies..."
-  cd bridgebase && npm install && cd ..
-  echo "   ✓ Dependencies installed."
+# Detect if we're in production (Railway sets PORT)
+if [ -n "$PORT" ] || [ "$NODE_ENV" = "production" ]; then
+  MODE="production"
 else
-  echo "   ✓ Dependencies already installed."
-  # Optional: run npm install anyway to catch any outdated/missing deps (slower)
-  # cd bridgebase && npm install --prefer-offline --no-audit --no-fund 2>/dev/null && cd .. || true
+  MODE="development"
 fi
 
+echo "🚀 Starting TSA Webmaster in $MODE mode..."
 echo ""
 
-# ============================================================================
-# 3. Launch dev server(s)
-# ============================================================================
-echo "🌐 Launching dev server..."
-echo "   Frontend + API: http://localhost:3000"
-echo ""
-echo "   Press Ctrl+C to stop."
-echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+cd bridgebase
 
-cd bridgebase && exec npm run dev
+if [ "$MODE" = "production" ]; then
+  # ============================================================================
+  # PRODUCTION MODE (Railway/Hosting)
+  # ============================================================================
+  echo "📦 Installing dependencies..."
+  npm ci --only=production || npm install --only=production
+  echo "   ✓ Dependencies installed."
+  echo ""
+  
+  echo "🔨 Building application..."
+  npm run build
+  echo "   ✓ Build complete."
+  echo ""
+  
+  echo "🌐 Starting production server on port ${PORT:-3000}..."
+  exec npm run start
+  
+else
+  # ============================================================================
+  # DEVELOPMENT MODE (Local)
+  # ============================================================================
+  echo "🧹 Clearing caches..."
+  
+  if [ -d ".next" ]; then
+    rm -rf .next
+    echo "   ✓ Cleared Next.js build cache (.next)"
+  fi
+  
+  if [ -d "node_modules/.cache" ]; then
+    rm -rf node_modules/.cache
+    echo "   ✓ Cleared node_modules cache"
+  fi
+  
+  if [ -d ".swc" ]; then
+    rm -rf .swc
+    echo "   ✓ Cleared SWC cache"
+  fi
+  
+  echo "   Cache clear complete."
+  echo ""
+  
+  echo "📦 Checking dependencies..."
+  if [ ! -d "node_modules/next" ] || [ ! -d "node_modules/react" ]; then
+    echo "   Installing dependencies..."
+    npm install
+    echo "   ✓ Dependencies installed."
+  else
+    echo "   ✓ Dependencies already installed."
+  fi
+  echo ""
+  
+  echo "🌐 Launching dev server..."
+  echo "   Frontend + API: http://localhost:3000"
+  echo ""
+  echo "   Press Ctrl+C to stop."
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  
+  exec npm run dev
+fi

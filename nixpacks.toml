@@ -1,0 +1,14 @@
+[phases.setup]
+nixPkgs = ["nodejs_20"]
+
+[phases.install]
+cmds = ["cd bridgebase && npm ci || cd bridgebase && npm install"]
+
+[phases.build]
+cmds = ["cd bridgebase && npm run build"]
+
+[start]
+cmd = "cd bridgebase && npm run start"
+
+[variables]
+NODE_ENV = "production"
