@@ -15,7 +15,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     const base = cn(
       'inline-flex items-center justify-center font-semibold tracking-tight focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:opacity-45 disabled:pointer-events-none',
       variant !== 'link' &&
-        'transition-[transform,box-shadow] duration-200 ease-out will-change-transform enabled:hover:scale-[1.02] enabled:active:scale-[0.98]'
+        'transition-[transform,box-shadow,background-color] duration-200 ease-out enabled:hover:-translate-y-px enabled:hover:shadow-md enabled:active:translate-y-0'
     );
 
     const variants: Record<NonNullable<ButtonProps['variant']>, string> = {
@@ -33,9 +33,9 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     const sizes: Record<NonNullable<ButtonProps['size']>, string> = {
-      sm: 'h-9 px-4 text-sm gap-1.5 rounded-xl',
-      md: 'h-11 px-6 text-sm gap-2 rounded-xl',
-      lg: 'h-14 px-8 text-base gap-2 rounded-2xl',
+      sm: 'h-9 px-4 text-sm gap-1.5 rounded-lg',
+      md: 'h-11 px-6 text-sm gap-2 rounded-lg',
+      lg: 'h-14 px-8 text-base gap-2 rounded-lg',
     };
 
     return (

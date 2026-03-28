@@ -35,7 +35,6 @@ const pageVariants = {
 export function PublicEntryLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const reduceMotion = useReducedMotion();
-  const isAuth = pathname === '/auth';
 
   const bgTransition = reduceMotion ? { duration: 0.2 } : { duration: BG_DURATION, ease: EASE };
 
@@ -53,7 +52,7 @@ export function PublicEntryLayout({ children }: { children: ReactNode }) {
           <motion.div
             className="absolute inset-0"
             initial={false}
-            animate={{ opacity: isAuth ? 0.5 : 0.88 }}
+            animate={{ opacity: 0.88 }}
             transition={bgTransition}
           >
             <Image
@@ -70,22 +69,14 @@ export function PublicEntryLayout({ children }: { children: ReactNode }) {
             aria-hidden
             className="absolute inset-0 bg-gradient-to-br from-[#23361D]/88 via-[#447CB3]/42 to-[#23361D]/75"
             initial={false}
-            animate={{ opacity: isAuth ? 0 : 1 }}
+            animate={{ opacity: 1 }}
             transition={bgTransition}
           />
           <motion.div
             aria-hidden
             className="absolute inset-0 bg-gradient-to-t from-[#0d1210]/90 via-transparent to-[#447CB3]/15"
             initial={false}
-            animate={{ opacity: isAuth ? 0 : 1 }}
-            transition={bgTransition}
-          />
-
-          <motion.div
-            aria-hidden
-            className="absolute inset-0 bg-gradient-to-br from-[#D4D8EC]/80 via-[#447CB3]/25 to-[#23361D]/50 dark:from-[#0f1419]/92 dark:via-[#1a2430]/88 dark:to-[#23361D]/45"
-            initial={false}
-            animate={{ opacity: isAuth ? 1 : 0 }}
+            animate={{ opacity: 1 }}
             transition={bgTransition}
           />
         </div>

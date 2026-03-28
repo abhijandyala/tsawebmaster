@@ -3,9 +3,8 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /*
- * Charlotte Connect — palette: #23361D forest, #50692B olive, #447CB3 blue,
- * #D4D8EC dusty blue, #BBB857 mustard. Motion/surfaces inspired by Haptimize
- * (https://github.com/Rockypocky77/Haptimize) — soft shadows, blobs, smooth color transitions.
+ * Charlotte Connect — civic/editorial direction: warm paper fields (gov.uk–style clarity),
+ * forest + blue + mustard accents. Motion only where it helps; no site-wide transition soup.
  */
 :root {
   --clt-forest: #23361d;
@@ -14,10 +13,10 @@
   --clt-dusty: #d4d8ec;
   --clt-mustard: #bbb857;
 
-  --background: #e9ecf6;
-  --background-alt: #dce1f0;
-  --surface: #ffffff;
-  --surface-muted: #f4f6fb;
+  --background: #e8e6e0;
+  --background-alt: #ddd9d2;
+  --surface: #fcfbfa;
+  --surface-muted: #f3f1ed;
 
   --foreground: #23361d;
   --foreground-secondary: #3d4f3a;
@@ -46,9 +45,9 @@
   --error: #b03d32;
   --error-light: #fceae8;
 
-  --shadow-card: 0 1px 3px rgba(35, 54, 29, 0.06);
-  --shadow-hover: 0 8px 28px rgba(68, 124, 179, 0.12);
-  --shadow-lg: 0 20px 50px rgba(35, 54, 29, 0.1);
+  --shadow-card: 0 1px 0 rgba(35, 54, 29, 0.06), 0 12px 40px rgba(35, 54, 29, 0.05);
+  --shadow-hover: 0 2px 0 rgba(35, 54, 29, 0.04), 0 20px 50px rgba(68, 124, 179, 0.11);
+  --shadow-lg: 0 24px 60px rgba(35, 54, 29, 0.08);
 
   --ring-focus: var(--clt-blue);
 }
@@ -134,13 +133,25 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "kern" 1, "liga" 1;
 }
 
-/* Haptimize-style smooth color transitions (scoped properties only) */
-*:where(:not(.no-transition)) {
+/* Transitions: interactive elements only — keeps the UI crisp like Stripe / Linear, not mushy. */
+:where(
+    a,
+    button,
+    input,
+    textarea,
+    select,
+    summary,
+    [role="button"],
+    [role="tab"],
+    .clt-card,
+    .clt-glass
+  ):where(:not(.no-transition)) {
   transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
-  transition-duration: 160ms;
-  transition-timing-function: ease;
+  transition-duration: 180ms;
+  transition-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 h1, h2, h3, h4, h5, h6, .font-display {
@@ -227,11 +238,11 @@ h1, h2, h3, h4, h5, h6, .font-display {
 }
 
 .clt-glass {
-  background: color-mix(in srgb, var(--surface) 78%, transparent);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid color-mix(in srgb, var(--clt-blue) 20%, white);
-  box-shadow: var(--shadow-hover);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  backdrop-filter: blur(18px) saturate(1.15);
+  -webkit-backdrop-filter: blur(18px) saturate(1.15);
+  border: 1px solid color-mix(in srgb, var(--clt-blue) 14%, var(--border-light));
+  box-shadow: var(--shadow-card);
 }
 
 .dark .clt-glass {
@@ -241,14 +252,14 @@ h1, h2, h3, h4, h5, h6, .font-display {
 
 .clt-card {
   background: var(--surface);
-  border: 1px solid var(--border-light);
+  border: 1px solid color-mix(in srgb, var(--border-light) 85%, var(--clt-blue));
   box-shadow: var(--shadow-card);
-  border-radius: 1.25rem;
+  border-radius: 1rem;
   transition: box-shadow 200ms ease, border-color 200ms ease, transform 200ms var(--ease-out-expo);
 }
 .clt-card:hover {
   box-shadow: var(--shadow-hover);
-  border-color: color-mix(in srgb, var(--clt-blue) 35%, var(--border));
+  border-color: color-mix(in srgb, var(--clt-blue) 28%, var(--border));
 }
 
 .fade-overlay-bottom {
@@ -286,4 +297,38 @@ h1, h2 {
 }
 p {
   text-wrap: pretty;
+}
+
+/* --- Google Translate (LanguageSelector) ---
+   Never use display:none on .goog-te-gadget or the whole page can break; the combo must stay in the DOM. */
+.goog-te-banner-frame,
+.goog-te-balloon-frame,
+#goog-gt-tt,
+.goog-tooltip,
+.goog-tooltip:hover,
+.goog-te-spinner-pos {
+  display: none !important;
+}
+
+body {
+  top: 0 !important;
+}
+
+.google-translate-root {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+  left: 0 !important;
+  top: 0 !important;
+  z-index: -1 !important;
+}
+
+.goog-te-gadget {
+  font-size: 0 !important;
 }

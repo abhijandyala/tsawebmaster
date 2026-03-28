@@ -1,11 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { deleteUser, reauthenticateWithCredential, EmailAuthProvider } from 'firebase/auth';
 import { useAuth } from '@/contexts/auth-context';
 import { getFirebaseAuth } from '@/lib/firebase';
 import { wipeUserFirestoreData } from '@/lib/wipeUserData';
+import { getLocalFavoriteIds, setLocalFavoriteIds } from '@/lib/localFavorites';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 
@@ -45,6 +47,14 @@ export default function SettingsPage() {
     }
   };
 
+  const clearLocalOnly = () => {
+    if (!confirm('Clear favorites and recent resources stored in this browser?')) return;
+    setLocalFavoriteIds([]);
+    localStorage.removeItem('clt-recent-resources');
+    localStorage.removeItem('charlotte-connect-help-plan');
+    setMsg('Local favorites and recent list cleared.');
+  };
+
   const deleteAccount = async () => {
     if (!user || !confirm('Permanently delete your account?')) return;
     const auth = getFirebaseAuth();
@@ -69,13 +79,29 @@ export default function SettingsPage() {
 
   if (!user) {
     return (
-      <div className="w-full max-w-md mx-auto space-y-6">
+      <div className="w-full max-w-lg mx-auto space-y-8">
         <div className="h-10 w-1.5 rounded-full bg-accent mb-4" />
         <h1 className="font-display text-3xl font-bold">Settings</h1>
-        <p className="text-sm text-foreground-secondary">Sign in to manage your profile.</p>
-        <Button variant="primary" type="button" onClick={() => router.push('/auth')}>
-          Sign in
-        </Button>
+        <p className="text-sm text-foreground-secondary leading-relaxed">
+          Charlotte Connect is open without sign-in for the TSA Webmaster competition. Use the options below to manage
+          data stored in this browser.
+        </p>
+        <section className="clt-glass rounded-3xl p-6 space-y-4 border border-border-light">
+          <h2 className="font-semibold text-foreground">Local data</h2>
+          <p className="text-sm text-foreground-secondary">
+            Favorites: <strong className="text-foreground">{getLocalFavoriteIds().length}</strong> saved on this device.
+          </p>
+          <Button variant="outline" type="button" onClick={clearLocalOnly}>
+            Clear local favorites & recent
+          </Button>
+        </section>
+        <p className="text-sm">
+          <Link href="/reference" className="font-semibold text-accent hover:underline">
+            Reference page →
+          </Link>{' '}
+          (sources, copyright checklist, work log)
+        </p>
+        {msg && <p className="text-sm text-foreground-muted">{msg}</p>}
       </div>
     );
   }

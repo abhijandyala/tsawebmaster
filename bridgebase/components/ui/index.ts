@@ -8,3 +8,4 @@ export { ThemeToggle } from './ThemeToggle';
 export { Textarea } from './Textarea';
 export { CrisisBanner } from './CrisisBanner';
 export { LanguageSelector } from './LanguageSelector';
+export { SectionEyebrow } from './SectionEyebrow';

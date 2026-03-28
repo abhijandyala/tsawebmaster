@@ -55,14 +55,33 @@ function getGoogleTranslateCookie(): string | null {
   return null;
 }
 
+function clearGoogTransCookies(): void {
+  const host = typeof window !== 'undefined' ? window.location.hostname : '';
+  const expires = 'expires=Thu, 01 Jan 1970 00:00:01 GMT';
+  document.cookie = `googtrans=;path=/;${expires}`;
+  if (host) {
+    document.cookie = `googtrans=;path=/;domain=.${host};${expires}`;
+    document.cookie = `googtrans=;path=/;domain=${host};${expires}`;
+  }
+}
+
 function triggerGoogleTranslate(langCode: string): boolean {
   const select = document.querySelector('.goog-te-combo') as HTMLSelectElement | null;
-  if (select) {
+  if (!select) return false;
+
+  if (langCode === 'en') {
+    clearGoogTransCookies();
+    const opt = Array.from(select.options).find((o) => o.value === '' || o.value === 'en');
+    select.value = opt?.value ?? '';
+    select.selectedIndex = 0;
+  } else {
+    const match = Array.from(select.options).find((o) => o.value === langCode);
+    if (!match) return false;
     select.value = langCode;
-    select.dispatchEvent(new Event('change'));
-    return true;
   }
-  return false;
+
+  select.dispatchEvent(new Event('change', { bubbles: true }));
+  return true;
 }
 
 export function useGoogleTranslate({ 

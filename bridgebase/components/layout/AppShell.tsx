@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, type ReactNode } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { type ReactNode } from 'react';
+import { usePathname } from 'next/navigation';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useAuth } from '@/contexts/auth-context';
 import { useDemo } from '@/contexts/demo-context';
@@ -16,18 +16,12 @@ const pageEase = [0.25, 0.1, 0.25, 1] as const;
 
 export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
-  const { user, loading } = useAuth();
+  const { user } = useAuth();
   const { isDemo, hydrated } = useDemo();
-  const router = useRouter();
   const { startTransition } = usePageTransition();
   const reduceMotion = useReducedMotion();
 
-  useEffect(() => {
-    if (!hydrated || loading) return;
-    if (!user && !isDemo) router.replace('/');
-  }, [user, isDemo, hydrated, loading, router]);
-
-  if (!hydrated || loading) {
+  if (!hydrated) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <motion.div
@@ -47,23 +41,8 @@ export function AppShell({ children }: { children: ReactNode }) {
     );
   }
 
-  if (!user && !isDemo) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <motion.p
-          className="text-sm text-foreground-muted"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.35, ease: pageEase }}
-        >
-          Redirecting…
-        </motion.p>
-      </div>
-    );
-  }
-
   const displayName =
-    user?.displayName || user?.email?.split('@')[0] || (isDemo ? 'Guest (demo)' : 'there');
+    user?.displayName || user?.email?.split('@')[0] || (isDemo ? 'Guest (demo)' : 'Charlotte neighbor');
 
   const isHome = pathname === '/home';
 
@@ -77,13 +56,10 @@ export function AppShell({ children }: { children: ReactNode }) {
         }}
       />
 
-      {/* Full-bleed header: no column paddingLeft — that inset was shrinking the header bar and showing bg beside it.
-          Overlay inset (expanded sidebar clearance) applies only to inner padding of header + main. */}
       <div
         className="box-border flex min-h-screen min-h-0 shrink-0 flex-col"
         style={{
           marginLeft: SIDEBAR_RAIL_PX,
-          // 100% = parent width; avoids 100vw scrollbar overflow. Sidebar is fixed/out of flex flow.
           width: `calc(100% - ${SIDEBAR_RAIL_PX}px)`,
           maxWidth: `calc(100% - ${SIDEBAR_RAIL_PX}px)`,
           ['--clt-overlay-inset' as string]: `${SIDEBAR_OVERLAY_INSET_PX}px`,
@@ -99,7 +75,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               transition={{ duration: 0.42, ease: pageEase }}
             >
               <p className="min-w-0 flex-1 text-left text-sm sm:text-base font-display font-semibold text-foreground truncate pr-2">
-                Welcome back, <span className="text-accent">{displayName}</span>
+                Welcome, <span className="text-accent">{displayName}</span>
               </p>
               <div className="flex shrink-0 items-center justify-end gap-1 sm:gap-2">
                 <LanguageSelector />

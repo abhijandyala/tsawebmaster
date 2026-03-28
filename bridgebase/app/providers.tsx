@@ -6,6 +6,7 @@ import { AuthProvider } from '@/contexts/auth-context';
 import { DemoProvider } from '@/contexts/demo-context';
 import { PageTransitionProvider } from '@/contexts/page-transition-context';
 import { NavigationTransitionBridge } from '@/components/layout/NavigationTransitionBridge';
+import { GoogleTranslateMount } from '@/components/translate/GoogleTranslateMount';
 
 export function Providers({ children }: { children: ReactNode }) {
   return (
@@ -13,6 +14,7 @@ export function Providers({ children }: { children: ReactNode }) {
       <AuthProvider>
         <DemoProvider>
           <PageTransitionProvider>
+            <GoogleTranslateMount />
             <NavigationTransitionBridge />
             {children}
           </PageTransitionProvider>

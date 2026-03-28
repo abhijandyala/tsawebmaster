@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useReducedMotion } from 'framer-motion';
-import { Home, LayoutGrid, Bookmark, Settings, LogOut } from 'lucide-react';
+import { Home, LayoutGrid, Bookmark, Settings, BookMarked, LogOut } from 'lucide-react';
 import { useAuth } from '@/contexts/auth-context';
 import { usePageTransition, PAGE_TRANSITION_FADE_IN_MS } from '@/contexts/page-transition-context';
 import { SIDEBAR_EXPANDED_PX, SIDEBAR_RAIL_PX } from '@/lib/appShellLayout';
@@ -18,6 +18,7 @@ const links = [
   { href: '/home', label: 'Home', icon: Home },
   { href: '/resources', label: 'Resource hub', icon: LayoutGrid },
   { href: '/your-resources', label: 'Your resources', icon: Bookmark },
+  { href: '/reference', label: 'Reference page', icon: BookMarked },
   { href: '/settings', label: 'Settings', icon: Settings },
 ];
 

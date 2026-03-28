@@ -138,14 +138,19 @@ export function ResourceFilters({
 
       <div className="flex flex-wrap items-center justify-between gap-4 pt-3 border-t border-border">
         <div className="flex items-center gap-4">
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={filters.openNow}
-              onChange={(e) => onFilterChange({ openNow: e.target.checked })}
-              className="w-4 h-4 border-border text-accent focus:ring-accent focus:ring-offset-0 rounded"
-            />
-            <span className="text-sm font-medium text-foreground">Open now</span>
+          <label className="flex flex-col gap-1 cursor-pointer sm:max-w-xs">
+            <span className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={filters.openNow}
+                onChange={(e) => onFilterChange({ openNow: e.target.checked })}
+                className="w-4 h-4 shrink-0 border-border text-accent focus:ring-accent focus:ring-offset-0 rounded"
+              />
+              <span className="text-sm font-medium text-foreground">Open now (estimate)</span>
+            </span>
+            <span className="text-xs text-foreground-muted leading-snug pl-6">
+              Uses hours listed on each profile — always call ahead to confirm.
+            </span>
           </label>
 
           {hasActiveFilters && (
@@ -220,7 +225,7 @@ export function ResourceFilters({
           )}
           {filters.openNow && (
             <span className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-lg bg-gold/20 text-primary">
-              Open now
+              Open now (est.)
               <button onClick={() => onFilterChange({ openNow: false })} className="hover:opacity-80">
                 <X className="w-3 h-3" />
               </button>

@@ -1,44 +1,19 @@
-'use client';
+import { Suspense } from 'react';
+import { ResourcesHubClient } from './ResourcesHubClient';
 
-import { useRouter } from 'next/navigation';
-import { motion } from 'framer-motion';
-import { resources } from '@/data/resources';
-import { HubResourceGrid } from '@/components/resources/HubResourceGrid';
-import { Button } from '@/components/ui/Button';
+function HubFallback() {
+  return (
+    <div className="max-w-6xl mx-auto py-24 flex flex-col items-center gap-3 text-foreground-muted text-sm">
+      <div className="h-9 w-9 rounded-2xl border-2 border-accent border-t-transparent animate-spin" aria-hidden />
+      Loading resource hub…
+    </div>
+  );
+}
 
 export default function ResourcesHubPage() {
-  const router = useRouter();
   return (
-    <div className="max-w-6xl mx-auto space-y-10">
-      <div className="clt-glass rounded-3xl p-6 sm:p-8 border border-border-light">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-          <div className="flex items-start gap-4 min-w-0">
-            <div className="h-14 w-1.5 rounded-full bg-gradient-to-b from-accent via-gold to-primary shrink-0 mt-1" />
-            <div className="min-w-0">
-              <motion.h1
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="font-display text-4xl font-bold text-foreground tracking-tight"
-              >
-                Resource hub
-              </motion.h1>
-              <p className="text-foreground-secondary mt-3 max-w-xl text-sm leading-relaxed">
-                Curated Charlotte-area support — food, housing, health, jobs, and crisis help. Cards open full detail,
-                map, and reviews.
-              </p>
-            </div>
-          </div>
-          <Button
-            variant="accent"
-            type="button"
-            className="shrink-0 shadow-md w-full sm:w-auto"
-            onClick={() => router.push('/request-resource')}
-          >
-            Need something else? Request a resource →
-          </Button>
-        </div>
-      </div>
-      <HubResourceGrid resources={resources} />
-    </div>
+    <Suspense fallback={<HubFallback />}>
+      <ResourcesHubClient />
+    </Suspense>
   );
 }

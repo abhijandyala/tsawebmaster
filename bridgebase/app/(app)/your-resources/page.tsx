@@ -5,9 +5,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/contexts/auth-context';
-import { useDemo } from '@/contexts/demo-context';
 import { resources } from '@/data/resources';
 import { listFavoriteIds, listRecentIds } from '@/lib/firestoreUser';
+import { getLocalFavoriteIds } from '@/lib/localFavorites';
 import { getLocalRecentIds } from '@/lib/localRecent';
 import { ResourceCard } from '@/components/resources/ResourceCard';
 import { Button } from '@/components/ui/Button';
@@ -20,7 +20,6 @@ function byIds(ids: string[]) {
 export default function YourResourcesPage() {
   const router = useRouter();
   const { user } = useAuth();
-  const { isDemo } = useDemo();
   const [favIds, setFavIds] = useState<string[]>([]);
   const [recentIds, setRecentIds] = useState<string[]>([]);
   const [expandFav, setExpandFav] = useState(false);
@@ -36,7 +35,7 @@ export default function YourResourcesPage() {
           setRecentIds(r);
         }
       } else {
-        setFavIds([]);
+        setFavIds(getLocalFavoriteIds());
         setRecentIds(getLocalRecentIds());
       }
     })();
@@ -58,9 +57,9 @@ export default function YourResourcesPage() {
           <div>
             <h1 className="font-display text-4xl font-bold text-foreground tracking-tight">Your resources</h1>
             <p className="text-foreground-secondary mt-3 text-sm max-w-lg leading-relaxed">
-              {isDemo && !user
-                ? 'Demo: favorites are not synced. Recent views are stored on this device only.'
-                : 'Favorites sync to your account. Recently opened resources appear below.'}
+              {user
+                ? 'Favorites sync to your account when signed in. Recently opened resources appear below.'
+                : 'Favorites and recent views are stored on this device only — no account required.'}
             </p>
           </div>
         </div>

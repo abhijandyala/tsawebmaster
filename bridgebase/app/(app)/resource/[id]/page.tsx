@@ -16,22 +16,12 @@ import {
   MessageSquare,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/auth-context';
-import { useDemo } from '@/contexts/demo-context';
 import { resources } from '@/data/resources';
 import { resourceCoverSrc, resourceImageGradient } from '@/lib/resourceImage';
-import {
-  addFavorite,
-  removeFavorite,
-  listFavoriteIds,
-  touchRecentView,
-} from '@/lib/firestoreUser';
+import { addFavorite, removeFavorite, listFavoriteIds, touchRecentView } from '@/lib/firestoreUser';
 import { pushLocalRecent } from '@/lib/localRecent';
-import {
-  subscribeResourceReviews,
-  submitReview,
-  type FirestoreReview,
-} from '@/lib/firestoreReviews';
-import { SignupRequiredModal } from '@/components/auth/SignupRequiredModal';
+import { getLocalFavoriteIds, toggleLocalFavorite } from '@/lib/localFavorites';
+import { subscribeResourceReviews, submitReview, type FirestoreReview } from '@/lib/firestoreReviews';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Modal } from '@/components/ui/Modal';
@@ -43,12 +33,9 @@ export default function ResourceDetailPage() {
   const params = useParams();
   const router = useRouter();
   const { user } = useAuth();
-  const { isDemo } = useDemo();
   const [favIds, setFavIds] = useState<string[]>([]);
   const [reviews, setReviews] = useState<FirestoreReview[]>([]);
   const [avg, setAvg] = useState(0);
-  const [gate, setGate] = useState(false);
-  const [gateFeature, setGateFeature] = useState('');
   const [reviewsOpen, setReviewsOpen] = useState(false);
   const [ratingIn, setRatingIn] = useState(4.5);
   const [textIn, setTextIn] = useState('');
@@ -69,6 +56,8 @@ export default function ResourceDetailPage() {
     if (user) {
       touchRecentView(user, resource.id).catch(() => {});
       listFavoriteIds(user).then(setFavIds).catch(() => {});
+    } else {
+      setFavIds(getLocalFavoriteIds());
     }
   }, [resource, user]);
 
@@ -80,39 +69,33 @@ export default function ResourceDetailPage() {
     });
   }, [resource]);
 
-  const requireAccount = useCallback((feature: string) => {
-    if (isDemo || !user) {
-      setGateFeature(feature);
-      setGate(true);
-      return true;
-    }
-    return false;
-  }, [isDemo, user]);
-
   const toggleBookmark = async () => {
     if (!resource) return;
-    if (requireAccount('save favorites')) return;
-    try {
-      if (isBookmarked) {
-        await removeFavorite(user!, resource.id);
-        setFavIds((ids) => ids.filter((x) => x !== resource.id));
-      } else {
-        await addFavorite(user!, resource.id);
-        setFavIds((ids) => [...ids, resource.id]);
+    if (user) {
+      try {
+        if (isBookmarked) {
+          await removeFavorite(user, resource.id);
+          setFavIds((ids) => ids.filter((x) => x !== resource.id));
+        } else {
+          await addFavorite(user, resource.id);
+          setFavIds((ids) => [...ids, resource.id]);
+        }
+      } catch {
+        /* ignore */
       }
-    } catch {
-      /* ignore */
+      return;
     }
+    toggleLocalFavorite(resource.id);
+    setFavIds(getLocalFavoriteIds());
   };
 
   const sendReview = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!resource) return;
-    if (requireAccount('write reviews')) return;
+    if (!resource || !user) return;
     setReviewErr('');
     setReviewBusy(true);
     try {
-      await submitReview(user!, {
+      await submitReview(user, {
         resourceId: resource.id,
         rating: ratingIn,
         text: textIn,
@@ -166,8 +149,6 @@ export default function ResourceDetailPage() {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <SignupRequiredModal isOpen={gate} onClose={() => setGate(false)} feature={gateFeature} />
-
       <button
         type="button"
         onClick={() => router.back()}
@@ -234,11 +215,13 @@ export default function ResourceDetailPage() {
           <section className="clt-glass rounded-3xl p-6 sm:p-8 space-y-4 border border-border-light">
             <h2 className="font-display text-xl font-bold flex items-center gap-2">
               <span className="w-8 h-0.5 rounded-full bg-gold" />
-              Write a review
+              Community reviews
             </h2>
-            {isDemo || !user ? (
-              <p className="text-sm text-foreground-secondary">
-                Sign in to rate and review (demo users can read only).
+            {!user ? (
+              <p className="text-sm text-foreground-secondary leading-relaxed">
+                This public competition build does not use accounts. You can read reviews from the directory below.
+                Favorites are saved on this device only. (Teams that operate a signed-in deployment can re-enable review
+                posting through Firebase.)
               </p>
             ) : (
               <form onSubmit={sendReview} className="space-y-3">
@@ -278,6 +261,11 @@ export default function ResourceDetailPage() {
               <Share2 className="w-4 h-4" />
             </Button>
           </div>
+          {!user && (
+            <p className="text-xs text-foreground-muted leading-relaxed">
+              Saves are stored in this browser (not synced). Clearing site data removes them.
+            </p>
+          )}
 
           <div className="h-[280px] rounded-3xl border-2 border-accent/20 overflow-hidden shadow-md ring-1 ring-gold/10">
             <GoogleMap
@@ -330,7 +318,7 @@ export default function ResourceDetailPage() {
       <Modal isOpen={reviewsOpen} onClose={() => setReviewsOpen(false)} title="Reviews" size="lg">
         <div className="px-6 pb-6 max-h-[60vh] overflow-y-auto space-y-4">
           {reviews.length === 0 ? (
-            <p className="text-sm text-foreground-secondary">No reviews yet. Be the first.</p>
+            <p className="text-sm text-foreground-secondary">No reviews yet.</p>
           ) : (
             reviews.map((r) => (
               <div key={r.id} className="border-b border-border pb-3">
