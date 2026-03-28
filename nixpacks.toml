@@ -1,8 +1,8 @@
 [phases.setup]
-nixPkgs = ["nodejs_20"]
+nixPkgs = ["nodejs_22"]
 
 [phases.install]
-cmds = ["cd bridgebase && npm ci || cd bridgebase && npm install"]
+cmds = ["cd bridgebase && npm ci --legacy-peer-deps || cd bridgebase && npm install --legacy-peer-deps"]
 
 [phases.build]
 cmds = ["cd bridgebase && npm run build"]
@@ -12,3 +12,4 @@ cmd = "cd bridgebase && npm run start"
 
 [variables]
 NODE_ENV = "production"
+NEXT_TELEMETRY_DISABLED = "1"
