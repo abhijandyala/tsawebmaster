@@ -1,0 +1,45 @@
+# Dependencies
+**/node_modules
+
+# Build outputs
+**/.next
+**/out
+**/build
+
+# Git
+.git
+.gitignore
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# Misc
+.DS_Store
+*.md
+!bridgebase/README.md
+
+# Environment
+**/.env
+**/.env.local
+**/.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# Test
+**/coverage
+
+# Config files not needed in Docker
+.cursor
+.agents
+skills-lock.json
+start.sh
+nixpacks.toml
+Procfile
+*.png
+*.jpg
+*.webp
